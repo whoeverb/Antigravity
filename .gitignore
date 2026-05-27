@@ -1,0 +1,7 @@
+﻿# Ignore python virtual environments anywhere in the project
+**/env/
+**/.venv/
+
+# Ignore local OS junk
+.DS_Store
+Thumbs.db
