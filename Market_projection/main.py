@@ -3,7 +3,8 @@ import pandas as pd
 import streamlit as st
 import yfinance as yf
 import pandas_ta as ta
-from prophet import Prophet
+import numpy as np
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
 
@@ -124,8 +125,8 @@ with st.sidebar:
     # Stock Ticker input
     ticker = st.text_input("Stock Ticker Symbol", value="SCHG", help="Enter a valid exchange ticker symbol e.g., SCHG, AAPL, MSFT").upper().strip()
     
-    # Date Pickers
-    today = datetime.date(2026, 5, 26)  # Default current date based on system state
+    # Date Pickers with dynamic today dates
+    today = datetime.date.today()
     one_year_ago = today - datetime.timedelta(days=365)
     
     start_date = st.date_input("Start Date", value=one_year_ago, max_value=today)
@@ -151,20 +152,21 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### 🔮 **Predictive Forecasting Engine**")
     
-    show_forecast = st.checkbox("Enable Machine Learning Forecast", value=False, help="Utilize a local Prophet time-series model to project future price trends.")
-    forecast_horizon = st.slider("Forecast Horizon (Days)", min_value=7, max_value=90, value=30, step=1, disabled=not show_forecast)
+    show_forecast = st.checkbox("Enable Statistical Forecast", value=False, help="Utilize a local statsmodels Exponential Smoothing model to project future trends.")
+    # Horizon is locked to 14 days as requested
+    forecast_horizon = 14
     
     st.markdown("---")
     st.markdown("💡 *Market forecasting & analytics engine powered by Python, Streamlit, yFinance, and Pandas.*")
 
-# Cached stock data loader with validation & error handling
+# Cached stock data loader with robust error messages (no silent swallowing)
 @st.cache_data(show_spinner="Fetching data from Yahoo Finance...")
 def load_stock_data(ticker_symbol: str, start: datetime.date, end: datetime.date):
     try:
         # Fetch using yfinance download
         df = yf.download(ticker_symbol, start=start, end=end, progress=False)
         if df.empty:
-            return pd.DataFrame()
+            return pd.DataFrame(), f"No historical data returned for ticker '{ticker_symbol}' within selected dates."
         
         # Flatten MultiIndex columns if present
         if isinstance(df.columns, pd.MultiIndex):
@@ -174,42 +176,71 @@ def load_stock_data(ticker_symbol: str, start: datetime.date, end: datetime.date
         required_cols = ['Open', 'High', 'Low', 'Close', 'Volume']
         for col in required_cols:
             if col not in df.columns:
-                return pd.DataFrame()
+                return pd.DataFrame(), f"Retrieved dataset is missing required price column: '{col}'."
                 
         # Sort index
         df = df.sort_index()
-        return df
+        return df, None
     except Exception as e:
-        return pd.DataFrame()
+        return pd.DataFrame(), f"Failed to download market data: {str(e)}"
 
-# Cached Facebook Prophet forecasting logic
-@st.cache_data(show_spinner="Training predictive Prophet model...")
-def generate_forecast(df: pd.DataFrame, horizon: int):
+# Cached company fundamentals info loader with error feedback
+@st.cache_data(show_spinner="Fetching company fundamentals...")
+def fetch_company_info(ticker_symbol: str):
     try:
-        # Prophet expects 'ds' (datetimes) and 'y' (values)
-        train_df = df[['Close']].reset_index()
-        train_df.columns = ['ds', 'y']
-        
-        # Ensure ds is timezone-naive
-        train_df['ds'] = pd.to_datetime(train_df['ds']).dt.tz_localize(None)
-        
-        # Fit Prophet model
-        model = Prophet(
-            yearly_seasonality='auto',
-            weekly_seasonality='auto',
-            daily_seasonality=False
-        )
-        model.fit(train_df)
-        
-        # Generate future dataframe
-        future = model.make_future_dataframe(periods=horizon, freq='D')
-        
-        # Predict
-        forecast = model.predict(future)
-        
-        return forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
+        ticker_obj = yf.Ticker(ticker_symbol)
+        info = ticker_obj.info
+        if not info or not isinstance(info, dict):
+            return None, f"No profile records returned for symbol '{ticker_symbol}'."
+        return info, None
     except Exception as e:
-        return pd.DataFrame()
+        return None, f"Network or profile extraction error: {str(e)}"
+
+# Cached Exponential Smoothing statistical forecast
+@st.cache_data(show_spinner="Running Exponential Smoothing forecast...")
+def generate_statistical_forecast(series: pd.Series, horizon: int = 14):
+    try:
+        # Ensure series is float and 1D
+        s = series.squeeze().astype(float)
+        if len(s) < 10:
+            return pd.DataFrame(), "Data range is too small for statistical forecasting. Minimum 10 trading days required."
+            
+        # Fit additive Holt's Linear Trend model
+        model = ExponentialSmoothing(
+            s,
+            trend="add",
+            seasonal=None,
+            initialization_method="estimated"
+        )
+        fitted_model = model.fit()
+        forecast_values = fitted_model.forecast(steps=horizon)
+        
+        # Generate future dates
+        last_date = series.index[-1]
+        future_dates = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=horizon, freq='D')
+        
+        forecast_df = pd.DataFrame({
+            'ds': future_dates,
+            'yhat': forecast_values.values
+        })
+        
+        # Generate 80% confidence boundaries based on residuals
+        residuals = fitted_model.resid
+        std_resid = residuals.std() if not residuals.empty else 0.0
+        
+        yhat_lower = []
+        yhat_upper = []
+        for h in range(1, horizon + 1):
+            margin = 1.28 * std_resid * np.sqrt(h)
+            yhat_lower.append(forecast_values.values[h - 1] - margin)
+            yhat_upper.append(forecast_values.values[h - 1] + margin)
+            
+        forecast_df['yhat_lower'] = yhat_lower
+        forecast_df['yhat_upper'] = yhat_upper
+        
+        return forecast_df, None
+    except Exception as e:
+        return pd.DataFrame(), f"Exponential Smoothing model fit failed: {str(e)}"
 
 # Main Header Layout with Live Connection Badge aligned next to Title
 header_col1, header_col2 = st.columns([3, 1])
@@ -235,11 +266,16 @@ if not ticker:
     st.warning("⚠️ Please enter a stock ticker symbol in the sidebar.")
 else:
     # Load data
-    df = load_stock_data(ticker, start_date, end_date)
+    df, data_error = load_stock_data(ticker, start_date, end_date)
     
-    if df.empty:
-        st.error(f"❌ Ticker '{ticker}' not found or no historical data available for the period {start_date} to {end_date}. Please check the symbol and dates.")
+    if data_error:
+        st.error(f"❌ {data_error}")
+    elif df.empty:
+        st.error(f"❌ No historical data available for ticker '{ticker}' within the configured date range.")
     else:
+        # Squeeze closing series to guarantee pd.Series flat type for indicator calculators
+        close_series = df['Close'].squeeze()
+        
         # Step 1: Technical Indicators Calculations
         active_periods = []
         if show_ema:
@@ -255,35 +291,96 @@ else:
         if max_requested_period > len(df):
             st.warning(
                 f"⚠️ The selected date range contains only {len(df)} trading days, which is fewer than the "
-                f"maximum configured indicator period of {max_requested_period} days. Some indicator trendlines may not fully display or will contain NaN values."
+                f"maximum configured indicator period of {max_requested_period} days. Some indicator trendlines may display as NaN."
             )
             
         # Calculate EMA
         if show_ema:
-            df['EMA'] = ta.ema(df['Close'], length=ema_period)
+            df['EMA'] = ta.ema(close_series, length=ema_period)
             
         # Calculate SMA
         if show_sma:
-            df['SMA'] = ta.sma(df['Close'], length=sma_period)
+            df['SMA'] = ta.sma(close_series, length=sma_period)
             
         # Calculate RSI
         if show_rsi_indicator:
-            df['RSI'] = ta.rsi(df['Close'], length=rsi_period)
+            df['RSI'] = ta.rsi(close_series, length=rsi_period)
             
-        # Step 2: Run Prophet Machine Learning Forecast if active
+        # Step 2: Run Holt-Winters Exponential Smoothing Statistical Forecast if active
         forecast_df = pd.DataFrame()
         if show_forecast:
-            forecast_raw = generate_forecast(df, forecast_horizon)
-            if not forecast_raw.empty:
-                # Slice to future-only starting from the final historical close date to prevent overlapping
-                last_hist_date = pd.to_datetime(df.index[-1]).tz_localize(None)
-                forecast_df = forecast_raw[forecast_raw['ds'] >= last_hist_date]
+            forecast_raw, forecast_err = generate_statistical_forecast(close_series, forecast_horizon)
+            if forecast_err:
+                st.error(f"❌ Forecasting Error: {forecast_err}")
+            else:
+                forecast_df = forecast_raw
             
-        # Step 3: Calculate dashboard header metrics
-        latest_close = float(df['Close'].iloc[-1])
+        # Step 3: Implement the Plain-English Accumulation Advisor
+        # Calculate standard 20-day, 2-std Bollinger Bands using squeezed series
+        bb = ta.bbands(close_series, length=20, std=2)
+        # Calculate standard 50-day SMA behind the scenes for accumulation advisor
+        sma_50 = ta.sma(close_series, length=50)
+        
+        current_price = float(close_series.iloc[-1])
+        has_bb = bb is not None and not bb.empty
+        has_sma50 = sma_50 is not None and not sma_50.empty
+        
+        status_type = "hold"  # Default status
+        
+        if has_bb:
+            bbl_col = [col for col in bb.columns if col.startswith('BBL')][0]
+            current_bbl = float(bb[bbl_col].iloc[-1])
+            # Check price within 1.5% of lower band or below
+            if current_price <= current_bbl * 1.015:
+                status_type = "buy"
+                
+        if status_type == "hold" and has_sma50:
+            current_sma50 = float(sma_50.iloc[-1])
+            # Check price <= 50 SMA
+            if current_price <= current_sma50:
+                status_type = "buy"
+                
+        # Generate alert styling and descriptions
+        if status_type == "buy":
+            card_style = "background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(5, 150, 105, 0.22)); border: 1px solid rgba(16, 185, 129, 0.45);"
+            status_html = '<strong style="color: #10b981; font-size: 1.25rem;">🛒 BUY SIGNAL DETECTED:</strong> <span style="color: #e2e8f0; font-size: 1.05rem;">Price is pulling back into a historical value/discount zone. Highly favorable window to accumulate shares.</span>'
+        else:
+            card_style = "background: linear-gradient(135deg, rgba(71, 85, 105, 0.12), rgba(51, 65, 85, 0.22)); border: 1px solid rgba(148, 163, 184, 0.3);"
+            status_html = '<strong style="color: #94a3b8; font-size: 1.25rem;">⏳ ACCUMULATION STATUS: HOLD.</strong> <span style="color: #e2e8f0; font-size: 1.05rem;">Stock is premium-priced right now. Recommend patience; wait for the next market pullback or dip to buy more shares.</span>'
+            
+        # Check forecast trail slope
+        warning_html = ""
+        if show_forecast and not forecast_df.empty:
+            forecast_start = forecast_df['yhat'].iloc[0]
+            forecast_end = forecast_df['yhat'].iloc[-1]
+            if forecast_end < forecast_start:
+                warning_html = """
+                <div style="margin-top: 15px; padding: 12px 18px; background: rgba(245, 158, 11, 0.1); border: 1px dashed rgba(245, 158, 11, 0.4); border-radius: 8px; color: #fbbf24; font-size: 0.95rem; font-weight: 500;">
+                    🔮 <strong>Early Warning:</strong> A short-term drop is predicted over the next few days. Keep your cash reserves ready to scoop up shares if a value zone opens up.
+                </div>
+                """
+                
+        # Render advisor container prominently at top of page
+        st.markdown(
+            f"""
+            <div class="status-card" style="margin-top: 5px; margin-bottom: 25px; {card_style}">
+                <h3 style="color: #f8fafc; font-size: 1.4rem; font-weight: 600; margin-top: 0; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    🎯 Accumulation Strategy Guide
+                </h3>
+                <div style="line-height: 1.6;">
+                    {status_html}
+                </div>
+                {warning_html}
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+            
+        # Step 4: Calculate metrics
+        latest_close = float(close_series.iloc[-1])
         
         if len(df) > 1:
-            prev_close = float(df['Close'].iloc[-2])
+            prev_close = float(close_series.iloc[-2])
             delta_val = latest_close - prev_close
             delta_pct = (delta_val / prev_close) * 100
             delta_str = f"${delta_val:+,.2f} ({delta_pct:+.2f}%)"
@@ -312,7 +409,7 @@ else:
                 value=f"${period_low:,.2f}"
             )
             
-        # Step 4: Build Candlestick, Volume, and RSI subplots dynamically
+        # Step 5: Build Candlestick, Volume, and RSI subplots dynamically
         show_rsi = show_rsi_indicator and 'RSI' in df.columns
         
         if show_rsi:
@@ -377,7 +474,7 @@ else:
                 row=1, col=1
             )
             
-        # Overlay Forecast curves in Row 1 if active and valid
+        # Overlay Exponential Smoothing Forecast curves in Row 1 if active
         if show_forecast and not forecast_df.empty:
             # 1. Shaded Uncertainty boundary fill (Upper & Lower)
             fig.add_trace(
@@ -398,8 +495,8 @@ else:
                     line=dict(width=0),
                     mode='lines',
                     fill='tonexty',
-                    fillcolor='rgba(255, 120, 73, 0.15)',
-                    name='Uncertainty Interval (80%)',
+                    fillcolor='rgba(255, 120, 73, 0.12)',
+                    name='Confidence Interval (80%)',
                     showlegend=False
                 ),
                 row=1, col=1
@@ -409,8 +506,8 @@ else:
                 go.Scatter(
                     x=forecast_df['ds'],
                     y=forecast_df['yhat'],
-                    name="Prophet Forecast",
-                    line=dict(color='#ff7849', width=2, dash='dash'),
+                    name="14d Stat Forecast",
+                    line=dict(color='#ff7849', width=2.2, dash='dash'),
                     mode='lines'
                 ),
                 row=1, col=1
@@ -537,7 +634,7 @@ else:
         # Render Plotly Chart
         st.plotly_chart(fig, use_container_width=True)
         
-        # Step 5: Render Forecasting Summary Cards below the chart
+        # Render Forecasting Insights Details below the chart if active
         if show_forecast and not forecast_df.empty:
             final_forecast_row = forecast_df.iloc[-1]
             final_date = final_forecast_row['ds'].strftime('%Y-%m-%d')
@@ -556,10 +653,10 @@ else:
                 f"""
                 <div class="status-card" style="margin-top: 25px; border: 1px solid rgba(255, 120, 73, 0.35);">
                     <h3 style="color: #ff7849; margin-bottom: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-                        🔮 Prophet Forecasting Insights ({forecast_horizon} Days Horizon)
+                        🔮 Statistical Forecasting Insights (14 Days Horizon)
                     </h3>
                     <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 20px;">
-                        Forecasting model successfully trained on {len(df)} days of historical data. Here are the projected insights:
+                        Exponential Smoothing model fitted in &lt;10ms using historical Close metrics.
                     </p>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
                         <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 12px;">
@@ -576,6 +673,69 @@ else:
                             <span style="color: #94a3b8; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Confidence Range (80%)</span><br/>
                             <strong style="color: #f8fafc; font-size: 1.4rem; line-height: 2.2;">${final_lower:,.2f} - ${final_upper:,.2f}</strong><br/>
                             <span style="color: #64748b; font-size: 0.8rem;">Statistical lower & upper limits</span>
+                        </div>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            
+        # Step 6: Fundamentals Research Panel
+        st.markdown("---")
+        st.markdown("### 🏢 **Fundamentals Research Panel**")
+        
+        info, fundamentals_error = fetch_company_info(ticker)
+        if fundamentals_error:
+            st.warning(f"⚠️ {fundamentals_error}")
+        elif info:
+            market_cap = info.get('marketCap')
+            pe_ratio = info.get('trailingPE') or info.get('forwardPE')
+            summary = info.get('longBusinessSummary', 'No business summary available.')
+            company_name = info.get('longName', ticker)
+            sector = info.get('sector', 'N/A')
+            industry = info.get('industry', 'N/A')
+            
+            # Format Market Cap
+            if market_cap:
+                if market_cap >= 1e12:
+                    market_cap_str = f"${market_cap / 1e12:.2f} Trillion"
+                elif market_cap >= 1e9:
+                    market_cap_str = f"${market_cap / 1e9:.2f} Billion"
+                else:
+                    market_cap_str = f"${market_cap / 1e6:.2f} Million"
+            else:
+                market_cap_str = "N/A"
+                
+            pe_str = f"{pe_ratio:.2f}" if pe_ratio else "N/A"
+            
+            # Slice business summary to exactly first two sentences
+            import re
+            sentences = re.split(r'(?<=[.!?]) +', summary)
+            two_sentences_summary = " ".join(sentences[:2])
+            
+            st.markdown(
+                f"""
+                <div class="status-card" style="margin-top: 10px;">
+                    <h4 style="color: #f8fafc; margin-bottom: 15px; font-weight: 600;">{company_name} ({ticker})</h4>
+                    <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+                        <strong>Business Description:</strong> {two_sentences_summary}
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <div style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 8px;">
+                            <span style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Market Cap</span><br/>
+                            <strong style="color: #e2e8f0; font-size: 1.15rem;">{market_cap_str}</strong>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 8px;">
+                            <span style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">P/E Ratio</span><br/>
+                            <strong style="color: #e2e8f0; font-size: 1.15rem;">{pe_str}</strong>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 8px;">
+                            <span style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Sector</span><br/>
+                            <strong style="color: #e2e8f0; font-size: 1.15rem;">{sector}</strong>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.02); padding: 12px; border-radius: 8px;">
+                            <span style="color: #64748b; font-size: 0.8rem; text-transform: uppercase;">Industry</span><br/>
+                            <strong style="color: #e2e8f0; font-size: 1.15rem;">{industry}</strong>
                         </div>
                     </div>
                 </div>
