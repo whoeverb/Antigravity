@@ -191,7 +191,7 @@ def _hl(v):
     """Inline-styled highlight span — no CSS class dependency."""
     return (f'<span style="display:inline-block;background:rgba(99,102,241,0.18);'
             f'border:1px solid rgba(99,102,241,0.3);padding:1px 7px;border-radius:6px;'
-            f'font-weight:600;color:#a5b4fc;font-size:0.92em;">{v}</span>')
+            f'font-weight:600;color:#A5B4FC;font-size:0.92em;">{v}</span>')
 
 def _card_wrap(inner_html, sig):
     """Wrap content in a fully inlined signal card."""
@@ -719,27 +719,27 @@ else:
 
             if deep_sig == "WAIT":
                 bullets = [
-                    "This ETF is showing signs of being <strong style='color:#f1f5f9;'>temporarily overvalued</strong> relative to its historical norms — you would be paying a premium above the long-term trend.",
+                    "This ETF is showing signs of being <strong style='color:#F8FAFC;'>temporarily overvalued</strong> relative to its historical norms — you would be paying a premium above the long-term trend.",
                     *([ f"RSI is at {_hl(f'{rsi_etf:.0f}')} — pushing into overbought territory above 73, indicating short-term buying has been excessive." ] if rsi_etf and rsi_etf>68 else []),
                     *([ f"Price is {_hl(f'{etf_prem:.1f}% above')} its 200-day moving average of {_hl('$'+f'{sma200_e:,.2f}')} — a meaningful premium to long-term fair value." ] if etf_prem and etf_prem>5 else []),
-                    "Since you DCA bi-weekly to monthly anyway, <strong style='color:#f1f5f9;'>continue your scheduled buys</strong> — but do <em>not</em> deploy any extra discretionary cash right now. Save it for the next pullback.",
+                    "Since you DCA bi-weekly to monthly anyway, <strong style='color:#F8FAFC;'>continue your scheduled buys</strong> — but do <em>not</em> deploy any extra discretionary cash right now. Save it for the next pullback.",
                     "Even great ETFs have cooling-off periods. Paying 10%+ above trend rarely produces good near-term results, even if the long-term trajectory remains intact.",
                 ]
             elif deep_sig == "BUY":
                 bullets = [
-                    "This ETF has pulled back into a <strong style='color:#f1f5f9;'>statistically significant discount zone</strong> — exactly the kind of dip you want to catch on top of your regular DCA schedule.",
+                    "This ETF has pulled back into a <strong style='color:#F8FAFC;'>statistically significant discount zone</strong> — exactly the kind of dip you want to catch on top of your regular DCA schedule.",
                     *([ f"RSI has reset to {_hl(f'{rsi_etf:.0f}')} — well into oversold territory, meaning the short-term selling has been overdone." ] if rsi_etf and rsi_etf<42 else []),
                     *([ f"Price is now {_hl(f'{abs(etf_prem):.1f}% below')} the 200-day moving average — trading at a genuine long-term discount." ] if etf_prem and etf_prem<0 else []),
-                    "This is a <strong style='color:#f1f5f9;'>high-conviction opportunity to deploy extra capital</strong>. For an ETF you're already committed to holding long-term, catching it at a discount materially improves your future cost basis and compounding.",
+                    "This is a <strong style='color:#F8FAFC;'>high-conviction opportunity to deploy extra capital</strong>. For an ETF you're already committed to holding long-term, catching it at a discount materially improves your future cost basis and compounding.",
                     "Suggested approach: deploy 50–100% of any discretionary cash earmarked for this position, on top of your scheduled DCA buy.",
                 ]
             else:
                 bullets = [
-                    "This ETF is trading in its normal range — not stretched to the upside, not beaten down. <strong style='color:#f1f5f9;'>Your regular DCA schedule is the right call here.</strong>",
+                    "This ETF is trading in its normal range — not stretched to the upside, not beaten down. <strong style='color:#F8FAFC;'>Your regular DCA schedule is the right call here.</strong>",
                     *([ f"RSI is at {_hl(f'{rsi_etf:.0f}')} — a balanced reading, consistent with normal buying and selling pressure." ] if rsi_etf else []),
                     *([ f"Price is {_hl(f'{abs(etf_prem):.1f}% {'above' if etf_prem>=0 else 'below'}')} the 200-day SMA — within a normal fluctuation band." ] if etf_prem is not None else []),
                     "No urgency to rush in extra capital, but no reason to delay your regular investment either.",
-                    "Stay disciplined: <strong style='color:#f1f5f9;'>consistency over timing</strong> is what builds long-term wealth in diversified ETFs.",
+                    "Stay disciplined: <strong style='color:#F8FAFC;'>consistency over timing</strong> is what builds long-term wealth in diversified ETFs.",
                 ]
 
             guide_html = (
@@ -755,34 +755,34 @@ else:
 
             if deep_sig == "SELL":
                 guide_html = (
-                    f'<strong style="color:#f87171;font-size:1.2rem;">🔴 SELL SIGNAL — Momentum Exhaustion</strong>'
+                    f'<strong style="color:#EF4444;font-size:1.2rem;">🔴 SELL SIGNAL — Momentum Exhaustion</strong>'
                     + _ul([
-                        f"The stock has reached a zone of <strong style='color:#f1f5f9;'>statistical overextension</strong>. Exhaustion indicators fired: {_hl('  ·  '.join(sell_reasons_deep))}.",
+                        f"The stock has reached a zone of <strong style='color:#F8FAFC;'>statistical overextension</strong>. Exhaustion indicators fired: {_hl('  ·  '.join(sell_reasons_deep))}.",
                         "When momentum oscillators hold above 78 for multiple sessions, it historically marks a point where short-term buyers run out of steam and the stock corrects.",
-                        "This is <em>not necessarily</em> a long-term thesis change — it signals that the <strong style='color:#f1f5f9;'>risk/reward for new money is poor right now</strong>.",
-                        f"<strong style='color:#f1f5f9;'>Recommended action:</strong> Consider trimming 25–50% of the position to lock in gains. Set a re-entry alert at the 50-SMA {(_hl('$'+f'{current_sma50_val:,.2f}')) if current_sma50_val else ''}.",
+                        "This is <em>not necessarily</em> a long-term thesis change — it signals that the <strong style='color:#F8FAFC;'>risk/reward for new money is poor right now</strong>.",
+                        f"<strong style='color:#F8FAFC;'>Recommended action:</strong> Consider trimming 25–50% of the position to lock in gains. Set a re-entry alert at the 50-SMA {(_hl('$'+f'{current_sma50_val:,.2f}')) if current_sma50_val else ''}.",
                     ])
                 )
             elif deep_sig == "BUY" and signal_source == "bb":
                 guide_html = (
-                    f'<strong style="color:#10b981;font-size:1.2rem;">🛒 BUY SIGNAL — Lower Bollinger Band Breach</strong>'
+                    f'<strong style="color:#10B981;font-size:1.2rem;">🛒 BUY SIGNAL — Lower Bollinger Band Breach</strong>'
                     + _ul([
-                        f"Current price {_hl('$'+f'{current_price:,.2f}')} has touched the <strong style='color:#f1f5f9;'>Lower Bollinger Band</strong> at {_hl('$'+f'{current_bbl:,.2f}')} — the statistical price floor set 2 standard deviations below the 20-day average.",
-                        "Think of it like a <strong style='color:#f1f5f9;'>rubber band being stretched</strong>: the further price deviates downward from the mean, the stronger the mathematical tendency to snap back.",
-                        "This signals the stock is <strong style='color:#f1f5f9;'>temporarily oversold</strong> — sellers have pushed price to an extreme and buying pressure typically builds from here.",
-                        "<strong style='color:#f1f5f9;'>Recommended action:</strong> Begin accumulating a partial position. Scale in across 2–3 sessions to reduce timing risk.",
+                        f"Current price {_hl('$'+f'{current_price:,.2f}')} has touched the <strong style='color:#F8FAFC;'>Lower Bollinger Band</strong> at {_hl('$'+f'{current_bbl:,.2f}')} — the statistical price floor set 2 standard deviations below the 20-day average.",
+                        "Think of it like a <strong style='color:#F8FAFC;'>rubber band being stretched</strong>: the further price deviates downward from the mean, the stronger the mathematical tendency to snap back.",
+                        "This signals the stock is <strong style='color:#F8FAFC;'>temporarily oversold</strong> — sellers have pushed price to an extreme and buying pressure typically builds from here.",
+                        "<strong style='color:#F8FAFC;'>Recommended action:</strong> Begin accumulating a partial position. Scale in across 2–3 sessions to reduce timing risk.",
                     ])
                 )
             elif deep_sig == "BUY" and signal_source == "sma50":
                 pct_str   = f"{pct_below_sma:.1f}" if pct_below_sma else "?"
                 sma50_fmt = f"{current_sma50_val:,.2f}" if current_sma50_val else "N/A"
                 guide_html = (
-                    f'<strong style="color:#10b981;font-size:1.2rem;">🛒 BUY SIGNAL — Below 50-Day Moving Average</strong>'
+                    f'<strong style="color:#10B981;font-size:1.2rem;">🛒 BUY SIGNAL — Below 50-Day Moving Average</strong>'
                     + _ul([
                         f"Trading at {_hl('$'+f'{current_price:,.2f}')} — {_hl(pct_str+'% below')} its 50-day SMA of {_hl('$'+sma50_fmt)}. You're cutting out short-term hype and buying at a structural discount.",
                         "This type of pullback is <em>normal and expected</em> in healthy bull trends — it shakes out weak hands and reloads the stock for its next leg up.",
-                        f"The further a quality stock falls below its 50-day average, the <strong style='color:#f1f5f9;'>wider your margin of safety</strong>.",
-                        "<strong style='color:#f1f5f9;'>Recommended action:</strong> Build a position here, with a plan to add more if price extends further below the average.",
+                        f"The further a quality stock falls below its 50-day average, the <strong style='color:#F8FAFC;'>wider your margin of safety</strong>.",
+                        "<strong style='color:#F8FAFC;'>Recommended action:</strong> Build a position here, with a plan to add more if price extends further below the average.",
                     ])
                 )
             else:  # HOLD
@@ -790,12 +790,12 @@ else:
                 sma_ref  = _hl('$'+f'{current_sma50_val:,.2f}') if current_sma50_val else ""
                 bbl_ref  = _hl('$'+f'{current_bbl:,.2f}')  if current_bbl       else ""
                 guide_html = (
-                    f'<strong style="color:#94a3b8;font-size:1.2rem;">⏳ HOLD — Stock Trading at Premium</strong>'
+                    f'<strong style="color:#94A3B8;font-size:1.2rem;">⏳ HOLD — Stock Trading at Premium</strong>'
                     + _ul([
                         f"At {_hl('$'+f'{current_price:,.2f}')}, the stock is above its 50-SMA {('('+sma_ref+')') if sma_ref else ''} and near the upper Bollinger Band {('('+bbu_ref+')') if bbu_ref else ''}. You are in <em>premium territory.</em>",
-                        "Buying here means paying a price that already reflects optimism — <strong style='color:#f1f5f9;'>you're not getting a deal, you're paying full price at peak excitement.</strong>",
-                        "Markets breathe. Even the strongest stocks pull back 5–15% before continuing higher. Your goal is to <strong style='color:#f1f5f9;'>buy those dips, not chase the peaks.</strong>",
-                        f"<strong style='color:#f1f5f9;'>Recommended action:</strong> Set a price alert at the 50-SMA {(sma_ref+' ') if sma_ref else ''}or lower BB {(bbl_ref) if bbl_ref else ''} and wait for the market to come to you.",
+                        "Buying here means paying a price that already reflects optimism — <strong style='color:#F8FAFC;'>you're not getting a deal, you're paying full price at peak excitement.</strong>",
+                        "Markets breathe. Even the strongest stocks pull back 5–15% before continuing higher. Your goal is to <strong style='color:#F8FAFC;'>buy those dips, not chase the peaks.</strong>",
+                        f"<strong style='color:#F8FAFC;'>Recommended action:</strong> Set a price alert at the 50-SMA {(sma_ref+' ') if sma_ref else ''}or lower BB {(bbl_ref) if bbl_ref else ''} and wait for the market to come to you.",
                     ])
                 )
             etf_badge = ""
