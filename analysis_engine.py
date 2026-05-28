@@ -3,19 +3,32 @@ import yfinance as yf
 import pandas as pd
 import pandas_ta as ta
 import numpy as np
+import time
 
 # ─── Data Fetching ────────────────────────────────────────────────────────────
 def load_stock_data(sym, start, end):
-    try:
-        df = yf.download(sym, start=start, end=end, progress=False)
-        if df.empty: return pd.DataFrame(), f"No data for '{sym}'."
-        if isinstance(df.columns, pd.MultiIndex):
-            df.columns = df.columns.get_level_values(0)
-        for c in ['Open','High','Low','Close','Volume']:
-            if c not in df.columns: return pd.DataFrame(), f"Missing '{c}'."
-        return df.sort_index(), None
-    except Exception as e:
-        return pd.DataFrame(), str(e)
+    # Retry logic for CI stability
+    for attempt in range(3):
+        try:
+            df = yf.download(sym, start=start, end=end, progress=False)
+            if df.empty: 
+                if attempt < 2: 
+                    time.sleep(2)
+                    continue
+                return pd.DataFrame(), f"No data for '{sym}'."
+            
+            if isinstance(df.columns, pd.MultiIndex):
+                df.columns = df.columns.get_level_values(0)
+            
+            for c in ['Open','High','Low','Close','Volume']:
+                if c not in df.columns: return pd.DataFrame(), f"Missing '{c}'."
+            return df.sort_index(), None
+        except Exception as e:
+            if attempt < 2:
+                time.sleep(2)
+                continue
+            return pd.DataFrame(), str(e)
+    return pd.DataFrame(), "Failed to fetch data after 3 attempts."
 
 def _quick_load(sym, days=300):
     end   = datetime.date.today()
@@ -25,28 +38,34 @@ def _quick_load(sym, days=300):
 # ─── Macro Overlay Engine ──────────────────────────────────────────────────────
 def get_macro_overlay():
     tickers = ["SPY", "QQQ", "^VIX", "^TNX"]
-    df = yf.download(tickers, period="1y", progress=False)['Close']
-    
-    spy = df['SPY'].iloc[-1]
-    spy_sma200 = df['SPY'].rolling(200).mean().iloc[-1]
-    qqq = df['QQQ'].iloc[-1]
-    qqq_sma200 = df['QQQ'].rolling(200).mean().iloc[-1]
-    vix = df['^VIX'].iloc[-1]
-    tnx = df['^TNX'].iloc[-1]
-    
-    score = 0
-    if spy > spy_sma200: score += 2
-    if qqq > qqq_sma200: score += 1
-    if vix < 20: score += 2
-    elif vix > 30: score -= 3
-    if tnx < 4.5: score += 1
-    else: score -= 1
-    
-    if score >= 4: regime, risk = "Bullish", "Low"
-    elif score <= 0: regime, risk = "Risk-Off", "High"
-    else: regime, risk = "Neutral", "Moderate"
-    
-    return {"regime": regime, "confidence": min(100, max(0, score * 15 + 50)), "risk_level": risk}
+    for attempt in range(3):
+        try:
+            df = yf.download(tickers, period="1y", progress=False)['Close']
+            spy = df['SPY'].iloc[-1]
+            spy_sma200 = df['SPY'].rolling(200).mean().iloc[-1]
+            qqq = df['QQQ'].iloc[-1]
+            qqq_sma200 = df['QQQ'].rolling(200).mean().iloc[-1]
+            vix = df['^VIX'].iloc[-1]
+            tnx = df['^TNX'].iloc[-1]
+            
+            score = 0
+            if spy > spy_sma200: score += 2
+            if qqq > qqq_sma200: score += 1
+            if vix < 20: score += 2
+            elif vix > 30: score -= 3
+            if tnx < 4.5: score += 1
+            else: score -= 1
+            
+            if score >= 4: regime, risk = "Bullish", "Low"
+            elif score <= 0: regime, risk = "Risk-Off", "High"
+            else: regime, risk = "Neutral", "Moderate"
+            
+            return {"regime": regime, "confidence": min(100, max(0, score * 15 + 50)), "risk_level": risk}
+        except Exception:
+            if attempt < 2:
+                time.sleep(2)
+                continue
+    return {"regime": "Neutral", "confidence": 50, "risk_level": "Moderate"}
 
 # ─── Market Regime Engine ──────────────────────────────────────────────────────
 def calculate_market_regime(df):
@@ -94,7 +113,7 @@ def calculate_market_regime(df):
 def etf_signal(sym, macro):
     df, err = _quick_load(sym)
     if err or df.empty: 
-        return {"signal": "DCA", "price": None, "change_pct": None, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable."}
+        return {"signal": "DCA", "price": 0.0, "change_pct": 0.0, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable."}
     
     regime, _, conf = calculate_market_regime(df)
     close = df['Close'].squeeze().astype(float)
@@ -131,7 +150,7 @@ def etf_signal(sym, macro):
 def stock_signal(sym, macro):
     df, err = _quick_load(sym)
     if err or df.empty: 
-        return {"signal": "HOLD", "price": None, "change_pct": None, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable."}
+        return {"signal": "HOLD", "price": 0.0, "change_pct": 0.0, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable."}
     
     regime, _, conf = calculate_market_regime(df)
     close = df['Close'].squeeze().astype(float)
