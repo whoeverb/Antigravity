@@ -216,6 +216,42 @@ def _type_badge(is_etf):
 def _format_reasons(reasons):
     return "  ·  ".join(reasons) if reasons else "Momentum remains steady."
 
+def regime_color(regime):
+    colors = {"Bullish": "#10b981", "Neutral": "#94a3b8", "Risk-Off": "#ef4444"}
+    return colors.get(regime, "#94a3b8")
+
+# ─── Macro Overlay Engine ──────────────────────────────────────────────────────
+@st.cache_data(ttl=3600)
+def get_macro_overlay(debug=False):
+    tickers = ["SPY", "QQQ", "^VIX", "^TNX"]
+    df = yf.download(tickers, period="1y", progress=False)['Close']
+    
+    spy = df['SPY'].iloc[-1]
+    spy_sma200 = df['SPY'].rolling(200).mean().iloc[-1]
+    qqq = df['QQQ'].iloc[-1]
+    qqq_sma200 = df['QQQ'].rolling(200).mean().iloc[-1]
+    vix = df['^VIX'].iloc[-1]
+    tnx = df['^TNX'].iloc[-1]
+    
+    score = 0
+    if spy > spy_sma200: score += 2
+    if qqq > qqq_sma200: score += 1
+    if vix < 20: score += 2
+    elif vix > 30: score -= 3
+    if tnx < 4.5: score += 1
+    else: score -= 1
+    
+    if score >= 4: regime, risk = "Bullish", "Low"
+    elif score <= 0: regime, risk = "Risk-Off", "High"
+    else: regime, risk = "Neutral", "Moderate"
+    
+    summary = f"Market conditions are {regime.lower()} with {risk.lower()} risk."
+    
+    if debug:
+        return {"regime": regime, "confidence": min(100, max(0, score * 15 + 50)), "risk_level": risk, "summary": summary, "score": score}
+    
+    return {"regime": regime, "confidence": min(100, max(0, score * 15 + 50)), "risk_level": risk, "summary": summary, "score": score}
+
 # ─── Market Regime Engine ──────────────────────────────────────────────────────
 @st.cache_data(show_spinner=False)
 def calculate_market_regime(df):
@@ -408,6 +444,8 @@ def etf_signal(sym):
     df, err = _quick_load(sym)
     if err or df.empty:
         return "DCA", "Data unavailable.", None, None
+    
+    macro = get_macro_overlay()
     close   = df['Close'].squeeze().astype(float)
     price   = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
@@ -440,12 +478,20 @@ def etf_signal(sym):
             score -= 3; reasons.append("Testing lower volatility support.")
 
     sig = "WAIT" if score >= 5 else ("BUY" if score <= -3 else "DCA")
+    
+    # Macro Adjustment
+    if macro['regime'] == "Risk-Off":
+        if sig == "BUY": sig = "DCA"
+        elif sig == "DCA": sig = "WAIT"
+        
     return sig, _format_reasons(reasons), price, chg_pct
 
 def stock_signal(sym):
     df, err = _quick_load(sym)
     if err or df.empty:
         return "HOLD", "Data unavailable.", None, None
+    
+    macro = get_macro_overlay()
     close   = df['Close'].squeeze().astype(float)
     price   = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
@@ -483,6 +529,10 @@ def stock_signal(sym):
         buy_reasons.append("Trading below the 50-day trend.")
     if buy_reasons:
         return "BUY", _format_reasons(buy_reasons), price, chg_pct
+
+    # Macro Adjustment
+    if macro['regime'] == "Risk-Off":
+        return "HOLD", "Macro conditions suggest caution.", price, chg_pct
 
     return "HOLD", "Momentum remains steady without extreme conditions.", price, chg_pct
 
