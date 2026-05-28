@@ -343,18 +343,25 @@ def stock_signal(sym):
 # ─── Portfolio Card Renderer ──────────────────────────────────────────────────
 def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
     s         = SIG_STYLES.get(sig, SIG_STYLES["HOLD"])
-    price_str = f"${price:,.2f}" if price is not None else "—"
     
-    # Price color logic: Green if >= 0, Red if < 0
+    saved    = st.session_state["pnl_data"].get(sym, {})
+    shares   = saved.get("shares", 0.0)
+    cost_avg = saved.get("cost",   0.0)
+    
+    # Price color logic: Green if price > cost_avg, Red if price < cost_avg
+    price_color = "#FFFFFF" # Default
+    if cost_avg > 0 and price:
+        price_color = "#10b981" if price > cost_avg else "#ef4444"
+    
+    price_str = f'<span style="color:{price_color};">${price:,.2f}</span>' if price is not None else "—"
+    
+    # Daily change color logic: Green if >= 0, Red if < 0
     chg_color = "#10b981" if (chg_pct or 0) >= 0 else "#ef4444"
     arrow     = "▲" if (chg_pct or 0) >= 0 else "▼"
     chg_html  = (f'<span style="color:{chg_color};font-size:0.75rem;">'
                  f'{arrow} {abs(chg_pct):.2f}%</span>') if chg_pct is not None else ""
 
     pnl_html = ""
-    saved    = st.session_state["pnl_data"].get(sym, {})
-    shares   = saved.get("shares", 0.0)
-    cost_avg = saved.get("cost",   0.0)
     if shares > 0 and cost_avg > 0 and price:
         unrealized  = shares * price - shares * cost_avg
         unreal_pct  = unrealized / (shares * cost_avg) * 100
