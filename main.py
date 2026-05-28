@@ -555,39 +555,63 @@ else:
         with m3: st.metric("Low",   f"${float(df['Low'].min()):,.2f}")
         with m4: st.metric("Volatility", f"{float(close_series.pct_change().std()*np.sqrt(252)*100):.1f}%")
 
-        # Chart
-        # Use subplots if RSI is enabled
-        if show_rsi_indicator:
-            fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.05, row_heights=[0.7, 0.3])
-        else:
-            fig = make_subplots(rows=1, cols=1)
-
-        # Add Price Trace
-        fig.add_trace(go.Candlestick(x=df.index,open=df['Open'],high=df['High'],low=df['Low'],close=df['Close'],name="Price"), row=1, col=1)
-        
-        if show_ema: fig.add_trace(go.Scatter(x=df.index,y=df['EMA'],name="EMA",line=dict(color='#facc15')), row=1, col=1)
-        if show_sma: fig.add_trace(go.Scatter(x=df.index,y=df['SMA'],name="SMA",line=dict(color='#22d3ee')), row=1, col=1)
-        
-        # Add Forecast
+        # ── Layer 1: Insight Summary ──────────────────────────────────────────
         if show_forecast and not forecast_df.empty:
-            fig.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat'], name="Forecast", line=dict(color='#ef4444', dash='dot')), row=1, col=1)
-            fig.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat_upper'], name="Upper Bound", line=dict(color='rgba(239,68,68,0.2)', width=0)), row=1, col=1)
-            fig.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat_lower'], name="Lower Bound", line=dict(color='rgba(239,68,68,0.2)', width=0), fill='tonexty'), row=1, col=1)
+            st.markdown("### 💡 Forecast Insight")
+            f_start = forecast_df['yhat'].iloc[0]
+            f_end = forecast_df['yhat'].iloc[-1]
+            pct_change = ((f_end - f_start) / f_start) * 100
+            direction = "Upward" if pct_change > 0 else "Downward"
+            
+            # Confidence based on band width relative to price
+            band_width = (forecast_df['yhat_upper'].iloc[-1] - forecast_df['yhat_lower'].iloc[-1]) / f_end
+            confidence = "High" if band_width < 0.05 else ("Medium" if band_width < 0.1 else "Low")
+            
+            st.info(f"**Trend:** {direction} trend expected over the next 14 days with **{confidence} confidence**. "
+                    f"The model projects a price change of {pct_change:+.2f}% by the end of the forecast period.")
 
-        # Add RSI
+        # ── Layer 2: Price Chart ──────────────────────────────────────────────
+        st.markdown("### 📊 Price Action")
         if show_rsi_indicator:
-            fig.add_trace(go.Scatter(x=df.index, y=df['RSI'], name="RSI", line=dict(color='#a855f7')), row=2, col=1)
-            fig.add_hline(y=70, line_dash="dash", line_color="red", row=2, col=1)
-            fig.add_hline(y=30, line_dash="dash", line_color="green", row=2, col=1)
-            fig.update_yaxes(title_text="RSI", row=2, col=1)
+            fig_price = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.05, row_heights=[0.7, 0.3])
+        else:
+            fig_price = make_subplots(rows=1, cols=1)
 
-        fig.update_layout(
+        fig_price.add_trace(go.Candlestick(x=df.index,open=df['Open'],high=df['High'],low=df['Low'],close=df['Close'],name="Price"), row=1, col=1)
+        
+        if show_ema: fig_price.add_trace(go.Scatter(x=df.index,y=df['EMA'],name="EMA",line=dict(color='#facc15')), row=1, col=1)
+        if show_sma: fig_price.add_trace(go.Scatter(x=df.index,y=df['SMA'],name="SMA",line=dict(color='#22d3ee')), row=1, col=1)
+        
+        if show_rsi_indicator:
+            fig_price.add_trace(go.Scatter(x=df.index, y=df['RSI'], name="RSI", line=dict(color='#a855f7')), row=2, col=1)
+            fig_price.add_hline(y=70, line_dash="dash", line_color="red", row=2, col=1)
+            fig_price.add_hline(y=30, line_dash="dash", line_color="green", row=2, col=1)
+            fig_price.update_yaxes(title_text="RSI", row=2, col=1)
+
+        fig_price.update_layout(
             plot_bgcolor='#0F172A', paper_bgcolor='rgba(0,0,0,0)',
             font=dict(color='#E2E8F0'),
             margin=dict(t=20,b=20,l=20,r=20),
             xaxis=dict(showgrid=False), yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)')
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig_price, use_container_width=True)
+
+        # ── Layer 3: Forecast Panel ───────────────────────────────────────────
+        if show_forecast and not forecast_df.empty:
+            st.markdown("### 🔮 14-Day Forecast")
+            fig_forecast = go.Figure()
+            fig_forecast.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat'], name="Forecast", line=dict(color='#ef4444', width=2)))
+            fig_forecast.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat_upper'], name="Upper Bound", line=dict(color='rgba(239,68,68,0.2)', width=0)))
+            fig_forecast.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat_lower'], name="Lower Bound", line=dict(color='rgba(239,68,68,0.2)', width=0), fill='tonexty'))
+            
+            fig_forecast.update_layout(
+                plot_bgcolor='#0F172A', paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='#E2E8F0'),
+                margin=dict(t=20,b=20,l=20,r=20),
+                xaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)'),
+                yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)')
+            )
+            st.plotly_chart(fig_forecast, use_container_width=True)
 
         # Fundamentals
         info, fund_err = fetch_company_info(ticker)
