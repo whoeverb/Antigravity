@@ -57,20 +57,6 @@ st.markdown("""
 /* Main app background */
 .stApp { background-color: #0F172A; }
 
-/* P&L Input Container Fix */
-.pnl-input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    height: auto;
-    padding: 16px;
-    background: rgba(30, 41, 59, 0.6);
-    border: 1px solid rgba(71, 85, 105, 0.4);
-    border-radius: 12px;
-    box-sizing: border-box;
-    margin-bottom: 16px;
-}
-
 /* Metric components */
 div[data-testid="stMetricValue"] { font-size:1.6rem !important; font-weight:700 !important; color:#FFFFFF !important; }
 div[data-testid="stMetricLabel"] { font-size:0.85rem !important; color:#94A3B8 !important; text-transform:uppercase; letter-spacing:0.05em; }
@@ -462,18 +448,17 @@ with st.expander("✏️ Update Shares & Cost Basis", expanded=False):
     changed     = False
     for idx, sym in enumerate(all_tickers):
         with pnl_cols[idx % 3]:
-            saved      = st.session_state["pnl_data"].get(sym, {})
-            # Using the new robust container class
-            st.markdown('<div class="pnl-input-container">', unsafe_allow_html=True)
-            st.markdown(f'<div style="font-size:0.8rem;font-weight:600;color:#94A3B8;">{sym}</div>', unsafe_allow_html=True)
-            shares_val = st.number_input(label=f"Shares {sym}", min_value=0.0, value=float(saved.get("shares", 0.0)), step=0.1, format="%.2f", key=f"sh_{sym}", label_visibility="collapsed")
-            cost_val   = st.number_input(label=f"Cost {sym}", min_value=0.0, value=float(saved.get("cost", 0.0)), step=0.01, format="%.2f", key=f"co_{sym}", label_visibility="collapsed")
-            st.markdown('</div>', unsafe_allow_html=True)
-            
-            new_entry  = {"shares": shares_val, "cost": cost_val}
-            if new_entry != saved:
-                changed = True
-            st.session_state["pnl_data"][sym] = new_entry
+            # Using native container instead of raw HTML to prevent layout breakage
+            with st.container(border=True):
+                st.markdown(f'<div style="font-size:0.8rem;font-weight:600;color:#94A3B8;margin-bottom:8px;">{sym}</div>', unsafe_allow_html=True)
+                saved      = st.session_state["pnl_data"].get(sym, {})
+                shares_val = st.number_input(label=f"Shares {sym}", min_value=0.0, value=float(saved.get("shares", 0.0)), step=0.1, format="%.2f", key=f"sh_{sym}", label_visibility="collapsed")
+                cost_val   = st.number_input(label=f"Cost {sym}", min_value=0.0, value=float(saved.get("cost", 0.0)), step=0.01, format="%.2f", key=f"co_{sym}", label_visibility="collapsed")
+                
+                new_entry  = {"shares": shares_val, "cost": cost_val}
+                if new_entry != saved:
+                    changed = True
+                st.session_state["pnl_data"][sym] = new_entry
     if changed:
         _save_pnl_to_disk(st.session_state["pnl_data"])
         st.success("✅ Saved.", icon="💾")
