@@ -560,7 +560,7 @@ else:
         if show_rsi_indicator:
             fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.05, row_heights=[0.7, 0.3])
         else:
-            fig = go.Figure()
+            fig = make_subplots(rows=1, cols=1)
 
         # Add Price Trace
         fig.add_trace(go.Candlestick(x=df.index,open=df['Open'],high=df['High'],low=df['Low'],close=df['Close'],name="Price"), row=1, col=1)
