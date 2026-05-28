@@ -597,4 +597,219 @@ with h1:
 with h2:
     st.markdown('<div style="text-align:right;padding-top:15px;"><span class="status-pulse"></span> Engine Active</div>', unsafe_allow_html=True)
 
-# ════
+# ══════════════════════════════════════════════════════════════════════════════
+# SECTION 1 — PORTFOLIO DASHBOARD
+# ══════════════════════════════════════════════════════════════════════════════
+st.markdown("## 📌 My Portfolio")
+
+if "show_editor" not in st.session_state:
+    st.session_state["show_editor"] = False
+
+if st.button("⚙️ Edit Holdings"):
+    st.session_state["show_editor"] = not st.session_state["show_editor"]
+
+if st.session_state["show_editor"]:
+    st.markdown("### 📝 Edit Holdings")
+    all_tickers = PORTFOLIO_ETFS + PORTFOLIO_STOCKS
+    
+    # Prepare data for editor
+    editor_data = []
+    for sym in all_tickers:
+        saved = st.session_state["pnl_data"].get(sym, {"shares": 0.0, "cost": 0.0})
+        editor_data.append({
+            "Ticker": sym,
+            "Type": "ETF" if sym in PORTFOLIO_ETFS else "STOCK",
+            "Shares": float(saved.get("shares", 0.0)),
+            "Cost Basis": float(saved.get("cost", 0.0))
+        })
+    
+    df_editor = pd.DataFrame(editor_data)
+    
+    # Display editor
+    edited_df = st.data_editor(
+        df_editor,
+        column_config={
+            "Ticker": st.column_config.TextColumn(disabled=True),
+            "Type": st.column_config.TextColumn(disabled=True),
+            "Shares": st.column_config.NumberColumn(min_value=0.0, format="%.2f"),
+            "Cost Basis": st.column_config.NumberColumn(min_value=0.0, format="%.2f")
+        },
+        hide_index=True,
+        use_container_width=True
+    )
+    
+    if st.button("💾 Save Holdings"):
+        new_pnl_data = {}
+        for _, row in edited_df.iterrows():
+            new_pnl_data[row["Ticker"]] = {
+                "shares": row["Shares"],
+                "cost": row["Cost Basis"]
+            }
+        st.session_state["pnl_data"] = new_pnl_data
+        _save_pnl_to_disk(new_pnl_data)
+        st.success("✅ Portfolio updated successfully!")
+        st.session_state["show_editor"] = False
+        st.rerun()
+
+# ── ETF Section ───────────────────────────────────────────────────────────────
+st.markdown('<div class="etf-panel">', unsafe_allow_html=True)
+st.markdown("### 📦 ETFs")
+st.markdown('<p style="color:#94a3b8; margin-bottom:20px;">Core diversified holdings.</p>', unsafe_allow_html=True)
+
+etf_cols = st.columns(4)
+for i, sym in enumerate(PORTFOLIO_ETFS):
+    sig, reason, price, chg_pct = etf_signal(sym)
+    with etf_cols[i % 4]:
+        st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=True), unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+# ── Stock Section ─────────────────────────────────────────────────────────────
+st.markdown('<div class="stock-panel">', unsafe_allow_html=True)
+st.markdown("### 📈 Individual Stocks")
+st.markdown('<p style="color:#94a3b8; margin-bottom:20px;">Higher volatility and growth positions.</p>', unsafe_allow_html=True)
+
+stock_cols = st.columns(4)
+for i, sym in enumerate(PORTFOLIO_STOCKS):
+    sig, reason, price, chg_pct = stock_signal(sym)
+    with stock_cols[i % 4]:
+        st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False), unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown("---")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SECTION 2 — DEEP-DIVE ANALYSIS
+# ══════════════════════════════════════════════════════════════════════════════
+st.markdown(f"## 🔬 Deep-Dive: `{ticker}`")
+
+if not ticker:
+    st.warning("⚠️ Enter a ticker in the sidebar.")
+else:
+    df, data_error = load_stock_data(ticker, start_date, end_date)
+    if data_error:
+        st.error(f"❌ {data_error}")
+    elif df.empty:
+        st.error(f"❌ No data.")
+    else:
+        close_series   = df['Close'].squeeze().astype(float)
+        is_etf_ticker  = ticker in PORTFOLIO_ETFS
+
+        if show_ema: df['EMA'] = ta.ema(close_series, length=ema_period)
+        if show_sma: df['SMA'] = ta.sma(close_series, length=sma_period)
+        if show_rsi_indicator: df['RSI'] = ta.rsi(close_series, length=rsi_period)
+
+        forecast_df = pd.DataFrame()
+        if show_forecast:
+            fraw, ferr = generate_statistical_forecast(tuple(close_series.values), tuple(close_series.index), 14)
+            if not ferr: forecast_df = fraw
+
+        # Metrics
+        latest_close = float(close_series.iloc[-1])
+        m1,m2,m3,m4 = st.columns(4)
+        with m1: st.metric("Latest Close", f"${latest_close:,.2f}")
+        with m2: st.metric("High",  f"${float(df['High'].max()):,.2f}")
+        with m3: st.metric("Low",   f"${float(df['Low'].min()):,.2f}")
+        with m4: st.metric("Volatility", f"{float(close_series.pct_change().std()*np.sqrt(252)*100):.1f}%")
+
+        # ── Layer 1: Market Regime ──────────────────────────────────────────
+        regime, score, conf, expl, meta = calculate_market_regime(df)
+        regime_color = meta.get("color", "#94a3b8")
+        
+        st.markdown("### 🧠 Market Regime")
+        c1, c2, c3 = st.columns([1, 1, 2])
+        with c1:
+            st.markdown(f'<div style="background:{regime_color}20;border:1px solid {regime_color}40;padding:10px;border-radius:8px;text-align:center;">'
+                        f'<div style="font-size:0.7rem;color:{regime_color};text-transform:uppercase;">Regime</div>'
+                        f'<div style="font-size:1.2rem;font-weight:700;color:{regime_color};">{regime}</div>'
+                        f'</div>', unsafe_allow_html=True)
+        with c2:
+            st.metric("Confidence", conf)
+        with c3:
+            st.info(f"**Analysis:** {expl}")
+
+        # ── Layer 2: Investment Summary ───────────────────────────────────────
+        st.markdown("### 💡 Investment Summary")
+        summary_data = generate_investment_summary(
+            ticker, regime, conf, score, {}, forecast_df, {}, 
+            float(close_series.pct_change().std() * np.sqrt(252) * 100), is_etf_ticker
+        )
+        
+        st.markdown(f"""
+        <div class="summary-card">
+            <h4 style="margin-top:0;">{summary_data['title']}</h4>
+            <p>{summary_data['summary']}</p>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <span style="background:rgba(255,255,255,0.1); padding:4px 10px; border-radius:6px; font-size:0.8rem;">Risk: {summary_data['risk_level']}</span>
+                <span style="background:rgba(255,255,255,0.1); padding:4px 10px; border-radius:6px; font-size:0.8rem;">Stance: {summary_data['stance']}</span>
+            </div>
+            <p style="font-size:0.8rem; color:#94a3b8; margin-top:10px;">{summary_data['confidence_text']}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # ── Layer 3: Forecast Insight ──────────────────────────────────────────
+        if show_forecast and not forecast_df.empty:
+            st.markdown("### 🔮 Forecast Insight")
+            f_start = forecast_df['yhat'].iloc[0]
+            f_end = forecast_df['yhat'].iloc[-1]
+            pct_change = ((f_end - f_start) / f_start) * 100
+            direction = "Upward" if pct_change > 0 else "Downward"
+            
+            # Confidence based on band width relative to price
+            band_width = (forecast_df['yhat_upper'].iloc[-1] - forecast_df['yhat_lower'].iloc[-1]) / f_end
+            confidence = "High" if band_width < 0.05 else ("Medium" if band_width < 0.1 else "Low")
+            
+            st.info(f"**Trend:** {direction} trend expected over the next 14 days with **{confidence} confidence**. "
+                    f"The model projects a price change of {pct_change:+.2f}% by the end of the forecast period.")
+
+        # ── Layer 4: Price Chart ──────────────────────────────────────────────
+        st.markdown("### 📊 Price Action")
+        if show_rsi_indicator:
+            fig_price = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.05, row_heights=[0.7, 0.3])
+        else:
+            fig_price = make_subplots(rows=1, cols=1)
+
+        fig_price.add_trace(go.Candlestick(x=df.index,open=df['Open'],high=df['High'],low=df['Low'],close=df['Close'],name="Price"), row=1, col=1)
+        
+        if show_ema: fig_price.add_trace(go.Scatter(x=df.index,y=df['EMA'],name="EMA",line=dict(color='#facc15')), row=1, col=1)
+        if show_sma: fig_price.add_trace(go.Scatter(x=df.index,y=df['SMA'],name="SMA",line=dict(color='#22d3ee')), row=1, col=1)
+        
+        if show_rsi_indicator:
+            fig_price.add_trace(go.Scatter(x=df.index, y=df['RSI'], name="RSI", line=dict(color='#a855f7')), row=2, col=1)
+            fig_price.add_hline(y=70, line_dash="dash", line_color="red", row=2, col=1)
+            fig_price.add_hline(y=30, line_dash="dash", line_color="green", row=2, col=1)
+            fig_price.update_yaxes(title_text="RSI", row=2, col=1)
+
+        fig_price.update_layout(
+            plot_bgcolor='#0F172A', paper_bgcolor='rgba(0,0,0,0)',
+            font=dict(color='#E2E8F0'),
+            margin=dict(t=20,b=20,l=20,r=20),
+            xaxis=dict(showgrid=False), yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)')
+        )
+        st.plotly_chart(fig_price, use_container_width=True)
+
+        # ── Layer 5: Forecast Panel ───────────────────────────────────────────
+        if show_forecast and not forecast_df.empty:
+            st.markdown("### 🔮 14-Day Forecast")
+            fig_forecast = go.Figure()
+            fig_forecast.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat'], name="Forecast", line=dict(color='#ef4444', width=2)))
+            fig_forecast.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat_upper'], name="Upper Bound", line=dict(color='rgba(239,68,68,0.2)', width=0)))
+            fig_forecast.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat_lower'], name="Lower Bound", line=dict(color='rgba(239,68,68,0.2)', width=0), fill='tonexty'))
+            
+            fig_forecast.update_layout(
+                plot_bgcolor='#0F172A', paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(color='#E2E8F0'),
+                margin=dict(t=20,b=20,l=20,r=20),
+                xaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)'),
+                yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)')
+            )
+            st.plotly_chart(fig_forecast, use_container_width=True)
+
+        # Fundamentals
+        info, fund_err = fetch_company_info(ticker)
+        if info:
+            st.markdown("### 🏢 Fundamentals")
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Market Cap", f"{info.get('marketCap',0)/1e9:.1f}B")
+            c2.metric("P/E", f"{info.get('trailingPE', 'N/A')}")
+            c3.metric("P/B", f"{info.get('priceToBook', 'N/A')}")
+            c4.metric("Yield", f"{info.get('dividendYield', 0)*100:.2f}%")
