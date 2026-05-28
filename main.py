@@ -59,7 +59,8 @@ st.markdown("""
 
 /* High Contrast Text */
 h1, h2, h3, h4, h5, h6 { color: #F8FAFC !important; font-weight: 700 !important; }
-p, li, span, div { color: #E2E8F0 !important; }
+/* Removed span from here to allow inline color styles to work */
+p, li, div { color: #E2E8F0 !important; }
 
 /* Metric components */
 div[data-testid="stMetricValue"] { font-size:1.8rem !important; font-weight:800 !important; color:#FFFFFF !important; }
