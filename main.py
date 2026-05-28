@@ -413,4 +413,127 @@ with st.sidebar:
                     f'<div style="background:rgba(30,41,59,0.5);border:1px solid rgba(71,85,105,0.3);'
                     f'border-radius:8px;padding:12px;text-align:center;">'
                     f'<div style="color:#94a3b8;font-size:0.7rem;text-transform:uppercase;">Next Earnings</div>'
-                    f'<div style="font-size:1.5rem;font-weight:700;color:{urg};">{"Today" if days_away
+                    f'<div style="font-size:1.5rem;font-weight:700;color:{urg};">{"Today" if days_away==0 else f"{days_away} Days"}</div>'
+                    f'<div style="color:#94a3b8;font-size:0.75rem;">{earnings_date.strftime("%b %d, %Y")}</div>'
+                    f'</div>', unsafe_allow_html=True)
+            else: st.caption(f"Last: {earnings_date.strftime('%b %d, %Y')}")
+
+    if ticker:
+        st.markdown("---")
+        st.markdown("### 📰 **News**")
+        news_items, _ = fetch_news(ticker)
+        for item in news_items:
+            st.markdown(f'<div style="font-size:0.8rem;margin-bottom:8px;"><a href="{item["link"]}" target="_blank">{item["title"]}</a></div>', unsafe_allow_html=True)
+
+# ─── Main Header ──────────────────────────────────────────────────────────────
+h1, h2 = st.columns([3,1])
+with h1:
+    st.markdown('<h1 style="font-weight:700;font-size:2.2rem;margin-bottom:0;">📈 Stock Research</h1>', unsafe_allow_html=True)
+    st.markdown('<p style="color:#94a3b8;">Portfolio signals & deep-dive analysis.</p>', unsafe_allow_html=True)
+with h2:
+    st.markdown('<div style="text-align:right;padding-top:15px;"><span class="status-pulse"></span> Engine Active</div>', unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SECTION 1 — PORTFOLIO DASHBOARD
+# ══════════════════════════════════════════════════════════════════════════════
+st.markdown("## 📌 My Portfolio")
+
+with st.expander("Update Shares & Cost Basis", expanded=False):
+    all_tickers = PORTFOLIO_ETFS + PORTFOLIO_STOCKS
+    # Use a 2-column layout to prevent overlap
+    cols = st.columns(2)
+    changed = False
+    
+    for idx, sym in enumerate(all_tickers):
+        with cols[idx % 2]:
+            with st.container(border=True):
+                st.markdown(f'<div style="font-size:0.9rem;font-weight:700;color:#F8FAFC;margin-bottom:8px;">{sym}</div>', unsafe_allow_html=True)
+                saved      = st.session_state["pnl_data"].get(sym, {})
+                shares_val = st.number_input(label=f"Shares {sym}", min_value=0.0, value=float(saved.get("shares", 0.0)), step=0.1, format="%.2f", key=f"sh_{sym}", label_visibility="collapsed")
+                cost_val   = st.number_input(label=f"Cost {sym}", min_value=0.0, value=float(saved.get("cost", 0.0)), step=0.01, format="%.2f", key=f"co_{sym}", label_visibility="collapsed")
+                
+                new_entry  = {"shares": shares_val, "cost": cost_val}
+                if new_entry != saved:
+                    changed = True
+                st.session_state["pnl_data"][sym] = new_entry
+    if changed:
+        _save_pnl_to_disk(st.session_state["pnl_data"])
+        st.success("✅ Saved.", icon="💾")
+
+# ── ETF Cards ─────────────────────────────────────────────────────────────────
+st.markdown("### 📦 ETFs")
+etf_cols = st.columns(len(PORTFOLIO_ETFS))
+for i, sym in enumerate(PORTFOLIO_ETFS):
+    sig, reason, price, chg_pct = etf_signal(sym)
+    with etf_cols[i]:
+        st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=True), unsafe_allow_html=True)
+
+# ── Stock Cards ───────────────────────────────────────────────────────────────
+st.markdown("### 📈 Stocks")
+stock_rows = [PORTFOLIO_STOCKS[i:i+3] for i in range(0,len(PORTFOLIO_STOCKS),3)]
+for row in stock_rows:
+    cols = st.columns(3)
+    for j, sym in enumerate(row):
+        sig, reason, price, chg_pct = stock_signal(sym)
+        with cols[j]:
+            st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False), unsafe_allow_html=True)
+
+st.markdown("---")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SECTION 2 — DEEP-DIVE ANALYSIS
+# ══════════════════════════════════════════════════════════════════════════════
+st.markdown(f"## 🔬 Deep-Dive: `{ticker}`")
+
+if not ticker:
+    st.warning("⚠️ Enter a ticker in the sidebar.")
+else:
+    df, data_error = load_stock_data(ticker, start_date, end_date)
+    if data_error:
+        st.error(f"❌ {data_error}")
+    elif df.empty:
+        st.error(f"❌ No data.")
+    else:
+        close_series   = df['Close'].squeeze().astype(float)
+        is_etf_ticker  = ticker in PORTFOLIO_ETFS
+
+        if show_ema: df['EMA'] = ta.ema(close_series, length=ema_period)
+        if show_sma: df['SMA'] = ta.sma(close_series, length=sma_period)
+        if show_rsi_indicator: df['RSI'] = ta.rsi(close_series, length=rsi_period)
+
+        forecast_df = pd.DataFrame()
+        if show_forecast:
+            fraw, ferr = generate_statistical_forecast(tuple(close_series.values), tuple(close_series.index), 14)
+            if not ferr: forecast_df = fraw
+
+        # Metrics
+        latest_close = float(close_series.iloc[-1])
+        m1,m2,m3,m4 = st.columns(4)
+        with m1: st.metric("Latest Close", f"${latest_close:,.2f}")
+        with m2: st.metric("High",  f"${float(df['High'].max()):,.2f}")
+        with m3: st.metric("Low",   f"${float(df['Low'].min()):,.2f}")
+        with m4: st.metric("Volatility", f"{float(close_series.pct_change().std()*np.sqrt(252)*100):.1f}%")
+
+        # Chart
+        fig = go.Figure()
+        fig.add_trace(go.Candlestick(x=df.index,open=df['Open'],high=df['High'],low=df['Low'],close=df['Close'],name="Price"))
+        if show_ema: fig.add_trace(go.Scatter(x=df.index,y=df['EMA'],name="EMA",line=dict(color='#facc15')))
+        if show_sma: fig.add_trace(go.Scatter(x=df.index,y=df['SMA'],name="SMA",line=dict(color='#22d3ee')))
+        
+        fig.update_layout(
+            plot_bgcolor='#0F172A', paper_bgcolor='rgba(0,0,0,0)',
+            font=dict(color='#E2E8F0'),
+            margin=dict(t=20,b=20,l=20,r=20),
+            xaxis=dict(showgrid=False), yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)')
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Fundamentals
+        info, fund_err = fetch_company_info(ticker)
+        if info:
+            st.markdown("### 🏢 Fundamentals")
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Market Cap", f"{info.get('marketCap',0)/1e9:.1f}B")
+            c2.metric("P/E", f"{info.get('trailingPE', 'N/A')}")
+            c3.metric("P/B", f"{info.get('priceToBook', 'N/A')}")
+            c4.metric("Yield", f"{info.get('dividendYield', 0)*100:.2f}%")
