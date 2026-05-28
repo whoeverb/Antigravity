@@ -160,9 +160,10 @@ def _days_until(d):
 
 def _card_wrap(inner_html, sig):
     s = SIG_STYLES.get(sig, SIG_STYLES["HOLD"])
+    # Fixed height container (approx 180px)
     return (
         f'<div style="background:{s["card_bg"]};border:{s["card_bdr"]};'
-        f'border-radius:12px;padding:16px;margin-bottom:12px;">'
+        f'border-radius:12px;padding:16px;margin-bottom:12px;height:180px;display:flex;flex-direction:column;">'
         f'{inner_html}</div>'
     )
 
@@ -343,6 +344,8 @@ def stock_signal(sym):
 def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
     s         = SIG_STYLES.get(sig, SIG_STYLES["HOLD"])
     price_str = f"${price:,.2f}" if price is not None else "—"
+    
+    # Price color logic: Green if >= 0, Red if < 0
     chg_color = "#10b981" if (chg_pct or 0) >= 0 else "#ef4444"
     arrow     = "▲" if (chg_pct or 0) >= 0 else "▼"
     chg_html  = (f'<span style="color:{chg_color};font-size:0.75rem;">'
@@ -355,14 +358,18 @@ def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
     if shares > 0 and cost_avg > 0 and price:
         unrealized  = shares * price - shares * cost_avg
         unreal_pct  = unrealized / (shares * cost_avg) * 100
+        # P&L color logic: Green for positive, Red for negative
         u_color     = "#10b981" if unrealized >= 0 else "#ef4444"
         sign        = "+" if unrealized >= 0 else ""
         pnl_html = (
-            f'<div style="font-size:0.75rem;margin-top:8px;padding-top:8px;'
+            f'<div style="font-size:0.75rem;margin-top:auto;padding-top:8px;'
             f'border-top:1px solid rgba(255,255,255,0.05);color:#94A3B8;">'
             f'{shares:g} sh @ ${cost_avg:,.2f} &nbsp; <span style="color:{u_color};font-weight:600;">'
             f'{sign}${unrealized:,.0f} ({sign}{unreal_pct:.1f}%)</span></div>'
         )
+
+    # Truncate reason text to 2 lines
+    truncated_reason = (reason[:65] + '...') if len(reason) > 65 else reason
 
     inner = f"""<div style="display:flex;justify-content:space-between;align-items:flex-start;">
     <div>
@@ -372,8 +379,8 @@ def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
     </div>
     <div>{_pill(sig)}</div>
 </div>
-{pnl_html}
-<div style="font-size:0.85rem;color:#CBD5E1;margin-top:10px;line-height:1.5;font-weight:500;">{reason}</div>"""
+<div style="font-size:0.80rem;color:#CBD5E1;margin-top:10px;line-height:1.3;font-weight:500;flex-grow:1;overflow:hidden;">{truncated_reason}</div>
+{pnl_html}"""
     return _card_wrap(inner, sig)
 
 # ─── Sidebar ──────────────────────────────────────────────────────────────────
