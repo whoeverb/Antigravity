@@ -92,10 +92,17 @@ div[data-testid="stMetricLabel"] { font-size:0.9rem !important; color:#94A3B8 !i
     animation: pulse 2s infinite;
 }
 
-/* Section Containers */
-.portfolio-section {
-    background: rgba(30, 41, 59, 0.4);
-    border: 1px solid rgba(71, 85, 105, 0.3);
+/* Section Panels */
+.etf-panel {
+    background: rgba(99, 102, 241, 0.05);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+.stock-panel {
+    background: rgba(245, 158, 11, 0.05);
+    border: 1px solid rgba(245, 158, 11, 0.2);
     border-radius: 16px;
     padding: 24px;
     margin-bottom: 24px;
@@ -511,32 +518,28 @@ if st.session_state["show_editor"]:
         st.rerun()
 
 # ── ETF Section ───────────────────────────────────────────────────────────────
-with st.container():
-    st.markdown('<div class="portfolio-section">', unsafe_allow_html=True)
-    c1, c2 = st.columns([0.1, 0.9])
-    with c1: st.markdown("### 📦")
-    with c2: st.markdown("### ETFs")
-    
-    etf_cols = st.columns(4)
-    for i, sym in enumerate(PORTFOLIO_ETFS):
-        sig, reason, price, chg_pct = etf_signal(sym)
-        with etf_cols[i % 4]:
-            st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=True), unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+st.markdown('<div class="etf-panel">', unsafe_allow_html=True)
+st.markdown("### 📦 ETFs")
+st.markdown('<p style="color:#94a3b8; margin-bottom:20px;">Core diversified holdings.</p>', unsafe_allow_html=True)
+
+etf_cols = st.columns(4)
+for i, sym in enumerate(PORTFOLIO_ETFS):
+    sig, reason, price, chg_pct = etf_signal(sym)
+    with etf_cols[i % 4]:
+        st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=True), unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ── Stock Section ─────────────────────────────────────────────────────────────
-with st.container():
-    st.markdown('<div class="portfolio-section">', unsafe_allow_html=True)
-    c1, c2 = st.columns([0.1, 0.9])
-    with c1: st.markdown("### 📈")
-    with c2: st.markdown("### Stocks")
-    
-    stock_cols = st.columns(4)
-    for i, sym in enumerate(PORTFOLIO_STOCKS):
-        sig, reason, price, chg_pct = stock_signal(sym)
-        with stock_cols[i % 4]:
-            st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False), unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+st.markdown('<div class="stock-panel">', unsafe_allow_html=True)
+st.markdown("### 📈 Individual Stocks")
+st.markdown('<p style="color:#94a3b8; margin-bottom:20px;">Higher volatility and growth positions.</p>', unsafe_allow_html=True)
+
+stock_cols = st.columns(4)
+for i, sym in enumerate(PORTFOLIO_STOCKS):
+    sig, reason, price, chg_pct = stock_signal(sym)
+    with stock_cols[i % 4]:
+        st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False), unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("---")
 
