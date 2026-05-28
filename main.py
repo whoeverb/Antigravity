@@ -370,8 +370,7 @@ def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
             f'</div>'
         )
 
-    inner = f"""
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+    inner = f"""<div style="display:flex;justify-content:space-between;align-items:flex-start;">
             <div>
                 <span style="font-size:1.05rem;font-weight:700;color:#f1f5f9;">{sym}</span>
                 {_type_badge(is_etf)}
@@ -380,8 +379,7 @@ def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
             <div style="margin-top:2px;">{_pill(sig)}</div>
         </div>
         {pnl_html}
-        <div style="font-size:0.76rem;color:#64748b;margin-top:6px;line-height:1.5;">{reason}</div>
-    """
+        <div style="font-size:0.76rem;color:#64748b;margin-top:6px;line-height:1.5;">{reason}</div>"""
     return _card_wrap(inner, sig)
 
 # ─── Sidebar ──────────────────────────────────────────────────────────────────
@@ -489,7 +487,7 @@ st.markdown(
     unsafe_allow_html=True)
 
 # ── P&L Input Expander (saves to disk on every change) ────────────────────────
-with st.expander("✏️  Enter / Update Shares & Cost Basis  (saved automatically)", expanded=False):
+with st.expander("✏️ Enter / Update Shares & Cost Basis", expanded=False):
     st.markdown(
         '<p style="color:#64748b;font-size:0.82rem;margin-bottom:12px;">'
         'Your entries are saved to <code>pnl_data.json</code> next to this script and reloaded on every restart.</p>',
