@@ -438,27 +438,54 @@ with h2:
 # ══════════════════════════════════════════════════════════════════════════════
 st.markdown("## 📌 My Portfolio")
 
-with st.expander("Update Shares & Cost Basis", expanded=False):
+if "show_editor" not in st.session_state:
+    st.session_state["show_editor"] = False
+
+if st.button("⚙️ Edit Holdings"):
+    st.session_state["show_editor"] = not st.session_state["show_editor"]
+
+if st.session_state["show_editor"]:
+    st.markdown("### 📝 Edit Holdings")
     all_tickers = PORTFOLIO_ETFS + PORTFOLIO_STOCKS
-    # Use a 2-column layout to prevent overlap
-    cols = st.columns(2)
-    changed = False
     
-    for idx, sym in enumerate(all_tickers):
-        with cols[idx % 2]:
-            with st.container(border=True):
-                st.markdown(f'<div style="font-size:0.9rem;font-weight:700;color:#F8FAFC;margin-bottom:8px;">{sym}</div>', unsafe_allow_html=True)
-                saved      = st.session_state["pnl_data"].get(sym, {})
-                shares_val = st.number_input(label=f"Shares {sym}", min_value=0.0, value=float(saved.get("shares", 0.0)), step=0.1, format="%.2f", key=f"sh_{sym}", label_visibility="collapsed")
-                cost_val   = st.number_input(label=f"Cost {sym}", min_value=0.0, value=float(saved.get("cost", 0.0)), step=0.01, format="%.2f", key=f"co_{sym}", label_visibility="collapsed")
-                
-                new_entry  = {"shares": shares_val, "cost": cost_val}
-                if new_entry != saved:
-                    changed = True
-                st.session_state["pnl_data"][sym] = new_entry
-    if changed:
-        _save_pnl_to_disk(st.session_state["pnl_data"])
-        st.success("✅ Saved.", icon="💾")
+    # Prepare data for editor
+    editor_data = []
+    for sym in all_tickers:
+        saved = st.session_state["pnl_data"].get(sym, {"shares": 0.0, "cost": 0.0})
+        editor_data.append({
+            "Ticker": sym,
+            "Type": "ETF" if sym in PORTFOLIO_ETFS else "STOCK",
+            "Shares": float(saved.get("shares", 0.0)),
+            "Cost Basis": float(saved.get("cost", 0.0))
+        })
+    
+    df_editor = pd.DataFrame(editor_data)
+    
+    # Display editor
+    edited_df = st.data_editor(
+        df_editor,
+        column_config={
+            "Ticker": st.column_config.TextColumn(disabled=True),
+            "Type": st.column_config.TextColumn(disabled=True),
+            "Shares": st.column_config.NumberColumn(min_value=0.0, format="%.2f"),
+            "Cost Basis": st.column_config.NumberColumn(min_value=0.0, format="%.2f")
+        },
+        hide_index=True,
+        use_container_width=True
+    )
+    
+    if st.button("💾 Save Holdings"):
+        new_pnl_data = {}
+        for _, row in edited_df.iterrows():
+            new_pnl_data[row["Ticker"]] = {
+                "shares": row["Shares"],
+                "cost": row["Cost Basis"]
+            }
+        st.session_state["pnl_data"] = new_pnl_data
+        _save_pnl_to_disk(new_pnl_data)
+        st.success("✅ Portfolio updated successfully!")
+        st.session_state["show_editor"] = False
+        st.rerun()
 
 # ── ETF Cards ─────────────────────────────────────────────────────────────────
 st.markdown("### 📦 ETFs")
