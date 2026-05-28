@@ -91,11 +91,10 @@ def calculate_market_regime(df):
     return regime, score, confidence
 
 # ─── Signal Engines ────────────────────────────────────────────────────────────
-def etf_signal(sym):
+def etf_signal(sym, macro):
     df, err = _quick_load(sym)
     if err or df.empty: return "DCA", None, None, "Data unavailable."
     
-    macro = get_macro_overlay()
     close = df['Close'].squeeze().astype(float)
     price = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
@@ -120,11 +119,10 @@ def etf_signal(sym):
         
     return sig, price, chg_pct, ", ".join(reasons) if reasons else "Steady"
 
-def stock_signal(sym):
+def stock_signal(sym, macro):
     df, err = _quick_load(sym)
     if err or df.empty: return "HOLD", None, None, "Data unavailable."
     
-    macro = get_macro_overlay()
     close = df['Close'].squeeze().astype(float)
     price = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
