@@ -93,8 +93,10 @@ def calculate_market_regime(df):
 # ─── Signal Engines ────────────────────────────────────────────────────────────
 def etf_signal(sym, macro):
     df, err = _quick_load(sym)
-    if err or df.empty: return "DCA", None, None, "Data unavailable."
+    if err or df.empty: 
+        return {"signal": "DCA", "price": None, "change_pct": None, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable."}
     
+    regime, _, conf = calculate_market_regime(df)
     close = df['Close'].squeeze().astype(float)
     price = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
@@ -117,12 +119,21 @@ def etf_signal(sym, macro):
         if sig == "BUY": sig = "DCA"
         elif sig == "DCA": sig = "WAIT"
         
-    return sig, price, chg_pct, ", ".join(reasons) if reasons else "Steady"
+    return {
+        "signal": sig,
+        "price": round(price, 2),
+        "change_pct": round(chg_pct, 2),
+        "regime": regime,
+        "confidence": conf,
+        "reasons": ", ".join(reasons) if reasons else "Steady"
+    }
 
 def stock_signal(sym, macro):
     df, err = _quick_load(sym)
-    if err or df.empty: return "HOLD", None, None, "Data unavailable."
+    if err or df.empty: 
+        return {"signal": "HOLD", "price": None, "change_pct": None, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable."}
     
+    regime, _, conf = calculate_market_regime(df)
     close = df['Close'].squeeze().astype(float)
     price = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
@@ -141,12 +152,16 @@ def stock_signal(sym, macro):
     sell_reasons = []
     if rsi_val and rsi_val > 78: sell_reasons.append("Momentum exhausted")
     if bbu and price > bbu * 1.08: sell_reasons.append("Stretched volatility")
-    if sell_reasons: return "SELL", price, chg_pct, ", ".join(sell_reasons)
+    if sell_reasons: 
+        return {"signal": "SELL", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(sell_reasons)}
 
     buy_reasons = []
     if bbl and price <= bbl * 1.015: buy_reasons.append("Support found")
     if sma50_val and price <= sma50_val: buy_reasons.append("Below 50d trend")
-    if buy_reasons: return "BUY", price, chg_pct, ", ".join(buy_reasons)
+    if buy_reasons: 
+        return {"signal": "BUY", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(buy_reasons)}
 
-    if macro['regime'] == "Risk-Off": return "HOLD", price, chg_pct, "Macro caution"
-    return "HOLD", price, chg_pct, "Steady"
+    if macro['regime'] == "Risk-Off": 
+        return {"signal": "HOLD", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": "Macro caution"}
+    
+    return {"signal": "HOLD", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": "Steady"}

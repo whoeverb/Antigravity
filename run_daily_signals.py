@@ -12,35 +12,13 @@ def run():
     
     # 2. Process ETFs
     for sym in PORTFOLIO_ETFS:
-        sig, price, chg, reason = analysis_engine.etf_signal(sym, macro)
-        df, _ = analysis_engine._quick_load(sym)
-        regime, _, conf = analysis_engine.calculate_market_regime(df)
-        
-        results[sym] = {
-            "type": "ETF",
-            "signal": sig,
-            "price": round(price, 2) if price else None,
-            "change_pct": round(chg, 2) if chg else None,
-            "regime": regime,
-            "confidence": conf,
-            "reasons": reason
-        }
+        data = analysis_engine.etf_signal(sym, macro)
+        results[sym] = {"type": "ETF", **data}
 
     # 3. Process Stocks
     for sym in PORTFOLIO_STOCKS:
-        sig, price, chg, reason = analysis_engine.stock_signal(sym, macro)
-        df, _ = analysis_engine._quick_load(sym)
-        regime, _, conf = analysis_engine.calculate_market_regime(df)
-        
-        results[sym] = {
-            "type": "STOCK",
-            "signal": sig,
-            "price": round(price, 2) if price else None,
-            "change_pct": round(chg, 2) if chg else None,
-            "regime": regime,
-            "confidence": conf,
-            "reasons": reason
-        }
+        data = analysis_engine.stock_signal(sym, macro)
+        results[sym] = {"type": "STOCK", **data}
 
     # 4. Generate Top Candidates
     score_map = {"BUY": 3, "DCA": 2, "HOLD": 1, "WAIT": 0, "SELL": -1}
