@@ -59,7 +59,6 @@ st.markdown("""
 
 /* High Contrast Text */
 h1, h2, h3, h4, h5, h6 { color: #F8FAFC !important; font-weight: 700 !important; }
-/* Removed span from here to allow inline color styles to work */
 p, li, div { color: #E2E8F0 !important; }
 
 /* Metric components */
@@ -557,11 +556,31 @@ else:
         with m4: st.metric("Volatility", f"{float(close_series.pct_change().std()*np.sqrt(252)*100):.1f}%")
 
         # Chart
-        fig = go.Figure()
-        fig.add_trace(go.Candlestick(x=df.index,open=df['Open'],high=df['High'],low=df['Low'],close=df['Close'],name="Price"))
-        if show_ema: fig.add_trace(go.Scatter(x=df.index,y=df['EMA'],name="EMA",line=dict(color='#facc15')))
-        if show_sma: fig.add_trace(go.Scatter(x=df.index,y=df['SMA'],name="SMA",line=dict(color='#22d3ee')))
+        # Use subplots if RSI is enabled
+        if show_rsi_indicator:
+            fig = make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.05, row_heights=[0.7, 0.3])
+        else:
+            fig = go.Figure()
+
+        # Add Price Trace
+        fig.add_trace(go.Candlestick(x=df.index,open=df['Open'],high=df['High'],low=df['Low'],close=df['Close'],name="Price"), row=1, col=1)
         
+        if show_ema: fig.add_trace(go.Scatter(x=df.index,y=df['EMA'],name="EMA",line=dict(color='#facc15')), row=1, col=1)
+        if show_sma: fig.add_trace(go.Scatter(x=df.index,y=df['SMA'],name="SMA",line=dict(color='#22d3ee')), row=1, col=1)
+        
+        # Add Forecast
+        if show_forecast and not forecast_df.empty:
+            fig.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat'], name="Forecast", line=dict(color='#ef4444', dash='dot')), row=1, col=1)
+            fig.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat_upper'], name="Upper Bound", line=dict(color='rgba(239,68,68,0.2)', width=0)), row=1, col=1)
+            fig.add_trace(go.Scatter(x=forecast_df['ds'], y=forecast_df['yhat_lower'], name="Lower Bound", line=dict(color='rgba(239,68,68,0.2)', width=0), fill='tonexty'), row=1, col=1)
+
+        # Add RSI
+        if show_rsi_indicator:
+            fig.add_trace(go.Scatter(x=df.index, y=df['RSI'], name="RSI", line=dict(color='#a855f7')), row=2, col=1)
+            fig.add_hline(y=70, line_dash="dash", line_color="red", row=2, col=1)
+            fig.add_hline(y=30, line_dash="dash", line_color="green", row=2, col=1)
+            fig.update_yaxes(title_text="RSI", row=2, col=1)
+
         fig.update_layout(
             plot_bgcolor='#0F172A', paper_bgcolor='rgba(0,0,0,0)',
             font=dict(color='#E2E8F0'),
