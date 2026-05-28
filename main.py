@@ -192,10 +192,10 @@ def _days_until(d):
 
 def _card_wrap(inner_html, sig):
     s = SIG_STYLES.get(sig, SIG_STYLES["HOLD"])
-    # Fixed height container (approx 210px to accommodate regime badge)
+    # Increased height to 230px to prevent text cutoff
     return (
         f'<div style="background:{s["card_bg"]};border:{s["card_bdr"]};'
-        f'border-radius:12px;padding:16px;margin-bottom:12px;height:210px;display:flex;flex-direction:column;">'
+        f'border-radius:12px;padding:16px;margin-bottom:12px;height:230px;display:flex;flex-direction:column;">'
         f'{inner_html}</div>'
     )
 
@@ -526,8 +526,8 @@ def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
             f'{sign}${unrealized:,.0f} ({sign}{unreal_pct:.1f}%)</span></div>'
         )
 
-    # Truncate reason text to 2 lines
-    truncated_reason = (reason[:65] + '...') if len(reason) > 65 else reason
+    # Improved reason text handling with wrapping
+    reason_text = reason if len(reason) < 80 else (reason[:77] + '...')
 
     inner = f"""<div style="display:flex;justify-content:space-between;align-items:flex-start;">
     <div>
@@ -537,7 +537,7 @@ def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
     </div>
     <div>{_pill(sig)}</div>
 </div>
-<div style="font-size:0.80rem;color:#CBD5E1;margin-top:10px;line-height:1.3;font-weight:500;flex-grow:1;overflow:hidden;">{truncated_reason}</div>
+<div style="font-size:0.80rem;color:#CBD5E1;margin-top:10px;line-height:1.3;font-weight:500;flex-grow:1;overflow:hidden;white-space:normal;word-wrap:break-word;">{reason_text}</div>
 <div style="margin-top:8px;"><span class="regime-badge" style="background:{regime_color}20;color:{regime_color};border:1px solid {regime_color}40;">{regime}</span><span style="font-size:0.7rem;color:#94a3b8;">{conf} Conf</span></div>
 {pnl_html}"""
     return _card_wrap(inner, sig)
