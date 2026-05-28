@@ -371,15 +371,15 @@ def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
         )
 
     inner = f"""<div style="display:flex;justify-content:space-between;align-items:flex-start;">
-            <div>
-                <span style="font-size:1.05rem;font-weight:700;color:#f1f5f9;">{sym}</span>
-                {_type_badge(is_etf)}
-                <div style="font-size:0.88rem;color:#94a3b8;margin-top:2px;">{price_str} &nbsp;{chg_html}</div>
-            </div>
-            <div style="margin-top:2px;">{_pill(sig)}</div>
-        </div>
-        {pnl_html}
-        <div style="font-size:0.76rem;color:#64748b;margin-top:6px;line-height:1.5;">{reason}</div>"""
+    <div>
+        <span style="font-size:1.05rem;font-weight:700;color:#f1f5f9;">{sym}</span>
+        {_type_badge(is_etf)}
+        <div style="font-size:0.88rem;color:#94a3b8;margin-top:2px;">{price_str} &nbsp;{chg_html}</div>
+    </div>
+    <div style="margin-top:2px;">{_pill(sig)}</div>
+</div>
+{pnl_html}
+<div style="font-size:0.76rem;color:#64748b;margin-top:6px;line-height:1.5;">{reason}</div>"""
     return _card_wrap(inner, sig)
 
 # ─── Sidebar ──────────────────────────────────────────────────────────────────
@@ -498,12 +498,14 @@ with st.expander("✏️ Enter / Update Shares & Cost Basis", expanded=False):
     for idx, sym in enumerate(all_tickers):
         with pnl_cols[idx % 3]:
             saved      = st.session_state["pnl_data"].get(sym, {})
+            st.markdown(f'<div style="display:flex;flex-direction:column;gap:8px;">', unsafe_allow_html=True)
             shares_val = st.number_input(f"{sym} — Shares", min_value=0.0,
                                          value=float(saved.get("shares", 0.0)),
-                                         step=0.1, format="%.2f", key=f"sh_{sym}")
+                                         step=0.1, format="%.2f", key=f"sh_{sym}", label_visibility="collapsed")
             cost_val   = st.number_input(f"{sym} — Avg Cost ($)", min_value=0.0,
                                          value=float(saved.get("cost", 0.0)),
-                                         step=0.01, format="%.2f", key=f"co_{sym}")
+                                         step=0.01, format="%.2f", key=f"co_{sym}", label_visibility="collapsed")
+            st.markdown(f'<p style="color:#94a3b8;font-size:0.82rem;margin-top:-8px;margin-bottom:12px;">{sym} — Shares / Avg Cost ($)</p>', unsafe_allow_html=True)
             new_entry  = {"shares": shares_val, "cost": cost_val}
             if new_entry != saved:
                 changed = True
