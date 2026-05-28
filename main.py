@@ -54,6 +54,11 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 * { font-family: 'Outfit', sans-serif !important; }
 
+/* Main app background color */
+.stApp {
+    background-color: #0F172A; /* Slate 900 */
+}
+
 @keyframes pulse {
     0%   { transform:scale(0.95); box-shadow:0 0 0 0   rgba(16,185,129,0.7); }
     70%  { transform:scale(1);    box-shadow:0 0 0 6px rgba(16,185,129,0);   }
@@ -64,12 +69,49 @@ st.markdown("""
     border-radius:50%; display:inline-block;
     animation: pulse 2s infinite;
 }
-div[data-testid="stMetricValue"] { font-size:1.8rem !important; font-weight:700 !important; color:#f8fafc !important; }
-div[data-testid="stMetricLabel"] { font-size:0.9rem !important; color:#94a3b8 !important; text-transform:uppercase; letter-spacing:0.05em; }
+/* Metric components */
+div[data-testid="stMetricValue"] { font-size:1.8rem !important; font-weight:700 !important; color:#F8FAFC !important; } /* Pure white */
+div[data-testid="stMetricLabel"] { font-size:0.9rem !important; color:#94A3B8 !important; text-transform:uppercase; letter-spacing:0.05em; } /* Slate 400 */
 [data-testid="stMetric"] {
-    background: linear-gradient(135deg,rgba(30,41,59,0.4),rgba(15,23,42,0.5)) !important;
-    border: 1px solid rgba(99,102,241,0.15) !important;
+    background: linear-gradient(135deg,rgba(30,41,59,0.6),rgba(15,23,42,0.7)) !important; /* Slightly elevated dark */
+    border: 1px solid rgba(71,85,105,0.2) !important; /* Slate 600 border */
     border-radius:12px !important; padding:12px 18px !important;
+}
+
+/* Streamlit specific input field styling for better appearance */
+.stNumberInput > label {
+    color: #94A3B8 !important; /* Muted gray for input labels */
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
+    margin-bottom: 4px;
+}
+.stNumberInput > div > div > input {
+    background-color: rgba(30,41,59,0.7) !important; /* Darker input background */
+    border: 1px solid rgba(71,85,105,0.4) !important; /* Subtle border */
+    color: #F8FAFC !important; /* White text for input values */
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+}
+.stNumberInput button {
+    color: #94A3B8 !important; /* Arrows color */
+    background-color: rgba(30,41,59,0.7) !important;
+    border: 1px solid rgba(71,85,105,0.4) !important;
+}
+
+
+/* General text color adjustments for readability */
+p, li {
+    color: #CBD5E1; /* Slate 300 for general text */
+}
+a {
+    color: #6366F1 !important; /* Indigo 500 for links */
+}
+
+/* Adjustments for various text elements to use the new palette */
+h1, h2, h3, h4, h5, h6 {
+    color: #F8FAFC !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -78,43 +120,43 @@ div[data-testid="stMetricLabel"] { font-size:0.9rem !important; color:#94a3b8 !i
 # Card backgrounds & borders per signal — all inlined to avoid Streamlit CSS sandboxing
 SIG_STYLES = {
     "BUY":  {
-        "card_bg":    "linear-gradient(135deg,rgba(16,185,129,0.13),rgba(5,150,105,0.2))",
-        "card_bdr":   "1px solid rgba(16,185,129,0.45)",
-        "pill_bg":    "rgba(16,185,129,0.2)",
-        "pill_color": "#10b981",
-        "pill_bdr":   "1px solid rgba(16,185,129,0.45)",
+        "card_bg":    "linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.3))", /* Emerald 500 */
+        "card_bdr":   "1px solid rgba(16,185,129,0.6)",
+        "pill_bg":    "rgba(16,185,129,0.3)",
+        "pill_color": "#10B981", /* Emerald 500 */
+        "pill_bdr":   "1px solid rgba(16,185,129,0.6)",
         "pill_label": "🟢 BUY",
     },
     "DCA":  {
-        "card_bg":    "linear-gradient(135deg,rgba(99,102,241,0.12),rgba(79,70,229,0.18))",
-        "card_bdr":   "1px solid rgba(99,102,241,0.4)",
-        "pill_bg":    "rgba(99,102,241,0.2)",
-        "pill_color": "#818cf8",
-        "pill_bdr":   "1px solid rgba(99,102,241,0.4)",
+        "card_bg":    "linear-gradient(135deg,rgba(99,102,241,0.18),rgba(79,70,229,0.25))", /* Indigo 500 */
+        "card_bdr":   "1px solid rgba(99,102,241,0.5)",
+        "pill_bg":    "rgba(99,102,241,0.25)",
+        "pill_color": "#6366F1", /* Indigo 500 */
+        "pill_bdr":   "1px solid rgba(99,102,241,0.5)",
         "pill_label": "💙 DCA",
     },
     "WAIT": {
-        "card_bg":    "linear-gradient(135deg,rgba(245,158,11,0.1),rgba(234,179,8,0.15))",
-        "card_bdr":   "1px solid rgba(245,158,11,0.45)",
-        "pill_bg":    "rgba(245,158,11,0.2)",
-        "pill_color": "#fbbf24",
-        "pill_bdr":   "1px solid rgba(245,158,11,0.45)",
+        "card_bg":    "linear-gradient(135deg,rgba(245,158,11,0.15),rgba(234,179,8,0.22))", /* Amber 500 */
+        "card_bdr":   "1px solid rgba(245,158,11,0.5)",
+        "pill_bg":    "rgba(245,158,11,0.25)",
+        "pill_color": "#FBBF24", /* Amber 400 */
+        "pill_bdr":   "1px solid rgba(245,158,11,0.5)",
         "pill_label": "🟡 WAIT",
     },
     "HOLD": {
-        "card_bg":    "linear-gradient(135deg,rgba(71,85,105,0.15),rgba(51,65,85,0.22))",
-        "card_bdr":   "1px solid rgba(148,163,184,0.28)",
-        "pill_bg":    "rgba(100,116,139,0.2)",
-        "pill_color": "#94a3b8",
-        "pill_bdr":   "1px solid rgba(100,116,139,0.38)",
+        "card_bg":    "linear-gradient(135deg,rgba(71,85,105,0.2),rgba(51,65,85,0.3))", /* Slate 600 */
+        "card_bdr":   "1px solid rgba(100,116,139,0.4)",
+        "pill_bg":    "rgba(100,116,139,0.25)",
+        "pill_color": "#94A3B8", /* Slate 400 */
+        "pill_bdr":   "1px solid rgba(100,116,139,0.4)",
         "pill_label": "⚪ HOLD",
     },
     "SELL": {
-        "card_bg":    "linear-gradient(135deg,rgba(239,68,68,0.12),rgba(220,38,38,0.18))",
-        "card_bdr":   "1px solid rgba(239,68,68,0.45)",
-        "pill_bg":    "rgba(239,68,68,0.2)",
-        "pill_color": "#f87171",
-        "pill_bdr":   "1px solid rgba(239,68,68,0.45)",
+        "card_bg":    "linear-gradient(135deg,rgba(239,68,68,0.18),rgba(220,38,38,0.25))", /* Red 500 */
+        "card_bdr":   "1px solid rgba(239,68,68,0.5)",
+        "pill_bg":    "rgba(239,68,68,0.25)",
+        "pill_color": "#EF4444", /* Red 500 */
+        "pill_bdr":   "1px solid rgba(239,68,68,0.5)",
         "pill_label": "🔴 SELL",
     },
 }
@@ -372,9 +414,9 @@ def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
 
     inner = f"""<div style="display:flex;justify-content:space-between;align-items:flex-start;">
     <div>
-        <span style="font-size:1.05rem;font-weight:700;color:#f1f5f9;">{sym}</span>
+        <span style="font-size:1.05rem;font-weight:700;color:#F8FAFC;">{sym}</span>
         {_type_badge(is_etf)}
-        <div style="font-size:0.88rem;color:#94a3b8;margin-top:2px;">{price_str} &nbsp;{chg_html}</div>
+        <div style="font-size:0.88rem;color:#94A3B8;margin-top:2px;">{price_str} &nbsp;{chg_html}</div>
     </div>
     <div style="margin-top:2px;">{_pill(sig)}</div>
 </div>
@@ -498,14 +540,15 @@ with st.expander("✏️ Enter / Update Shares & Cost Basis", expanded=False):
     for idx, sym in enumerate(all_tickers):
         with pnl_cols[idx % 3]:
             saved      = st.session_state["pnl_data"].get(sym, {})
-            st.markdown(f'<div style="display:flex;flex-direction:column;gap:8px;">', unsafe_allow_html=True)
-            shares_val = st.number_input(f"{sym} — Shares", min_value=0.0,
+            st.markdown(f'<div style="display:flex; flex-direction: column; gap: 8px; padding: 4px; border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; margin-bottom: 12px;">'
+                        f'<p style="color:#94A3B8;font-size:0.88rem; margin:0 0 4px 0; font-weight: 500;">{sym} — Shares / Avg Cost ($)</p>', unsafe_allow_html=True)
+            shares_val = st.number_input(label=f"Shares for {sym}", min_value=0.0,
                                          value=float(saved.get("shares", 0.0)),
                                          step=0.1, format="%.2f", key=f"sh_{sym}", label_visibility="collapsed")
-            cost_val   = st.number_input(f"{sym} — Avg Cost ($)", min_value=0.0,
+            cost_val   = st.number_input(label=f"Avg Cost for {sym}", min_value=0.0,
                                          value=float(saved.get("cost", 0.0)),
                                          step=0.01, format="%.2f", key=f"co_{sym}", label_visibility="collapsed")
-            st.markdown(f'<p style="color:#94a3b8;font-size:0.82rem;margin-top:-8px;margin-bottom:12px;">{sym} — Shares / Avg Cost ($)</p>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True) # Close the div
             new_entry  = {"shares": shares_val, "cost": cost_val}
             if new_entry != saved:
                 changed = True
@@ -552,7 +595,7 @@ def _summary_chip(count, color, label):
     return (f'<div style="background:rgba({color},0.1);border:1px solid rgba({color},0.3);'
             f'padding:8px 20px;border-radius:10px;text-align:center;">'
             f'<div style="font-size:1.4rem;font-weight:700;color:rgb({color});">{count}</div>'
-            f'<div style="font-size:0.72rem;color:#64748b;text-transform:uppercase;">{label}</div>'
+            f'<div style="font-size:0.72rem;color:#94A3B8;text-transform:uppercase;">{label}</div>'
             f'</div>')
 
 st.markdown(
@@ -651,7 +694,7 @@ else:
 
         # ── Strategy card body ─────────────────────────────────────────────────
         def _li(text):
-            return (f'<li style="color:#cbd5e1;font-size:0.95rem;line-height:1.75;margin-bottom:4px;">'
+            return (f'<li style="color:#E2E8F0;font-size:0.95rem;line-height:1.75;margin-bottom:4px;">'
                     f'{text}</li>')
 
         def _ul(items):
@@ -873,20 +916,20 @@ else:
                               line=dict(color=clr,width=1.5,dash='dash'),row=3,col=1)
 
         fig.update_layout(
-            plot_bgcolor='rgba(15,23,42,0.7)',paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='#e2e8f0',family='Outfit'),
+            plot_bgcolor='#0F172A',paper_bgcolor='rgba(0,0,0,0)', /* Use the main app background */
+            font=dict(color='#E2E8F0',family='Outfit'), /* Slate 200 */
             margin=dict(t=15,b=15,l=15,r=15),
-            xaxis=dict(showgrid=True,gridcolor='rgba(255,255,255,0.05)',zeroline=False,
+            xaxis=dict(showgrid=True,gridcolor='rgba(255,255,255,0.08)',zeroline=False,
                        rangeslider=dict(visible=False)),
-            yaxis=dict(title="Price ($)",showgrid=True,gridcolor='rgba(255,255,255,0.05)',
+            yaxis=dict(title="Price ($)",showgrid=True,gridcolor='rgba(255,255,255,0.08)',
                        zeroline=False,tickprefix="$"),
-            xaxis2=dict(showgrid=True,gridcolor='rgba(255,255,255,0.05)',zeroline=False),
-            yaxis2=dict(title="Volume",showgrid=True,gridcolor='rgba(255,255,255,0.05)',zeroline=False),
+            xaxis2=dict(showgrid=True,gridcolor='rgba(255,255,255,0.08)',zeroline=False),
+            yaxis2=dict(title="Volume",showgrid=True,gridcolor='rgba(255,255,255,0.08)',zeroline=False),
             showlegend=True,
             legend=dict(orientation="h",yanchor="bottom",y=1.02,xanchor="right",x=1,
-                        font=dict(size=11,color='#e2e8f0'),
-                        bgcolor='rgba(15,23,42,0.5)',
-                        bordercolor='rgba(255,255,255,0.05)',borderwidth=1),
+                        font=dict(size=11,color='#E2E8F0'),
+                        bgcolor='rgba(30,41,59,0.5)', /* Slate 800 with opacity */
+                        bordercolor='rgba(255,255,255,0.1)',borderwidth=1),
             height=750 if show_rsi else 620,
         )
         if show_rsi:
@@ -918,16 +961,16 @@ else:
                 f'Confidence intervals: 1.28σ × √h ≈ 80% coverage.</p>'
                 f'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;">'
                 f'<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:15px;border-radius:12px;">'
-                f'<span style="color:#94a3b8;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;">Projected Target</span><br/>'
-                f'<strong style="color:#f8fafc;font-size:1.8rem;">${fin_price:,.2f}</strong><br/>'
+                f'<span style="color:#94A3B8;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;">Projected Target</span><br/>'
+                f'<strong style="color:#F8FAFC;font-size:1.8rem;">${fin_price:,.2f}</strong><br/>'
                 f'<span style="color:#64748b;font-size:.78rem;">Target Date: {fin_date}</span></div>'
                 f'<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:15px;border-radius:12px;">'
-                f'<span style="color:#94a3b8;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;">Expected Trend</span><br/>'
+                f'<span style="color:#94A3B8;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;">Expected Trend</span><br/>'
                 f'<strong style="color:{g_col};font-size:1.8rem;">{dsym} {exp_chg:+.2f}%</strong><br/>'
                 f'<span style="color:#64748b;font-size:.78rem;">From close ${latest_close:,.2f}</span></div>'
                 f'<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:15px;border-radius:12px;">'
-                f'<span style="color:#94a3b8;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;">80% Confidence Range</span><br/>'
-                f'<strong style="color:#f8fafc;font-size:1.35rem;line-height:2.2;">${fin_lower:,.2f} – ${fin_upper:,.2f}</strong><br/>'
+                f'<span style="color:#94A3B8;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;">80% Confidence Range</span><br/>'
+                f'<strong style="color:#F8FAFC;font-size:1.35rem;line-height:2.2;">${fin_lower:,.2f} – ${fin_upper:,.2f}</strong><br/>'
                 f'<span style="color:#64748b;font-size:.78rem;">Statistical lower & upper bounds</span></div>'
                 f'</div></div>',
                 unsafe_allow_html=True)
