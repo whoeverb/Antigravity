@@ -213,6 +213,9 @@ def _type_badge(is_etf):
     return ('<span style="font-size:0.65rem;color:#C084FC;background:rgba(192,132,252,0.1);'
             'border:1px solid rgba(192,132,252,0.2);padding:1px 6px;border-radius:4px;margin-left:6px;">STOCK</span>')
 
+def _format_reasons(reasons):
+    return "  ·  ".join(reasons) if reasons else "Momentum remains steady."
+
 # ─── Market Regime Engine ──────────────────────────────────────────────────────
 @st.cache_data(show_spinner=False)
 def calculate_market_regime(df):
@@ -414,31 +417,30 @@ def etf_signal(sym):
     rsi_s = ta.rsi(close, length=14)
     rsi   = float(rsi_s.iloc[-1]) if rsi_s is not None and not rsi_s.empty else 50.0
     if rsi > 73:
-        score += 3; reasons.append("Price is looking overextended (RSI high).")
+        score += 3; reasons.append("Momentum looks stretched.")
     elif rsi < 40:
-        score -= 2; reasons.append("Price is looking cheap (RSI low).")
+        score -= 2; reasons.append("Momentum appears oversold.")
 
     sma200 = ta.sma(close, length=min(200,len(close)-1))
     if sma200 is not None and not sma200.empty:
         s200 = float(sma200.iloc[-1])
         prem = (price - s200) / s200 * 100
         if prem > 10:
-            score += 3; reasons.append("Price is significantly above its long-term average.")
+            score += 3; reasons.append("Trading well above long-term averages.")
         elif prem < 0:
-            score -= 4; reasons.append("Price is trading below its long-term average.")
+            score -= 4; reasons.append("Trading below long-term averages.")
 
     bb = ta.bbands(close, length=20, std=2)
     if bb is not None and not bb.empty:
         bbu = float(bb[[c for c in bb.columns if c.startswith('BBU')][0]].iloc[-1])
         bbl = float(bb[[c for c in bb.columns if c.startswith('BBL')][0]].iloc[-1])
         if price >= bbu * 0.98:
-            score += 2; reasons.append("Price is hitting the upper range of normal volatility.")
+            score += 2; reasons.append("Testing upper volatility limits.")
         elif price <= bbl * 1.03:
-            score -= 3; reasons.append("Price is hitting the lower range of normal volatility.")
+            score -= 3; reasons.append("Testing lower volatility support.")
 
     sig = "WAIT" if score >= 5 else ("BUY" if score <= -3 else "DCA")
-    reason_str = "  ·  ".join(reasons) if reasons else "Trading within a normal range."
-    return sig, reason_str, price, chg_pct
+    return sig, _format_reasons(reasons), price, chg_pct
 
 def stock_signal(sym):
     df, err = _quick_load(sym)
@@ -466,23 +468,23 @@ def stock_signal(sym):
 
     sell_reasons = []
     if rsi_val and rsi_3d and all(r > 78 for r in rsi_3d):
-        sell_reasons.append("Price momentum is exhausted (RSI very high).")
+        sell_reasons.append("Momentum looks exhausted.")
     if bbu and price > bbu * 1.08:
-        sell_reasons.append("Price is extremely high compared to recent volatility.")
+        sell_reasons.append("Price looks stretched relative to volatility.")
     if sma50_val and price > sma50_val * 1.25:
-        sell_reasons.append("Price is significantly above its 50-day average.")
+        sell_reasons.append("Trading well above the 50-day trend.")
     if sell_reasons:
-        return "SELL", "  ·  ".join(sell_reasons), price, chg_pct
+        return "SELL", _format_reasons(sell_reasons), price, chg_pct
 
     buy_reasons = []
     if bbl and price <= bbl * 1.015:
-        buy_reasons.append("Price is at a support level (lower volatility band).")
+        buy_reasons.append("Finding support near lower volatility bands.")
     if sma50_val and price <= sma50_val:
-        buy_reasons.append("Price is trading below its 50-day average.")
+        buy_reasons.append("Trading below the 50-day trend.")
     if buy_reasons:
-        return "BUY", "  ·  ".join(buy_reasons), price, chg_pct
+        return "BUY", _format_reasons(buy_reasons), price, chg_pct
 
-    return "HOLD", "Price is stable, no extreme signals.", price, chg_pct
+    return "HOLD", "Momentum remains steady without extreme conditions.", price, chg_pct
 
 # ─── Portfolio Card Renderer ──────────────────────────────────────────────────
 def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
