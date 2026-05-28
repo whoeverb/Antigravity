@@ -20,8 +20,8 @@ st.set_page_config(
 )
 
 # ─── Portfolio Definition ──────────────────────────────────────────────────────
-PORTFOLIO_ETFS   = ["SCHG", "SMH", "QTUM", "VOO", "XT"]
-PORTFOLIO_STOCKS = ["AMZN", "ORCL", "LRN", "NBIS", "NVDA", "ASML", "TSM", "GOOG", "EVGO"]
+PORTFOLIO_ETFS   = ["SCHG", "SMH", "QTUM", "VOO", "XT", "SCHD", "VUG"]
+PORTFOLIO_STOCKS = ["AMZN", "ORCL", "LRN", "NBIS", "NVDA", "ASML", "TSM", "EVGO", "BRK.B", "BSM", "INTA", "KO", "SNDL", "TEM"]
 
 # ─── Persistent P&L Storage ───────────────────────────────────────────────────
 PNL_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pnl_data.json")
