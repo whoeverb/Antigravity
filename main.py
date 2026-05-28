@@ -259,7 +259,7 @@ def _quick_load(sym, days=300):
 def etf_signal(sym):
     df, err = _quick_load(sym)
     if err or df.empty:
-        return "DCA", "Could not fetch data.", None, None
+        return "DCA", "Data unavailable.", None, None
     close   = df['Close'].squeeze().astype(float)
     price   = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
@@ -269,36 +269,36 @@ def etf_signal(sym):
     rsi_s = ta.rsi(close, length=14)
     rsi   = float(rsi_s.iloc[-1]) if rsi_s is not None and not rsi_s.empty else 50.0
     if rsi > 73:
-        score += 3; reasons.append(f"RSI {rsi:.0f} — overbought")
+        score += 3; reasons.append("Price is looking overextended (RSI high).")
     elif rsi < 40:
-        score -= 2; reasons.append(f"RSI {rsi:.0f} — oversold")
+        score -= 2; reasons.append("Price is looking cheap (RSI low).")
 
     sma200 = ta.sma(close, length=min(200,len(close)-1))
     if sma200 is not None and not sma200.empty:
         s200 = float(sma200.iloc[-1])
         prem = (price - s200) / s200 * 100
         if prem > 10:
-            score += 3; reasons.append(f"{prem:.1f}% above 200-SMA")
+            score += 3; reasons.append("Price is significantly above its long-term average.")
         elif prem < 0:
-            score -= 4; reasons.append(f"{abs(prem):.1f}% below 200-SMA")
+            score -= 4; reasons.append("Price is trading below its long-term average.")
 
     bb = ta.bbands(close, length=20, std=2)
     if bb is not None and not bb.empty:
         bbu = float(bb[[c for c in bb.columns if c.startswith('BBU')][0]].iloc[-1])
         bbl = float(bb[[c for c in bb.columns if c.startswith('BBL')][0]].iloc[-1])
         if price >= bbu * 0.98:
-            score += 2; reasons.append(f"Near upper BB")
+            score += 2; reasons.append("Price is hitting the upper range of normal volatility.")
         elif price <= bbl * 1.03:
-            score -= 3; reasons.append(f"Near lower BB")
+            score -= 3; reasons.append("Price is hitting the lower range of normal volatility.")
 
     sig = "WAIT" if score >= 5 else ("BUY" if score <= -3 else "DCA")
-    reason_str = "  ·  ".join(reasons) if reasons else "Normal trading range."
+    reason_str = "  ·  ".join(reasons) if reasons else "Trading within a normal range."
     return sig, reason_str, price, chg_pct
 
 def stock_signal(sym):
     df, err = _quick_load(sym)
     if err or df.empty:
-        return "HOLD", "Could not fetch data.", None, None
+        return "HOLD", "Data unavailable.", None, None
     close   = df['Close'].squeeze().astype(float)
     price   = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
@@ -321,23 +321,23 @@ def stock_signal(sym):
 
     sell_reasons = []
     if rsi_val and rsi_3d and all(r > 78 for r in rsi_3d):
-        sell_reasons.append(f"RSI {rsi_val:.0f} — exhaustion")
+        sell_reasons.append("Price momentum is exhausted (RSI very high).")
     if bbu and price > bbu * 1.08:
-        sell_reasons.append(f"{(price/bbu-1)*100:.1f}% above upper BB")
+        sell_reasons.append("Price is extremely high compared to recent volatility.")
     if sma50_val and price > sma50_val * 1.25:
-        sell_reasons.append(f"{(price/sma50_val-1)*100:.1f}% above 50-SMA")
+        sell_reasons.append("Price is significantly above its 50-day average.")
     if sell_reasons:
         return "SELL", "  ·  ".join(sell_reasons), price, chg_pct
 
     buy_reasons = []
     if bbl and price <= bbl * 1.015:
-        buy_reasons.append(f"At/below lower BB")
+        buy_reasons.append("Price is at a support level (lower volatility band).")
     if sma50_val and price <= sma50_val:
-        buy_reasons.append(f"Below 50-SMA")
+        buy_reasons.append("Price is trading below its 50-day average.")
     if buy_reasons:
         return "BUY", "  ·  ".join(buy_reasons), price, chg_pct
 
-    return "HOLD", "Premium-priced but not extreme.", price, chg_pct
+    return "HOLD", "Price is stable, no extreme signals.", price, chg_pct
 
 # ─── Portfolio Card Renderer ──────────────────────────────────────────────────
 def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
@@ -373,7 +373,7 @@ def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
     <div>{_pill(sig)}</div>
 </div>
 {pnl_html}
-<div style="font-size:0.75rem;color:#64748b;margin-top:8px;line-height:1.4;">{reason}</div>"""
+<div style="font-size:0.85rem;color:#CBD5E1;margin-top:10px;line-height:1.5;font-weight:500;">{reason}</div>"""
     return _card_wrap(inner, sig)
 
 # ─── Sidebar ──────────────────────────────────────────────────────────────────
@@ -413,127 +413,4 @@ with st.sidebar:
                     f'<div style="background:rgba(30,41,59,0.5);border:1px solid rgba(71,85,105,0.3);'
                     f'border-radius:8px;padding:12px;text-align:center;">'
                     f'<div style="color:#94a3b8;font-size:0.7rem;text-transform:uppercase;">Next Earnings</div>'
-                    f'<div style="font-size:1.5rem;font-weight:700;color:{urg};">{"Today" if days_away==0 else f"{days_away} Days"}</div>'
-                    f'<div style="color:#94a3b8;font-size:0.75rem;">{earnings_date.strftime("%b %d, %Y")}</div>'
-                    f'</div>', unsafe_allow_html=True)
-            else: st.caption(f"Last: {earnings_date.strftime('%b %d, %Y')}")
-
-    if ticker:
-        st.markdown("---")
-        st.markdown("### 📰 **News**")
-        news_items, _ = fetch_news(ticker)
-        for item in news_items:
-            st.markdown(f'<div style="font-size:0.8rem;margin-bottom:8px;"><a href="{item["link"]}" target="_blank">{item["title"]}</a></div>', unsafe_allow_html=True)
-
-# ─── Main Header ──────────────────────────────────────────────────────────────
-h1, h2 = st.columns([3,1])
-with h1:
-    st.markdown('<h1 style="font-weight:700;font-size:2.2rem;margin-bottom:0;">📈 Stock Research</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="color:#94a3b8;">Portfolio signals & deep-dive analysis.</p>', unsafe_allow_html=True)
-with h2:
-    st.markdown('<div style="text-align:right;padding-top:15px;"><span class="status-pulse"></span> Engine Active</div>', unsafe_allow_html=True)
-
-# ══════════════════════════════════════════════════════════════════════════════
-# SECTION 1 — PORTFOLIO DASHBOARD
-# ══════════════════════════════════════════════════════════════════════════════
-st.markdown("## 📌 My Portfolio")
-
-with st.expander("✏️ Update Shares & Cost Basis", expanded=False):
-    all_tickers = PORTFOLIO_ETFS + PORTFOLIO_STOCKS
-    # Use a more responsive grid layout
-    cols = st.columns(4)
-    changed = False
-    
-    for idx, sym in enumerate(all_tickers):
-        with cols[idx % 4]:
-            with st.container(border=True):
-                st.markdown(f'<div style="font-size:0.9rem;font-weight:700;color:#F8FAFC;margin-bottom:8px;">{sym}</div>', unsafe_allow_html=True)
-                saved      = st.session_state["pnl_data"].get(sym, {})
-                shares_val = st.number_input(label=f"Shares {sym}", min_value=0.0, value=float(saved.get("shares", 0.0)), step=0.1, format="%.2f", key=f"sh_{sym}", label_visibility="collapsed")
-                cost_val   = st.number_input(label=f"Cost {sym}", min_value=0.0, value=float(saved.get("cost", 0.0)), step=0.01, format="%.2f", key=f"co_{sym}", label_visibility="collapsed")
-                
-                new_entry  = {"shares": shares_val, "cost": cost_val}
-                if new_entry != saved:
-                    changed = True
-                st.session_state["pnl_data"][sym] = new_entry
-    if changed:
-        _save_pnl_to_disk(st.session_state["pnl_data"])
-        st.success("✅ Saved.", icon="💾")
-
-# ── ETF Cards ─────────────────────────────────────────────────────────────────
-st.markdown("### 📦 ETFs")
-etf_cols = st.columns(len(PORTFOLIO_ETFS))
-for i, sym in enumerate(PORTFOLIO_ETFS):
-    sig, reason, price, chg_pct = etf_signal(sym)
-    with etf_cols[i]:
-        st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=True), unsafe_allow_html=True)
-
-# ── Stock Cards ───────────────────────────────────────────────────────────────
-st.markdown("### 📈 Stocks")
-stock_rows = [PORTFOLIO_STOCKS[i:i+3] for i in range(0,len(PORTFOLIO_STOCKS),3)]
-for row in stock_rows:
-    cols = st.columns(3)
-    for j, sym in enumerate(row):
-        sig, reason, price, chg_pct = stock_signal(sym)
-        with cols[j]:
-            st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False), unsafe_allow_html=True)
-
-st.markdown("---")
-
-# ══════════════════════════════════════════════════════════════════════════════
-# SECTION 2 — DEEP-DIVE ANALYSIS
-# ══════════════════════════════════════════════════════════════════════════════
-st.markdown(f"## 🔬 Deep-Dive: `{ticker}`")
-
-if not ticker:
-    st.warning("⚠️ Enter a ticker in the sidebar.")
-else:
-    df, data_error = load_stock_data(ticker, start_date, end_date)
-    if data_error:
-        st.error(f"❌ {data_error}")
-    elif df.empty:
-        st.error(f"❌ No data.")
-    else:
-        close_series   = df['Close'].squeeze().astype(float)
-        is_etf_ticker  = ticker in PORTFOLIO_ETFS
-
-        if show_ema: df['EMA'] = ta.ema(close_series, length=ema_period)
-        if show_sma: df['SMA'] = ta.sma(close_series, length=sma_period)
-        if show_rsi_indicator: df['RSI'] = ta.rsi(close_series, length=rsi_period)
-
-        forecast_df = pd.DataFrame()
-        if show_forecast:
-            fraw, ferr = generate_statistical_forecast(tuple(close_series.values), tuple(close_series.index), 14)
-            if not ferr: forecast_df = fraw
-
-        # Metrics
-        latest_close = float(close_series.iloc[-1])
-        m1,m2,m3,m4 = st.columns(4)
-        with m1: st.metric("Latest Close", f"${latest_close:,.2f}")
-        with m2: st.metric("High",  f"${float(df['High'].max()):,.2f}")
-        with m3: st.metric("Low",   f"${float(df['Low'].min()):,.2f}")
-        with m4: st.metric("Volatility", f"{float(close_series.pct_change().std()*np.sqrt(252)*100):.1f}%")
-
-        # Chart
-        fig = go.Figure()
-        fig.add_trace(go.Candlestick(x=df.index,open=df['Open'],high=df['High'],low=df['Low'],close=df['Close'],name="Price"))
-        if show_ema: fig.add_trace(go.Scatter(x=df.index,y=df['EMA'],name="EMA",line=dict(color='#facc15')))
-        if show_sma: fig.add_trace(go.Scatter(x=df.index,y=df['SMA'],name="SMA",line=dict(color='#22d3ee')))
-        
-        fig.update_layout(
-            plot_bgcolor='#0F172A', paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='#E2E8F0'),
-            margin=dict(t=20,b=20,l=20,r=20),
-            xaxis=dict(showgrid=False), yaxis=dict(showgrid=True, gridcolor='rgba(255,255,255,0.05)')
-        )
-        st.plotly_chart(fig, use_container_width=True)
-
-        # Fundamentals
-        info, fund_err = fetch_company_info(ticker)
-        if info:
-            st.markdown("### 🏢 Fundamentals")
-            c1, c2, c3, c4 = st.columns(4)
-            c1.metric("Market Cap", f"{info.get('marketCap',0)/1e9:.1f}B")
-            c2.metric("P/E", f"{info.get('trailingPE', 'N/A')}")
-            c3.metric("P/B", f"{info.get('priceToBook', 'N/A')}")
-            c4.metric("Yield", f"{info.get('dividendYield', 0)*100:.2f}%")
+                    f'<div style="font-size:1.5rem;font-weight:700;color:{urg};">{"Today" if days_away
