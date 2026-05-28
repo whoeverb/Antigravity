@@ -122,13 +122,25 @@ SIG_STYLES = {
 # ─── Helpers ───────────────────────────────────────────────────────────────────
 def _fmt_age(pub_ts):
     try:
-        pub_dt = datetime.datetime.utcfromtimestamp(pub_ts) if isinstance(pub_ts,(int,float)) else pub_ts
-        delta  = datetime.datetime.utcnow() - pub_dt
-        hours  = int(delta.total_seconds()//3600)
+        # For Python 3.9+ utcfromtimestamp is deprecated.
+        # Use fromtimestamp with timezone awareness.
+        if isinstance(pub_ts, (int, float)):
+            # Ensure timestamp is interpreted as UTC to match utcnow()
+            pub_dt = datetime.datetime.fromtimestamp(pub_ts, tz=datetime.timezone.utc)
+        else:
+            pub_dt = pub_ts # Assume already a datetime object, potentially timezone naive
+        
+        # If pub_dt is timezone-naive, make it timezone-aware UTC for consistent comparison
+        if pub_dt.tzinfo is None:
+            pub_dt = pub_dt.replace(tzinfo=datetime.timezone.utc)
+
+        delta  = datetime.datetime.now(datetime.timezone.utc) - pub_dt
+        hours  = int(delta.total_seconds() // 3600)
         if hours < 1:  return "just now"
         if hours < 24: return f"{hours}h ago"
-        return f"{hours//24}d ago"
-    except: return ""
+        return f"{hours // 24}d ago"
+    except Exception: # Catch specific exceptions if possible, but broad for robustness here
+        return ""
 
 def _days_until(d):
     return (d - datetime.date.today()).days
