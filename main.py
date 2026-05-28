@@ -51,34 +51,34 @@ if "pnl_loaded" not in st.session_state:
 # ─── Global CSS (Professional Financial Dashboard Aesthetic) ───────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 * { font-family: 'Inter', sans-serif !important; }
 
 /* Main app background */
 .stApp { background-color: #0F172A; }
 
+/* High Contrast Text */
+h1, h2, h3, h4, h5, h6 { color: #F8FAFC !important; font-weight: 700 !important; }
+p, li, span, div { color: #E2E8F0 !important; }
+
 /* Metric components */
-div[data-testid="stMetricValue"] { font-size:1.6rem !important; font-weight:700 !important; color:#FFFFFF !important; }
-div[data-testid="stMetricLabel"] { font-size:0.85rem !important; color:#94A3B8 !important; text-transform:uppercase; letter-spacing:0.05em; }
+div[data-testid="stMetricValue"] { font-size:1.8rem !important; font-weight:800 !important; color:#FFFFFF !important; }
+div[data-testid="stMetricLabel"] { font-size:0.9rem !important; color:#94A3B8 !important; font-weight:600 !important; text-transform:uppercase; }
 [data-testid="stMetric"] {
-    background: rgba(30, 41, 59, 0.5);
-    border: 1px solid rgba(71, 85, 105, 0.3);
-    border-radius: 12px; padding:16px;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.5);
+    border-radius: 12px; padding:20px;
 }
 
-/* Inputs */
-.stNumberInput > label { color: #E2E8F0 !important; font-weight: 500 !important; }
+/* Inputs - High Contrast */
+.stNumberInput > label { color: #F8FAFC !important; font-weight: 600 !important; font-size: 0.9rem !important; }
 .stNumberInput > div > div > input {
     background-color: #1E293B !important;
-    border: 1px solid #475569 !important;
+    border: 2px solid #475569 !important;
     color: #FFFFFF !important;
-    border-radius: 6px !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
 }
-
-/* Typography */
-h1, h2, h3, h4, h5, h6 { color: #F8FAFC !important; }
-p, li { color: #CBD5E1 !important; }
-a { color: #818CF8 !important; }
 
 /* Pulse Animation */
 @keyframes pulse {
@@ -87,7 +87,7 @@ a { color: #818CF8 !important; }
     100% { transform:scale(0.95); box-shadow:0 0 0 0 rgba(16,185,129,0); }
 }
 .status-pulse {
-    width:8px; height:8px; background-color:#10b981;
+    width:10px; height:10px; background-color:#10b981;
     border-radius:50%; display:inline-block;
     animation: pulse 2s infinite;
 }
@@ -157,10 +157,6 @@ def _fmt_age(pub_ts):
 
 def _days_until(d):
     return (d - datetime.date.today()).days
-
-def _hl(v):
-    return (f'<span style="background:rgba(99,102,241,0.2);padding:2px 6px;border-radius:4px;'
-            f'font-weight:600;color:#C7D2FE;">{v}</span>')
 
 def _card_wrap(inner_html, sig):
     s = SIG_STYLES.get(sig, SIG_STYLES["HOLD"])
@@ -444,13 +440,14 @@ st.markdown("## 📌 My Portfolio")
 
 with st.expander("✏️ Update Shares & Cost Basis", expanded=False):
     all_tickers = PORTFOLIO_ETFS + PORTFOLIO_STOCKS
-    pnl_cols    = st.columns(3)
-    changed     = False
+    # Use a more responsive grid layout
+    cols = st.columns(4)
+    changed = False
+    
     for idx, sym in enumerate(all_tickers):
-        with pnl_cols[idx % 3]:
-            # Using native container instead of raw HTML to prevent layout breakage
+        with cols[idx % 4]:
             with st.container(border=True):
-                st.markdown(f'<div style="font-size:0.8rem;font-weight:600;color:#94A3B8;margin-bottom:8px;">{sym}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="font-size:0.9rem;font-weight:700;color:#F8FAFC;margin-bottom:8px;">{sym}</div>', unsafe_allow_html=True)
                 saved      = st.session_state["pnl_data"].get(sym, {})
                 shares_val = st.number_input(label=f"Shares {sym}", min_value=0.0, value=float(saved.get("shares", 0.0)), step=0.1, format="%.2f", key=f"sh_{sym}", label_visibility="collapsed")
                 cost_val   = st.number_input(label=f"Cost {sym}", min_value=0.0, value=float(saved.get("cost", 0.0)), step=0.01, format="%.2f", key=f"co_{sym}", label_visibility="collapsed")
