@@ -4,7 +4,7 @@ import '../models/signal_model.dart';
 
 class SignalService {
   // Updated to point to the new location in signal_engine/
-  static const String _url = "https://raw.githubusercontent.com/whoeverb/Antigravity/main/signal_engine/signals.json";
+  static const String _url = "https://raw.githubusercontent.com/whoeverb/Antigravity/main/signals.json";
 
   Future<SignalResponse> fetchSignals() async {
     final response = await http.get(Uri.parse(_url));
