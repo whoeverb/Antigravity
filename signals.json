@@ -1,0 +1,221 @@
+{
+  "generated_at": "2026-05-29 17:27:22.257606",
+  "signals": {
+    "SCHG": {
+      "type": "ETF",
+      "signal": "DCA",
+      "price": 34.99,
+      "change_pct": 1.21,
+      "regime": "Bullish",
+      "confidence": "Medium",
+      "reasons": "Momentum stretched"
+    },
+    "SMH": {
+      "type": "ETF",
+      "signal": "DCA",
+      "price": 599.83,
+      "change_pct": 0.73,
+      "regime": "Overheated",
+      "confidence": "Medium",
+      "reasons": "Above long-term avg"
+    },
+    "QTUM": {
+      "type": "ETF",
+      "signal": "WAIT",
+      "price": 159.06,
+      "change_pct": 1.63,
+      "regime": "Strong Uptrend",
+      "confidence": "Medium",
+      "reasons": "Momentum stretched, Above long-term avg"
+    },
+    "VOO": {
+      "type": "ETF",
+      "signal": "WAIT",
+      "price": 693.91,
+      "change_pct": 0.57,
+      "regime": "Bullish",
+      "confidence": "Medium",
+      "reasons": "Momentum stretched, Above long-term avg"
+    },
+    "XT": {
+      "type": "ETF",
+      "signal": "WAIT",
+      "price": 83.4,
+      "change_pct": 1.47,
+      "regime": "Strong Uptrend",
+      "confidence": "High",
+      "reasons": "Momentum stretched, Above long-term avg"
+    },
+    "SCHD": {
+      "type": "ETF",
+      "signal": "DCA",
+      "price": 32.63,
+      "change_pct": 0.25,
+      "regime": "Strong Uptrend",
+      "confidence": "High",
+      "reasons": "Above long-term avg"
+    },
+    "VUG": {
+      "type": "ETF",
+      "signal": "WAIT",
+      "price": 89.22,
+      "change_pct": 1.14,
+      "regime": "Bullish",
+      "confidence": "Medium",
+      "reasons": "Momentum stretched, Above long-term avg"
+    },
+    "AMZN": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 274.0,
+      "change_pct": 0.79,
+      "regime": "Strong Uptrend",
+      "confidence": "Medium",
+      "reasons": "Steady"
+    },
+    "ORCL": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 203.7,
+      "change_pct": 6.67,
+      "regime": "Neutral",
+      "confidence": "Low",
+      "reasons": "Steady"
+    },
+    "LRN": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 91.97,
+      "change_pct": 1.09,
+      "regime": "Neutral",
+      "confidence": "Low",
+      "reasons": "Steady"
+    },
+    "NBIS": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 226.34,
+      "change_pct": 8.62,
+      "regime": "Strong Uptrend",
+      "confidence": "Low",
+      "reasons": "Steady"
+    },
+    "NVDA": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 214.25,
+      "change_pct": 0.78,
+      "regime": "Strong Uptrend",
+      "confidence": "Medium",
+      "reasons": "Steady"
+    },
+    "ASML": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 1605.77,
+      "change_pct": 0.49,
+      "regime": "Strong Uptrend",
+      "confidence": "Low",
+      "reasons": "Steady"
+    },
+    "TSM": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 424.86,
+      "change_pct": 0.5,
+      "regime": "Strong Uptrend",
+      "confidence": "Medium",
+      "reasons": "Steady"
+    },
+    "EVGO": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 2.16,
+      "change_pct": 4.85,
+      "regime": "Neutral",
+      "confidence": "Low",
+      "reasons": "Steady"
+    },
+    "BRK.B": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 0.0,
+      "change_pct": 0.0,
+      "regime": "Neutral",
+      "confidence": "Low",
+      "reasons": "Data unavailable."
+    },
+    "BSM": {
+      "type": "STOCK",
+      "signal": "BUY",
+      "price": 13.31,
+      "change_pct": 0.23,
+      "regime": "Bullish",
+      "confidence": "Low",
+      "reasons": "Below 50d trend"
+    },
+    "INTA": {
+      "type": "STOCK",
+      "signal": "BUY",
+      "price": 20.6,
+      "change_pct": 7.63,
+      "regime": "Neutral",
+      "confidence": "Low",
+      "reasons": "Below 50d trend"
+    },
+    "KO": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 80.41,
+      "change_pct": -1.48,
+      "regime": "Bullish",
+      "confidence": "Medium",
+      "reasons": "Steady"
+    },
+    "SNDL": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 1.49,
+      "change_pct": 2.76,
+      "regime": "Neutral",
+      "confidence": "Low",
+      "reasons": "Steady"
+    },
+    "TEM": {
+      "type": "STOCK",
+      "signal": "HOLD",
+      "price": 51.29,
+      "change_pct": 8.73,
+      "regime": "Neutral",
+      "confidence": "Low",
+      "reasons": "Steady"
+    }
+  },
+  "top_candidates": [
+    {
+      "ticker": "BSM",
+      "score": 3,
+      "signal": "BUY"
+    },
+    {
+      "ticker": "INTA",
+      "score": 3,
+      "signal": "BUY"
+    },
+    {
+      "ticker": "SCHG",
+      "score": 2,
+      "signal": "DCA"
+    },
+    {
+      "ticker": "SMH",
+      "score": 2,
+      "signal": "DCA"
+    },
+    {
+      "ticker": "SCHD",
+      "score": 2,
+      "signal": "DCA"
+    }
+  ]
+}
