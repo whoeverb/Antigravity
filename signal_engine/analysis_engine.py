@@ -37,7 +37,7 @@ def _quick_load(sym, days=300):
     return load_stock_data(sym, start, end)
 
 # ─── Prophet Forecasting ──────────────────────────────────────────────────────
-def get_prophet_forecast(close, periods=30):
+def get_prophet_forecast(close, current_price, periods=30):
     try:
         df = close.reset_index()
         df.columns = ['ds', 'y']
@@ -45,7 +45,15 @@ def get_prophet_forecast(close, periods=30):
         model.fit(df)
         future = model.make_future_dataframe(periods=periods)
         forecast = model.predict(future)
-        return float(forecast['yhat'].iloc[-1])
+        val = float(forecast['yhat'].iloc[-1])
+        
+        # Validation
+        if val <= 0:
+            return None
+        if abs(val - current_price) / current_price > 0.40:
+            return None
+            
+        return val
     except Exception:
         return None
 
@@ -134,7 +142,7 @@ def etf_signal(sym, macro):
     price = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
     
-    forecast_30d = get_prophet_forecast(close)
+    forecast_30d = get_prophet_forecast(close, price)
     
     score = 0
     reasons = []
@@ -180,7 +188,7 @@ def stock_signal(sym, macro, cost_basis=None):
     price = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
 
-    forecast_30d = get_prophet_forecast(close)
+    forecast_30d = get_prophet_forecast(close, price)
     reasons = []
     
     if forecast_30d:
