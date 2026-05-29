@@ -1,7 +1,6 @@
 import Foundation
 
 class SignalService: ObservableObject {
-    // REPLACE THIS URL WITH YOUR ACTUAL GITHUB RAW URL
     private let GITHUB_RAW_URL = "https://raw.githubusercontent.com/whoeverb/Antigravity/main/signals.json"
     
     @Published var data: SignalResponse?
