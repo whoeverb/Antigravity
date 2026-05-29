@@ -1,6 +1,6 @@
 yfinance
 pandas
-pandas-ta
+pandas-ta2
 numpy
 streamlit
 statsmodels
