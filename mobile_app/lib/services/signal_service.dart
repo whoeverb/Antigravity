@@ -12,7 +12,7 @@ class SignalService {
     if (response.statusCode == 200) {
       return SignalResponse.fromJson(json.decode(response.body));
     } else {
-      throw Exception('Failed to load signals');
+      throw Exception('Failed to load signals: Status Code ${response.statusCode}');
     }
   }
 }
