@@ -16,6 +16,13 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../signal_engine'))
 import analysis_engine
 import pandas_ta_classic as ta
 
+# Initialize variables for static analysis
+ticker = "SCHG"
+today = datetime.date.today()
+one_year_ago = today - datetime.timedelta(days=365)
+start_date = one_year_ago
+end_date = today
+
 # ─── Page Config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Stock Research & Projection App",
@@ -295,13 +302,110 @@ def generate_statistical_forecast(series_vals, series_idx, horizon=14):
     except Exception as e:
         return pd.DataFrame(), str(e)
 
-# ─── Main Header ──────────────────────────────────────────────────────────────
-h1, h2 = st.columns([3,1])
-with h1:
-    st.markdown('<h1 style="font-weight:700;font-size:2.2rem;margin-bottom:0;">📈 Stock Research</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="color:#94a3b8;">Portfolio signals & deep-dive analysis.</p>', unsafe_allow_html=True)
-with h2:
-    st.markdown('<div style="text-align:right;padding-top:15px;"><span class="status-pulse"></span> Engine Active</div>', unsafe_allow_html=True)
+# ─── Portfolio Card Renderer ──────────────────────────────────────────────────
+def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
+    s         = SIG_STYLES.get(sig, SIG_STYLES["HOLD"])
+    
+    # Get Regime Data
+    df, _ = _quick_load(sym)
+    regime, _, conf, _, meta = analysis_engine.calculate_market_regime(df)
+    regime_color = meta.get("color", "#94a3b8")
+    
+    saved    = st.session_state["pnl_data"].get(sym, {})
+    shares   = saved.get("shares", 0.0)
+    cost_avg = saved.get("cost",   0.0)
+    
+    # Price color logic: Green if price > cost_avg, Red if price < cost_avg
+    price_color = "#FFFFFF" # Default
+    if cost_avg > 0 and price:
+        price_color = "#10b981" if price > cost_avg else "#ef4444"
+    
+    price_str = f'<span style="color:{price_color};">${price:,.2f}</span>' if price is not None else "—"
+    
+    # Daily change color logic: Green if >= 0, Red if < 0
+    chg_color = "#10b981" if (chg_pct or 0) >= 0 else "#ef4444"
+    arrow     = "▲" if (chg_pct or 0) >= 0 else "▼"
+    chg_html  = (f'<span style="color:{chg_color};font-size:0.75rem;">'
+                 f'{arrow} {abs(chg_pct):.2f}%</span>') if chg_pct is not None else ""
+
+    pnl_html = ""
+    if shares > 0 and cost_avg > 0 and price:
+        unrealized  = shares * price - shares * cost_avg
+        unreal_pct  = unrealized / (shares * cost_avg) * 100
+        # P&L color logic: Green for positive, Red for negative
+        u_color     = "#10b981" if unrealized >= 0 else "#ef4444"
+        sign        = "+" if unrealized >= 0 else ""
+        pnl_html = (
+            f'<div style="font-size:0.75rem;margin-top:auto;padding-top:8px;'
+            f'border-top:1px solid rgba(255,255,255,0.05);color:#94A3B8;">'
+            f'{shares:g} sh @ ${cost_avg:,.2f} &nbsp; <span style="color:{u_color};font-weight:600;">'
+            f'{sign}${unrealized:,.0f} ({sign}{unreal_pct:.1f}%)</span></div>'
+        )
+
+    # Improved reason text handling with wrapping
+    reason_text = reason if len(reason) < 80 else (reason[:77] + '...')
+
+    inner = f"""<div style="display:flex;justify-content:space-between;align-items:flex-start;">
+    <div>
+        <span style="font-size:1rem;font-weight:700;color:#F8FAFC;">{sym}</span>
+        {_type_badge(is_etf)}
+        <div style="font-size:0.85rem;color:#94A3B8;margin-top:2px;">{price_str} &nbsp;{chg_html}</div>
+    </div>
+    <div>{_pill(sig)}</div>
+</div>
+<div style="font-size:0.80rem;color:#CBD5E1;margin-top:10px;line-height:1.3;font-weight:500;flex-grow:1;overflow:hidden;white-space:normal;word-wrap:break-word;">{reason_text}</div>
+<div style="margin-top:8px;"><span class="regime-badge" style="background:{regime_color}20;color:{regime_color};border:1px solid {regime_color}40;">{regime}</span><span style="font-size:0.7rem;color:#94a3b8;">{conf} Conf</span></div>
+{pnl_html}"""
+    return _card_wrap(inner, sig)
+
+# ─── Sidebar ──────────────────────────────────────────────────────────────────
+with st.sidebar:
+    st.image("https://img.icons8.com/fluent/96/000000/line-chart.png", width=50)
+    st.markdown("### **Navigation**")
+    ticker = st.text_input("🔍 Analyze Ticker", value="SCHG").upper().strip()
+
+    today        = datetime.date.today()
+    one_year_ago = today - datetime.timedelta(days=365)
+    start_date   = st.date_input("Start Date", value=one_year_ago)
+    end_date     = st.date_input("End Date",   value=today)
+
+    st.markdown("---")
+    st.markdown("### 📊 **Indicators**")
+    show_ema  = st.checkbox("Short-term EMA", value=False)
+    ema_period = st.number_input("EMA Period",  min_value=2, max_value=200, value=20, disabled=not show_ema)
+    show_sma  = st.checkbox("Long-term SMA",   value=False)
+    sma_period = st.number_input("SMA Period",  min_value=2, max_value=500, value=50, disabled=not show_sma)
+    show_rsi_indicator = st.checkbox("RSI",    value=False)
+    rsi_period = st.number_input("RSI Period",  min_value=2, max_value=100, value=14, disabled=not show_rsi_indicator)
+
+    st.markdown("---")
+    st.markdown("### 🔮 **Forecast**")
+    show_forecast    = st.checkbox("Enable 14-Day Forecast", value=False)
+
+    if ticker:
+        st.markdown("---")
+        st.markdown("### 📅 **Earnings**")
+        earnings_date, earn_err = fetch_earnings_date(ticker)
+        if earn_err: st.caption(f"⚠️ {earn_err}")
+        elif earnings_date:
+            days_away = _days_until(earnings_date)
+            if days_away >= 0:
+                urg = "#ef4444" if days_away<=7 else ("#fbbf24" if days_away<=21 else "#34d399")
+                st.markdown(
+                    f'<div style="background:rgba(30,41,59,0.5);border:1px solid rgba(71,85,105,0.3);'
+                    f'border-radius:8px;padding:12px;text-align:center;">'
+                    f'<div style="color:#94a3b8;font-size:0.7rem;text-transform:uppercase;">Next Earnings</div>'
+                    f'<div style="font-size:1.5rem;font-weight:700;color:{urg};">{"Today" if days_away==0 else f"{days_away} Days"}</div>'
+                    f'<div style="color:#94a3b8;font-size:0.75rem;">{earnings_date.strftime("%b %d, %Y")}</div>'
+                    f'</div>', unsafe_allow_html=True)
+            else: st.caption(f"Last: {earnings_date.strftime('%b %d, %Y')}")
+
+    if ticker:
+        st.markdown("---")
+        st.markdown("### 📰 **News**")
+        news_items, _ = fetch_news(ticker)
+        for item in news_items:
+            st.markdown(f'<div style="font-size:0.8rem;margin-bottom:8px;"><a href="{item["link"]}" target="_blank">{item["title"]}</a></div>', unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # SECTION 1 — PORTFOLIO DASHBOARD
