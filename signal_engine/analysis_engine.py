@@ -4,6 +4,7 @@ import pandas as pd
 import pandas_ta_classic as ta
 import numpy as np
 import time
+from prophet import Prophet
 
 # ─── Data Fetching ────────────────────────────────────────────────────────────
 def load_stock_data(sym, start, end):
@@ -34,6 +35,19 @@ def _quick_load(sym, days=300):
     end   = datetime.date.today()
     start = end - datetime.timedelta(days=days)
     return load_stock_data(sym, start, end)
+
+# ─── Prophet Forecasting ──────────────────────────────────────────────────────
+def get_prophet_forecast(close, periods=30):
+    try:
+        df = close.reset_index()
+        df.columns = ['ds', 'y']
+        model = Prophet(daily_seasonality=False, weekly_seasonality=False, yearly_seasonality=True)
+        model.fit(df)
+        future = model.make_future_dataframe(periods=periods)
+        forecast = model.predict(future)
+        return float(forecast['yhat'].iloc[-1])
+    except Exception:
+        return None
 
 # ─── Macro Overlay Engine ──────────────────────────────────────────────────────
 def get_macro_overlay():
@@ -113,14 +127,22 @@ def calculate_market_regime(df):
 def etf_signal(sym, macro):
     df, err = _quick_load(sym)
     if err or df.empty: 
-        return {"signal": "DCA", "price": 0.0, "change_pct": 0.0, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable."}
+        return {"signal": "DCA", "price": 0.0, "change_pct": 0.0, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable.", "forecast_30d": None}
     
     regime, _, conf = calculate_market_regime(df)
     close = df['Close'].squeeze().astype(float)
     price = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
+    
+    forecast_30d = get_prophet_forecast(close)
+    
     score = 0
     reasons = []
+
+    if forecast_30d:
+        diff = (price - forecast_30d) / forecast_30d
+        if diff < -0.05: reasons.append("Below 30d forecast trend — potential dip entry")
+        elif diff > 0.05: reasons.append("Above 30d forecast trend — overextended")
 
     rsi = float(ta.rsi(close, length=14).iloc[-1])
     if rsi > 73: score += 3; reasons.append("Momentum stretched")
@@ -144,26 +166,33 @@ def etf_signal(sym, macro):
         "change_pct": round(chg_pct, 2),
         "regime": regime,
         "confidence": conf,
-        "reasons": ", ".join(reasons) if reasons else "Steady"
+        "reasons": ", ".join(reasons) if reasons else "Steady",
+        "forecast_30d": round(forecast_30d, 2) if forecast_30d else None
     }
 
 def stock_signal(sym, macro, cost_basis=None):
     df, err = _quick_load(sym)
     if err or df.empty: 
-        return {"signal": "HOLD", "price": 0.0, "change_pct": 0.0, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable."}
+        return {"signal": "HOLD", "price": 0.0, "change_pct": 0.0, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable.", "forecast_30d": None}
     
     regime, _, conf = calculate_market_regime(df)
     close = df['Close'].squeeze().astype(float)
     price = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
 
+    forecast_30d = get_prophet_forecast(close)
     reasons = []
     
+    if forecast_30d:
+        diff = (price - forecast_30d) / forecast_30d
+        if diff < -0.05: reasons.append("Below 30d forecast trend — potential dip entry")
+        elif diff > 0.05: reasons.append("Above 30d forecast trend — overextended")
+
     # Tax-loss harvesting logic
     if cost_basis and cost_basis > 0:
         loss_pct = (price - cost_basis) / cost_basis * 100
         if loss_pct <= -20:
-            return {"signal": "SELL", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": f"Tax-loss harvest: down {loss_pct:.0f}% from cost basis. Consider reinvesting in ETF."}
+            return {"signal": "SELL", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": f"Tax-loss harvest: down {loss_pct:.0f}% from cost basis. Consider reinvesting in ETF.", "forecast_30d": round(forecast_30d, 2) if forecast_30d else None}
         elif -20 < loss_pct <= -10:
             reasons.append(f"Approaching tax-loss threshold: down {loss_pct:.0f}%")
 
@@ -182,15 +211,15 @@ def stock_signal(sym, macro, cost_basis=None):
     if rsi_val and rsi_val > 78: sell_reasons.append("Momentum exhausted")
     if bbu and price > bbu * 1.08: sell_reasons.append("Stretched volatility")
     if sell_reasons: 
-        return {"signal": "SELL", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(sell_reasons + reasons)}
+        return {"signal": "SELL", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(sell_reasons + reasons), "forecast_30d": round(forecast_30d, 2) if forecast_30d else None}
 
     buy_reasons = []
     if bbl and price <= bbl * 1.015: buy_reasons.append("Support found")
     if sma50_val and price <= sma50_val: buy_reasons.append("Below 50d trend")
     if buy_reasons: 
-        return {"signal": "BUY", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(buy_reasons + reasons)}
+        return {"signal": "BUY", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(buy_reasons + reasons), "forecast_30d": round(forecast_30d, 2) if forecast_30d else None}
 
     if macro['regime'] == "Risk-Off": 
-        return {"signal": "HOLD", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": "Macro caution" + (", " + ", ".join(reasons) if reasons else "")}
+        return {"signal": "HOLD", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": "Macro caution" + (", " + ", ".join(reasons) if reasons else ""), "forecast_30d": round(forecast_30d, 2) if forecast_30d else None}
     
-    return {"signal": "HOLD", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(reasons) if reasons else "Steady"}
+    return {"signal": "HOLD", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(reasons) if reasons else "Steady", "forecast_30d": round(forecast_30d, 2) if forecast_30d else None}
