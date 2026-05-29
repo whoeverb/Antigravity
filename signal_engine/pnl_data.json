@@ -1,0 +1,86 @@
+{
+  "SCHG": {
+    "shares": 1222038.0,
+    "cost": 32.29
+  },
+  "SMH": {
+    "shares": 34.027,
+    "cost": 406.66
+  },
+  "QTUM": {
+    "shares": 70.0,
+    "cost": 141.84
+  },
+  "VOO": {
+    "shares": 30.473,
+    "cost": 545.88
+  },
+  "XT": {
+    "shares": 73.075,
+    "cost": 71.02
+  },
+  "SCHD": {
+    "shares": 88.541,
+    "cost": 27.71
+  },
+  "VUG": {
+    "shares": 1078.98,
+    "cost": 46.16
+  },
+  "AMZN": {
+    "shares": 100.0,
+    "cost": 130.0
+  },
+  "ORCL": {
+    "shares": 50.68,
+    "cost": 176.84
+  },
+  "LRN": {
+    "shares": 42.0,
+    "cost": 120.2
+  },
+  "NBIS": {
+    "shares": 50.0,
+    "cost": 39.51
+  },
+  "NVDA": {
+    "shares": 100.033,
+    "cost": 134.3
+  },
+  "ASML": {
+    "shares": 6.0,
+    "cost": 1483.9
+  },
+  "TSM": {
+    "shares": 10.0,
+    "cost": 400.9
+  },
+  "EVGO": {
+    "shares": 2500.0,
+    "cost": 4.3
+  },
+  "BRK.B": {
+    "shares": 3.0,
+    "cost": 481.3
+  },
+  "BSM": {
+    "shares": 588.481,
+    "cost": 15.13
+  },
+  "INTA": {
+    "shares": 15.0,
+    "cost": 69.24
+  },
+  "KO": {
+    "shares": 8.429,
+    "cost": 62.05
+  },
+  "SNDL": {
+    "shares": 743.0,
+    "cost": 17.09
+  },
+  "TEM": {
+    "shares": 50.0,
+    "cost": 68.4
+  }
+}
