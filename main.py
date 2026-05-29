@@ -5,7 +5,7 @@ import re
 import pandas as pd
 import streamlit as st
 import yfinance as yf
-import pandas_ta as ta
+import pandas_ta_classic as ta
 import numpy as np
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from plotly.subplots import make_subplots
