@@ -63,7 +63,16 @@ class _SignalsScreenState extends State<SignalsScreen> {
                   margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   child: ListTile(
                     title: Text(ticker, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: Text("${info.type} • ${info.regime}"),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("${info.type} • ${info.regime} • ${info.confidence}"),
+                        Text(info.reasons, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                        if (info.forecast30d != null)
+                          Text("30d target: \$${info.forecast30d!.toStringAsFixed(2)}", 
+                               style: const TextStyle(fontSize: 12, color: Colors.blueGrey)),
+                      ],
+                    ),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,

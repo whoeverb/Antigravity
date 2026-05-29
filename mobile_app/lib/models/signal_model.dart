@@ -32,6 +32,7 @@ class SignalData {
   final String regime;
   final String confidence;
   final String reasons;
+  final double? forecast30d;
 
   SignalData({
     required this.type,
@@ -41,6 +42,7 @@ class SignalData {
     required this.regime,
     required this.confidence,
     required this.reasons,
+    this.forecast30d,
   });
 
   factory SignalData.fromJson(Map<String, dynamic> json) {
@@ -52,6 +54,7 @@ class SignalData {
       regime: json['regime'] ?? '',
       confidence: json['confidence'] ?? '',
       reasons: json['reasons'] ?? '',
+      forecast30d: (json['forecast_30d'] as num?)?.toDouble(),
     );
   }
 }
