@@ -5,11 +5,16 @@ import re
 import pandas as pd
 import streamlit as st
 import yfinance as yf
-import pandas_ta_classic as ta
 import numpy as np
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
+import sys
+
+# Add signal_engine to path for imports
+sys.path.append(os.path.join(os.path.dirname(__file__), '../signal_engine'))
+import analysis_engine
+import pandas_ta_classic as ta
 
 # ─── Page Config ───────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -220,150 +225,6 @@ def regime_color(regime):
     colors = {"Bullish": "#10b981", "Neutral": "#94a3b8", "Risk-Off": "#ef4444"}
     return colors.get(regime, "#94a3b8")
 
-# ─── Macro Overlay Engine ──────────────────────────────────────────────────────
-@st.cache_data(ttl=3600)
-def get_macro_overlay(debug=False):
-    tickers = ["SPY", "QQQ", "^VIX", "^TNX"]
-    df = yf.download(tickers, period="1y", progress=False)['Close']
-    
-    spy = df['SPY'].iloc[-1]
-    spy_sma200 = df['SPY'].rolling(200).mean().iloc[-1]
-    qqq = df['QQQ'].iloc[-1]
-    qqq_sma200 = df['QQQ'].rolling(200).mean().iloc[-1]
-    vix = df['^VIX'].iloc[-1]
-    tnx = df['^TNX'].iloc[-1]
-    
-    score = 0
-    if spy > spy_sma200: score += 2
-    if qqq > qqq_sma200: score += 1
-    if vix < 20: score += 2
-    elif vix > 30: score -= 3
-    if tnx < 4.5: score += 1
-    else: score -= 1
-    
-    if score >= 4: regime, risk = "Bullish", "Low"
-    elif score <= 0: regime, risk = "Risk-Off", "High"
-    else: regime, risk = "Neutral", "Moderate"
-    
-    summary = f"Market conditions are {regime.lower()} with {risk.lower()} risk."
-    
-    if debug:
-        return {"regime": regime, "confidence": min(100, max(0, score * 15 + 50)), "risk_level": risk, "summary": summary, "score": score}
-    
-    return {"regime": regime, "confidence": min(100, max(0, score * 15 + 50)), "risk_level": risk, "summary": summary, "score": score}
-
-# ─── Market Regime Engine ──────────────────────────────────────────────────────
-@st.cache_data(show_spinner=False)
-def calculate_market_regime(df):
-    if df.empty or len(df) < 200:
-        return "Neutral", 0, "Low", "Insufficient data for analysis.", {}
-
-    close = df['Close'].squeeze().astype(float)
-    price = float(close.iloc[-1])
-    
-    # Indicators
-    rsi = float(ta.rsi(close, length=14).iloc[-1])
-    sma50 = float(ta.sma(close, length=50).iloc[-1])
-    sma200 = float(ta.sma(close, length=200).iloc[-1])
-    bb = ta.bbands(close, length=20, std=2)
-    bbu = float(bb[[c for c in bb.columns if c.startswith('BBU')][0]].iloc[-1])
-    bbl = float(bb[[c for c in bb.columns if c.startswith('BBL')][0]].iloc[-1])
-    vol = float(close.pct_change().std() * np.sqrt(252) * 100)
-    
-    # Trend Slope (20-day)
-    y = close.iloc[-20:].values
-    x = np.arange(len(y))
-    slope = np.polyfit(x, y, 1)[0]
-    
-    # Scoring
-    score = 0
-    if rsi > 78: score += 3
-    elif rsi > 70: score += 1
-    elif rsi < 35: score -= 3
-    elif rsi < 45: score -= 1
-    
-    if price > sma200 * 1.12: score += 2
-    elif price < sma200: score -= 2
-    
-    if sma50 > sma200: score += 2
-    else: score -= 2
-    
-    if price >= bbu: score += 1
-    elif price <= bbl: score -= 1
-    
-    if vol > 30: score += 2 # High risk/volatility
-    
-    # Regime Mapping
-    if score >= 7: regime, color = "Overheated", "#ef4444"
-    elif score >= 4: regime, color = "Strong Uptrend", "#10b981"
-    elif score >= 1: regime, color = "Bullish", "#10b981"
-    elif score <= -7: regime, color = "Oversold Opportunity", "#34d399"
-    elif score <= -4: regime, color = "Pullback", "#f59e0b"
-    else: regime, color = "Neutral", "#94a3b8"
-    
-    # Confidence
-    if vol < 25 and abs(score) >= 4: confidence = "High"
-    elif vol > 40 or abs(score) < 2: confidence = "Low"
-    else: confidence = "Medium"
-    
-    # Explanation
-    explanation = f"The market is currently in a {regime} state. "
-    if score > 0: explanation += "Momentum is positive, but monitor for overextension."
-    else: explanation += "Conditions suggest caution or potential accumulation opportunities."
-    
-    return regime, score, confidence, explanation, {"color": color}
-
-# ─── Investment Summary Engine ────────────────────────────────────────────────
-def generate_investment_summary(ticker, regime, confidence, score, indicators, forecast_data, fundamentals, volatility, is_etf):
-    # Determine Stance
-    if regime == "Overheated":
-        stance = "Patience favored"
-        risk = "Elevated"
-    elif regime == "Oversold Opportunity":
-        stance = "Aggressive accumulation"
-        risk = "Low"
-    elif regime == "Pullback":
-        stance = "Gradual accumulation"
-        risk = "Moderate"
-    elif regime == "Strong Uptrend":
-        stance = "Normal DCA"
-        risk = "Moderate"
-    elif volatility > 30:
-        stance = "Elevated caution"
-        risk = "High"
-    else:
-        stance = "Normal DCA"
-        risk = "Moderate"
-
-    # Title
-    title = f"{regime} Conditions"
-    
-    # Summary
-    if is_etf:
-        summary = f"For {ticker}, the market regime is currently {regime.lower()}. "
-        if regime in ["Strong Uptrend", "Bullish"]:
-            summary += "Long-term trend conditions remain constructive for gradual accumulation."
-        elif regime == "Overheated":
-            summary += "Momentum is positive, but price is beginning to look stretched compared to historical trading ranges."
-        else:
-            summary += "Conditions suggest a balanced approach, favoring patience or steady accumulation."
-    else:
-        summary = f"For {ticker}, the market regime is currently {regime.lower()}. "
-        if volatility > 30:
-            summary += "Elevated volatility increases short-term risk, suggesting a more cautious approach."
-        elif regime == "Overheated":
-            summary += "Momentum remains strong, though elevated volatility increases short-term risk."
-        else:
-            summary += "Recent price action suggests a period of consolidation, which may favor gradual accumulation."
-
-    return {
-        "title": title,
-        "summary": summary,
-        "risk_level": risk,
-        "stance": stance,
-        "confidence_text": f"Confidence is {confidence.lower()} based on current indicator alignment."
-    }
-
 # ─── Cached Loaders ────────────────────────────────────────────────────────────
 @st.cache_data(show_spinner=False)
 def load_stock_data(sym, start, end):
@@ -434,213 +295,6 @@ def generate_statistical_forecast(series_vals, series_idx, horizon=14):
     except Exception as e:
         return pd.DataFrame(), str(e)
 
-# ─── Signal Engines ────────────────────────────────────────────────────────────
-def _quick_load(sym, days=300):
-    end   = datetime.date.today()
-    start = end - datetime.timedelta(days=days)
-    return load_stock_data(sym, start, end)
-
-def etf_signal(sym):
-    df, err = _quick_load(sym)
-    if err or df.empty:
-        return "DCA", "Data unavailable.", None, None
-    
-    macro = get_macro_overlay()
-    close   = df['Close'].squeeze().astype(float)
-    price   = float(close.iloc[-1])
-    chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
-    score   = 0
-    reasons = []
-
-    rsi_s = ta.rsi(close, length=14)
-    rsi   = float(rsi_s.iloc[-1]) if rsi_s is not None and not rsi_s.empty else 50.0
-    if rsi > 73:
-        score += 3; reasons.append("Momentum looks stretched.")
-    elif rsi < 40:
-        score -= 2; reasons.append("Momentum appears oversold.")
-
-    sma200 = ta.sma(close, length=min(200,len(close)-1))
-    if sma200 is not None and not sma200.empty:
-        s200 = float(sma200.iloc[-1])
-        prem = (price - s200) / s200 * 100
-        if prem > 10:
-            score += 3; reasons.append("Trading well above long-term averages.")
-        elif prem < 0:
-            score -= 4; reasons.append("Trading below long-term averages.")
-
-    bb = ta.bbands(close, length=20, std=2)
-    if bb is not None and not bb.empty:
-        bbu = float(bb[[c for c in bb.columns if c.startswith('BBU')][0]].iloc[-1])
-        bbl = float(bb[[c for c in bb.columns if c.startswith('BBL')][0]].iloc[-1])
-        if price >= bbu * 0.98:
-            score += 2; reasons.append("Testing upper volatility limits.")
-        elif price <= bbl * 1.03:
-            score -= 3; reasons.append("Testing lower volatility support.")
-
-    sig = "WAIT" if score >= 5 else ("BUY" if score <= -3 else "DCA")
-    
-    # Macro Adjustment
-    if macro['regime'] == "Risk-Off":
-        if sig == "BUY": sig = "DCA"
-        elif sig == "DCA": sig = "WAIT"
-        
-    return sig, _format_reasons(reasons), price, chg_pct
-
-def stock_signal(sym):
-    df, err = _quick_load(sym)
-    if err or df.empty:
-        return "HOLD", "Data unavailable.", None, None
-    
-    macro = get_macro_overlay()
-    close   = df['Close'].squeeze().astype(float)
-    price   = float(close.iloc[-1])
-    chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
-
-    bb    = ta.bbands(close, length=20, std=2)
-    sma50 = ta.sma(close, length=min(50,len(close)-1))
-    rsi_s = ta.rsi(close, length=14)
-
-    bbl = bbu = sma50_val = rsi_val = None
-    rsi_3d = []
-
-    if bb is not None and not bb.empty:
-        bbl = float(bb[[c for c in bb.columns if c.startswith('BBL')][0]].iloc[-1])
-        bbu = float(bb[[c for c in bb.columns if c.startswith('BBU')][0]].iloc[-1])
-    if sma50 is not None and not sma50.empty:
-        sma50_val = float(sma50.iloc[-1])
-    if rsi_s is not None and len(rsi_s) >= 3:
-        rsi_val = float(rsi_s.iloc[-1])
-        rsi_3d  = list(rsi_s.iloc[-3:].values)
-
-    sell_reasons = []
-    if rsi_val and rsi_3d and all(r > 78 for r in rsi_3d):
-        sell_reasons.append("Momentum looks exhausted.")
-    if bbu and price > bbu * 1.08:
-        sell_reasons.append("Price looks stretched relative to volatility.")
-    if sma50_val and price > sma50_val * 1.25:
-        sell_reasons.append("Trading well above the 50-day trend.")
-    if sell_reasons:
-        return "SELL", _format_reasons(sell_reasons), price, chg_pct
-
-    buy_reasons = []
-    if bbl and price <= bbl * 1.015:
-        buy_reasons.append("Finding support near lower volatility bands.")
-    if sma50_val and price <= sma50_val:
-        buy_reasons.append("Trading below the 50-day trend.")
-    if buy_reasons:
-        return "BUY", _format_reasons(buy_reasons), price, chg_pct
-
-    # Macro Adjustment
-    if macro['regime'] == "Risk-Off":
-        return "HOLD", "Macro conditions suggest caution.", price, chg_pct
-
-    return "HOLD", "Momentum remains steady without extreme conditions.", price, chg_pct
-
-# ─── Portfolio Card Renderer ──────────────────────────────────────────────────
-def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
-    s         = SIG_STYLES.get(sig, SIG_STYLES["HOLD"])
-    
-    # Get Regime Data
-    df, _ = _quick_load(sym)
-    regime, _, conf, _, meta = calculate_market_regime(df)
-    regime_color = meta.get("color", "#94a3b8")
-    
-    saved    = st.session_state["pnl_data"].get(sym, {})
-    shares   = saved.get("shares", 0.0)
-    cost_avg = saved.get("cost",   0.0)
-    
-    # Price color logic: Green if price > cost_avg, Red if price < cost_avg
-    price_color = "#FFFFFF" # Default
-    if cost_avg > 0 and price:
-        price_color = "#10b981" if price > cost_avg else "#ef4444"
-    
-    price_str = f'<span style="color:{price_color};">${price:,.2f}</span>' if price is not None else "—"
-    
-    # Daily change color logic: Green if >= 0, Red if < 0
-    chg_color = "#10b981" if (chg_pct or 0) >= 0 else "#ef4444"
-    arrow     = "▲" if (chg_pct or 0) >= 0 else "▼"
-    chg_html  = (f'<span style="color:{chg_color};font-size:0.75rem;">'
-                 f'{arrow} {abs(chg_pct):.2f}%</span>') if chg_pct is not None else ""
-
-    pnl_html = ""
-    if shares > 0 and cost_avg > 0 and price:
-        unrealized  = shares * price - shares * cost_avg
-        unreal_pct  = unrealized / (shares * cost_avg) * 100
-        # P&L color logic: Green for positive, Red for negative
-        u_color     = "#10b981" if unrealized >= 0 else "#ef4444"
-        sign        = "+" if unrealized >= 0 else ""
-        pnl_html = (
-            f'<div style="font-size:0.75rem;margin-top:auto;padding-top:8px;'
-            f'border-top:1px solid rgba(255,255,255,0.05);color:#94A3B8;">'
-            f'{shares:g} sh @ ${cost_avg:,.2f} &nbsp; <span style="color:{u_color};font-weight:600;">'
-            f'{sign}${unrealized:,.0f} ({sign}{unreal_pct:.1f}%)</span></div>'
-        )
-
-    # Improved reason text handling with wrapping
-    reason_text = reason if len(reason) < 80 else (reason[:77] + '...')
-
-    inner = f"""<div style="display:flex;justify-content:space-between;align-items:flex-start;">
-    <div>
-        <span style="font-size:1rem;font-weight:700;color:#F8FAFC;">{sym}</span>
-        {_type_badge(is_etf)}
-        <div style="font-size:0.85rem;color:#94A3B8;margin-top:2px;">{price_str} &nbsp;{chg_html}</div>
-    </div>
-    <div>{_pill(sig)}</div>
-</div>
-<div style="font-size:0.80rem;color:#CBD5E1;margin-top:10px;line-height:1.3;font-weight:500;flex-grow:1;overflow:hidden;white-space:normal;word-wrap:break-word;">{reason_text}</div>
-<div style="margin-top:8px;"><span class="regime-badge" style="background:{regime_color}20;color:{regime_color};border:1px solid {regime_color}40;">{regime}</span><span style="font-size:0.7rem;color:#94a3b8;">{conf} Conf</span></div>
-{pnl_html}"""
-    return _card_wrap(inner, sig)
-
-# ─── Sidebar ──────────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.image("https://img.icons8.com/fluent/96/000000/line-chart.png", width=50)
-    st.markdown("### **Navigation**")
-    ticker = st.text_input("🔍 Analyze Ticker", value="SCHG").upper().strip()
-
-    today        = datetime.date.today()
-    one_year_ago = today - datetime.timedelta(days=365)
-    start_date   = st.date_input("Start Date", value=one_year_ago)
-    end_date     = st.date_input("End Date",   value=today)
-
-    st.markdown("---")
-    st.markdown("### 📊 **Indicators**")
-    show_ema  = st.checkbox("Short-term EMA", value=False)
-    ema_period = st.number_input("EMA Period",  min_value=2, max_value=200, value=20, disabled=not show_ema)
-    show_sma  = st.checkbox("Long-term SMA",   value=False)
-    sma_period = st.number_input("SMA Period",  min_value=2, max_value=500, value=50, disabled=not show_sma)
-    show_rsi_indicator = st.checkbox("RSI",    value=False)
-    rsi_period = st.number_input("RSI Period",  min_value=2, max_value=100, value=14, disabled=not show_rsi_indicator)
-
-    st.markdown("---")
-    st.markdown("### 🔮 **Forecast**")
-    show_forecast    = st.checkbox("Enable 14-Day Forecast", value=False)
-
-    if ticker:
-        st.markdown("---")
-        st.markdown("### 📅 **Earnings**")
-        earnings_date, earn_err = fetch_earnings_date(ticker)
-        if earn_err: st.caption(f"⚠️ {earn_err}")
-        elif earnings_date:
-            days_away = _days_until(earnings_date)
-            if days_away >= 0:
-                urg = "#ef4444" if days_away<=7 else ("#fbbf24" if days_away<=21 else "#34d399")
-                st.markdown(
-                    f'<div style="background:rgba(30,41,59,0.5);border:1px solid rgba(71,85,105,0.3);'
-                    f'border-radius:8px;padding:12px;text-align:center;">'
-                    f'<div style="color:#94a3b8;font-size:0.7rem;text-transform:uppercase;">Next Earnings</div>'
-                    f'<div style="font-size:1.5rem;font-weight:700;color:{urg};">{"Today" if days_away==0 else f"{days_away} Days"}</div>'
-                    f'<div style="color:#94a3b8;font-size:0.75rem;">{earnings_date.strftime("%b %d, %Y")}</div>'
-                    f'</div>', unsafe_allow_html=True)
-            else: st.caption(f"Last: {earnings_date.strftime('%b %d, %Y')}")
-
-    if ticker:
-        st.markdown("---")
-        st.markdown("### 📰 **News**")
-        news_items, _ = fetch_news(ticker)
-        for item in news_items:
-            st.markdown(f'<div style="font-size:0.8rem;margin-bottom:8px;"><a href="{item["link"]}" target="_blank">{item["title"]}</a></div>', unsafe_allow_html=True)
-
 # ─── Main Header ──────────────────────────────────────────────────────────────
 h1, h2 = st.columns([3,1])
 with h1:
@@ -710,7 +364,7 @@ st.markdown('<p style="color:#94a3b8; margin-bottom:20px;">Core diversified hold
 
 etf_cols = st.columns(4)
 for i, sym in enumerate(PORTFOLIO_ETFS):
-    sig, reason, price, chg_pct = etf_signal(sym)
+    sig, reason, price, chg_pct = analysis_engine.etf_signal(sym)
     with etf_cols[i % 4]:
         st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=True), unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
@@ -722,7 +376,7 @@ st.markdown('<p style="color:#94a3b8; margin-bottom:20px;">Higher volatility and
 
 stock_cols = st.columns(4)
 for i, sym in enumerate(PORTFOLIO_STOCKS):
-    sig, reason, price, chg_pct = stock_signal(sym)
+    sig, reason, price, chg_pct = analysis_engine.stock_signal(sym)
     with stock_cols[i % 4]:
         st.markdown(_render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False), unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
@@ -764,7 +418,7 @@ else:
         with m4: st.metric("Volatility", f"{float(close_series.pct_change().std()*np.sqrt(252)*100):.1f}%")
 
         # ── Layer 1: Market Regime ──────────────────────────────────────────
-        regime, score, conf, expl, meta = calculate_market_regime(df)
+        regime, score, conf, expl, meta = analysis_engine.calculate_market_regime(df)
         regime_color = meta.get("color", "#94a3b8")
         
         st.markdown("### 🧠 Market Regime")
@@ -781,7 +435,7 @@ else:
 
         # ── Layer 2: Investment Summary ───────────────────────────────────────
         st.markdown("### 💡 Investment Summary")
-        summary_data = generate_investment_summary(
+        summary_data = analysis_engine.generate_investment_summary(
             ticker, regime, conf, score, {}, forecast_df, {}, 
             float(close_series.pct_change().std() * np.sqrt(252) * 100), is_etf_ticker
         )

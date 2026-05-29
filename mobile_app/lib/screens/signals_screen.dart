@@ -81,7 +81,6 @@ class _SignalsScreenState extends State<SignalsScreen> {
                       ),
                       child: Text(info.signal, style: TextStyle(color: _getSignalColor(info.signal), fontWeight: FontWeight.bold)),
                     ),
-                    // Future: Add onTap to navigate to a DetailScreen with charts
                   ),
                 );
               },
