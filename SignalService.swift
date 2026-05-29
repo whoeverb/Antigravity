@@ -2,7 +2,7 @@ import Foundation
 
 class SignalService: ObservableObject {
     // REPLACE THIS URL WITH YOUR ACTUAL GITHUB RAW URL
-    private let GITHUB_RAW_URL = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/signals.json"
+    private let GITHUB_RAW_URL = "https://raw.githubusercontent.com/whoeverb/Antigravity/main/signals.json"
     
     @Published var data: SignalResponse?
     @Published var isLoading = false
