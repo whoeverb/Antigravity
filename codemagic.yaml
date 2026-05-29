@@ -41,7 +41,7 @@ workflows:
       - name: Pack IPA and Stage to Codemagic Output Directory
         script: |
           cd mobile_app
-          zip -r $CM_BUILD_DIR/fire_tracker.ipa Payload
+          zip -r $CM_BUILD_DIR/market_projection.ipa Payload
 
     artifacts:
       - "*.ipa"
