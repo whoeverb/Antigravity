@@ -10,24 +10,5 @@ class SignalService: ObservableObject {
     
     @MainActor
     func fetchSignals() async {
-        isLoading = true
-        errorMessage = nil
-        
-        guard let url = URL(string: GITHUB_RAW_URL) else {
-            errorMessage = "Invalid URL"
-            isLoading = false
-            return
-        }
-        
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            self.data = try decoder.decode(SignalResponse.self, from: data)
-        } catch {
-            errorMessage = "Failed to load signals: \(error.localizedDescription)"
-        }
-        
-        isLoading = false
-    }
-}
+        // Prevent redundant calls if already loading
+        guard

@@ -4,6 +4,12 @@ struct SignalResponse: Codable {
     let generatedAt: String
     let signals: [String: SignalData]
     let topCandidates: [Candidate]
+
+    enum CodingKeys: String, CodingKey {
+        case generatedAt = "generated_at"
+        case signals
+        case topCandidates = "top_candidates"
+    }
 }
 
 struct SignalData: Codable {
@@ -14,6 +20,11 @@ struct SignalData: Codable {
     let regime: String
     let confidence: String
     let reasons: String
+
+    enum CodingKeys: String, CodingKey {
+        case type, signal, price, regime, confidence, reasons
+        case changePct = "change_pct"
+    }
 }
 
 struct Candidate: Codable, Identifiable {
