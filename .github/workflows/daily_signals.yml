@@ -5,6 +5,9 @@ on:
     - cron: '0 12 * * *' # Runs at 12:00 UTC every day
   workflow_dispatch:      # Allows manual triggering
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   generate-signals:
     runs-on: ubuntu-latest
