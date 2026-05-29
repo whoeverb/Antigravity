@@ -147,7 +147,7 @@ def etf_signal(sym, macro):
         "reasons": ", ".join(reasons) if reasons else "Steady"
     }
 
-def stock_signal(sym, macro):
+def stock_signal(sym, macro, cost_basis=None):
     df, err = _quick_load(sym)
     if err or df.empty: 
         return {"signal": "HOLD", "price": 0.0, "change_pct": 0.0, "regime": "Neutral", "confidence": "Low", "reasons": "Data unavailable."}
@@ -156,6 +156,16 @@ def stock_signal(sym, macro):
     close = df['Close'].squeeze().astype(float)
     price = float(close.iloc[-1])
     chg_pct = float((close.iloc[-1]-close.iloc[-2])/close.iloc[-2]*100) if len(close)>1 else 0.0
+
+    reasons = []
+    
+    # Tax-loss harvesting logic
+    if cost_basis and cost_basis > 0:
+        loss_pct = (price - cost_basis) / cost_basis * 100
+        if loss_pct <= -20:
+            return {"signal": "SELL", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": f"Tax-loss harvest: down {loss_pct:.0f}% from cost basis. Consider reinvesting in ETF."}
+        elif -20 < loss_pct <= -10:
+            reasons.append(f"Approaching tax-loss threshold: down {loss_pct:.0f}%")
 
     bb = ta.bbands(close, length=20, std=2)
     sma50 = ta.sma(close, length=min(50,len(close)-1))
@@ -172,15 +182,15 @@ def stock_signal(sym, macro):
     if rsi_val and rsi_val > 78: sell_reasons.append("Momentum exhausted")
     if bbu and price > bbu * 1.08: sell_reasons.append("Stretched volatility")
     if sell_reasons: 
-        return {"signal": "SELL", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(sell_reasons)}
+        return {"signal": "SELL", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(sell_reasons + reasons)}
 
     buy_reasons = []
     if bbl and price <= bbl * 1.015: buy_reasons.append("Support found")
     if sma50_val and price <= sma50_val: buy_reasons.append("Below 50d trend")
     if buy_reasons: 
-        return {"signal": "BUY", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(buy_reasons)}
+        return {"signal": "BUY", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(buy_reasons + reasons)}
 
     if macro['regime'] == "Risk-Off": 
-        return {"signal": "HOLD", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": "Macro caution"}
+        return {"signal": "HOLD", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": "Macro caution" + (", " + ", ".join(reasons) if reasons else "")}
     
-    return {"signal": "HOLD", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": "Steady"}
+    return {"signal": "HOLD", "price": round(price, 2), "change_pct": round(chg_pct, 2), "regime": regime, "confidence": conf, "reasons": ", ".join(reasons) if reasons else "Steady"}

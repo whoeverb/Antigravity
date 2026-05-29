@@ -3,6 +3,7 @@ import datetime
 import math
 import analysis_engine
 import sys
+import os
 
 PORTFOLIO_ETFS   = ["SCHG", "SMH", "QTUM", "VOO", "XT", "SCHD", "VUG"]
 PORTFOLIO_STOCKS = ["AMZN", "ORCL", "LRN", "NBIS", "NVDA", "ASML", "TSM", "EVGO", "BRK.B", "BSM", "INTA", "KO", "SNDL", "TEM"]
@@ -18,10 +19,25 @@ def clean_data(obj):
         return [clean_data(v) for v in obj]
     return obj
 
+def load_cost_basis():
+    path = os.path.join(os.path.dirname(__file__), "pnl_data.json")
+    if not os.path.exists(path):
+        print("Warning: pnl_data.json not found.")
+        return {}
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+            # Map ticker -> cost
+            return {k: v.get("cost", 0.0) for k, v in data.items()}
+    except Exception as e:
+        print(f"Warning: Failed to parse pnl_data.json: {e}")
+        return {}
+
 def run():
     try:
         print("Starting signal generation...")
         macro = analysis_engine.get_macro_overlay()
+        cost_basis_data = load_cost_basis()
         results = {}
         
         # Process ETFs
@@ -31,7 +47,8 @@ def run():
 
         # Process Stocks
         for sym in PORTFOLIO_STOCKS:
-            data = analysis_engine.stock_signal(sym, macro)
+            basis = cost_basis_data.get(sym)
+            data = analysis_engine.stock_signal(sym, macro, cost_basis=basis)
             results[sym] = {"type": "STOCK", **data}
 
         # Generate Top Candidates
