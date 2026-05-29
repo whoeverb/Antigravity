@@ -1,5 +1,4 @@
 yfinance
-pandas
 pandas-ta-classic
 numpy
 streamlit
