@@ -307,7 +307,7 @@ def _render_portfolio_card(sym, sig, reason, price, chg_pct, is_etf=False):
     s         = SIG_STYLES.get(sig, SIG_STYLES["HOLD"])
     
     # Get Regime Data
-    df, _ = _quick_load(sym)
+    df, _ = analysis_engine._quick_load(sym)
     regime, _, conf, _, meta = analysis_engine.calculate_market_regime(df)
     regime_color = meta.get("color", "#94a3b8")
     
