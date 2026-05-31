@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-30 13:44:10.000594",
+  "generated_at": "2026-05-31 13:49:30.630662",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -8,8 +8,8 @@
       "change_pct": 0.37,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry, Momentum stretched, Above long-term avg",
-      "forecast_30d": 45.99
+      "reasons": "Momentum stretched, Above long-term avg",
+      "forecast_30d": null
     },
     "SMH": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Momentum stretched, Above long-term avg",
-      "forecast_30d": 155.26
+      "forecast_30d": 154.99
     },
     "VOO": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
-      "forecast_30d": 27.66
+      "forecast_30d": 26.9
     },
     "VUG": {
       "type": "ETF",
@@ -68,8 +68,8 @@
       "change_pct": 0.43,
       "regime": "Strong Uptrend",
       "confidence": "High",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry, Momentum stretched, Above long-term avg",
-      "forecast_30d": 123.06
+      "reasons": "Momentum stretched, Above long-term avg",
+      "forecast_30d": null
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 239.73
+      "forecast_30d": 239.96
     },
     "LRN": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1698.26
+      "forecast_30d": 1698.58
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 436.02
+      "forecast_30d": 435.26
     },
     "EVGO": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 82.36
+      "forecast_30d": 82.33
     },
     "SNDL": {
       "type": "STOCK",
