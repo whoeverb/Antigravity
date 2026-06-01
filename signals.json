@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-01 16:03:13.907575",
+  "generated_at": "2026-06-01 20:23:51.903269",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Momentum stretched, Above long-term avg",
-      "forecast_30d": 155.58
+      "forecast_30d": 155.37
     },
     "VOO": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
-      "forecast_30d": 26.98
+      "forecast_30d": 27.8
     },
     "VUG": {
       "type": "ETF",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1703.24
+      "forecast_30d": 1705.67
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 439.45
+      "forecast_30d": 437.11
     },
     "EVGO": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 82.82
+      "forecast_30d": 82.55
     },
     "SNDL": {
       "type": "STOCK",
