@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04 18:24:56.434399",
+  "generated_at": "2026-06-04 20:18:42.617976",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -28,8 +28,8 @@
       "change_pct": -0.59,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
-      "reasons": "Momentum stretched, Above long-term avg",
-      "forecast_30d": 172.07
+      "reasons": "Below 30d forecast trend \u2014 potential dip entry, Momentum stretched, Above long-term avg",
+      "forecast_30d": 225.76
     },
     "VOO": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
-      "forecast_30d": 27.56
+      "forecast_30d": 27.25
     },
     "VUG": {
       "type": "ETF",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 14.1
+      "forecast_30d": 14.11
     },
     "INTA": {
       "type": "STOCK",
@@ -189,16 +189,16 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Support found",
-      "forecast_30d": 79.64
+      "forecast_30d": 79.65
     },
     "SNDL": {
       "type": "STOCK",
-      "signal": "SELL",
+      "signal": "BUY",
       "price": 1.41,
       "change_pct": -2.08,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Tax-loss harvest: down -92% from cost basis. Consider reinvesting in ETF.",
+      "reasons": "Below 50d trend",
       "forecast_30d": 1.47
     },
     "TEM": {
@@ -224,17 +224,17 @@
       "signal": "BUY"
     },
     {
+      "ticker": "SNDL",
+      "score": 3,
+      "signal": "BUY"
+    },
+    {
       "ticker": "SCHG",
       "score": 2,
       "signal": "DCA"
     },
     {
       "ticker": "VOO",
-      "score": 2,
-      "signal": "DCA"
-    },
-    {
-      "ticker": "XT",
       "score": 2,
       "signal": "DCA"
     }
