@@ -9,7 +9,7 @@
   "AMZN": {"shares": 100.0, "cost": 130.0},
   "ORCL": {"shares": 50.68, "cost": 176.84},
   "LRN": {"shares": 42.0, "cost": 120.2},
-  "NBIS": {"shares": 50.0, "cost": 39.51},
+  "NBIS": {"shares": 32.0, "cost": 39.51},
   "NVDA": {"shares": 100.033, "cost": 134.3},
   "ASML": {"shares": 6.0, "cost": 1483.9},
   "TSM": {"shares": 10.0, "cost": 400.9},
@@ -18,6 +18,6 @@
   "BSM": {"shares": 588.481, "cost": 15.13},
   "INTA": {"shares": 15.0, "cost": 69.24},
   "KO": {"shares": 8.429, "cost": 62.05},
-  "SNDL": {"shares": 743.0, "cost": 17.09},
-  "TEM": {"shares": 50.0, "cost": 68.4}
+  "TEM": {"shares": 50.0, "cost": 68.4},
+  "GOOG": {"shares": 28.0, "cost": 363.00}
 }
