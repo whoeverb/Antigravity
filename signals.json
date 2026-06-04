@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-04 15:52:56.155419",
+  "generated_at": "2026-06-04 18:24:56.434399",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -28,8 +28,8 @@
       "change_pct": -0.59,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry, Momentum stretched, Above long-term avg",
-      "forecast_30d": 225.76
+      "reasons": "Momentum stretched, Above long-term avg",
+      "forecast_30d": 172.07
     },
     "VOO": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
-      "forecast_30d": 27.09
+      "forecast_30d": 27.56
     },
     "VUG": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 254.41
+      "forecast_30d": 253.6
     },
     "LRN": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 14.11
+      "forecast_30d": 14.1
     },
     "INTA": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Support found",
-      "forecast_30d": 79.65
+      "forecast_30d": 79.64
     },
     "SNDL": {
       "type": "STOCK",
