@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-05 15:32:03.019394",
+  "generated_at": "2026-06-05 18:01:35.668144",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Momentum stretched, Above long-term avg",
-      "forecast_30d": 165.19
+      "forecast_30d": null
     },
     "VOO": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Steady",
-      "forecast_30d": 244.47
+      "forecast_30d": 242.84
     },
     "LRN": {
       "type": "STOCK",
