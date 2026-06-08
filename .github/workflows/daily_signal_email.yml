@@ -1,24 +1,24 @@
 # .github/workflows/daily_signal_email.yml
 #
-# Runs the full Antigravity pipeline twice daily on weekdays,
-# then emails the HTML signal report.
-#
 # GitHub Actions → Settings → Secrets and variables → Actions:
 #
-#   VARIABLES tab (not sensitive — visible in logs):
-#     GMAIL_USER       your Gmail address, e.g. you@gmail.com
-#     RECIPIENT_EMAIL  destination address (can be same as GMAIL_USER)
+#   VARIABLES tab:
+#     GMAIL_USER       your Gmail address
+#     RECIPIENT_EMAIL  destination address
 #
-#   SECRETS tab (sensitive — never shown in logs):
+#   SECRETS tab:
 #     GMAIL_APP_PASS   16-char App Password from myaccount.google.com/apppasswords
 
 name: Daily Signal Email
 
 on:
   schedule:
-    - cron: "0 14 * * 1-5"    # Mon–Fri 8:00 AM ET (13:00 UTC — covers EST & EDT)
-    - cron: "0 18 * * 1-5"    # Mon–Fri 12:00 PM ET (17:00 UTC)
-  workflow_dispatch:            # Allow manual trigger from GitHub UI
+    - cron: "0 13 * * 1-5"    # Mon–Fri 8:00 AM ET
+    - cron: "0 17 * * 1-5"    # Mon–Fri 12:00 PM ET
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   run-and-email:
@@ -26,33 +26,25 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      # ── 1. Checkout ──────────────────────────────────────────────────────────
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
-      # ── 2. Python setup ──────────────────────────────────────────────────────
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.6.0
         with:
           python-version: "3.11"
           cache: "pip"
 
-      # ── 3. Install dependencies ───────────────────────────────────────────
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install yfinance pandas pandas_ta_classic numpy prophet
 
-      # ── 4. Run the signal engine (produces signals.json) ──────────────────
-      # Adjust this step if your entry point is different
-      # (e.g. signal_engine/main.py or streamlit_app/run.py)
       - name: Generate signals
-        run: |
-          python signal_engine/main.py
+        run: python signal_engine/main.py
         env:
           PYTHONUNBUFFERED: "1"
 
-      # ── 5. Send the HTML email ─────────────────────────────────────────────
       - name: Send signal email
         run: python send_email.py signals.json
         env:
@@ -60,10 +52,9 @@ jobs:
           GMAIL_APP_PASS:  ${{ secrets.GMAIL_APP_PASS }}
           RECIPIENT_EMAIL: ${{ vars.RECIPIENT_EMAIL }}
 
-      # ── 6. (Optional) Upload signals.json as an artifact for debugging ─────
       - name: Upload signals artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: signals-${{ github.run_id }}
           path: signals.json
