@@ -30,7 +30,7 @@ def send_signal_email(signals_path: str = "signals.json") -> None:
 
     # ── Build the message ─────────────────────────────────────────────────────
     today = datetime.now().strftime("%b %d, %Y")
-    subject = f"🚀 Antigravity Signal Report — {today}"
+    subject = f"🚀 Signal Report — {today}"
 
     html_body = render_html(signals_path)
 
@@ -41,7 +41,7 @@ def send_signal_email(signals_path: str = "signals.json") -> None:
 
     # Plain-text fallback
     plain = (
-        f"Antigravity Signal Report — {today}\n\n"
+        f"Signal Report — {today}\n\n"
         "Open this email in an HTML-capable client to view the full report.\n"
         f"Signals file: {signals_path}"
     )
