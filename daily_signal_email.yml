@@ -1,18 +1,23 @@
 # .github/workflows/daily_signal_email.yml
 #
-# Runs the full Antigravity pipeline daily at 4:35 PM ET (20:35 UTC)
-# — just after US market close — then emails the HTML report.
+# Runs the full Antigravity pipeline twice daily on weekdays,
+# then emails the HTML signal report.
 #
-# Required GitHub Secrets (Settings → Secrets → Actions):
-#   GMAIL_USER       your Gmail address
-#   GMAIL_APP_PASS   16-char App Password from myaccount.google.com/apppasswords
-#   RECIPIENT_EMAIL  destination address (optional; defaults to GMAIL_USER)
+# GitHub Actions → Settings → Secrets and variables → Actions:
+#
+#   VARIABLES tab (not sensitive — visible in logs):
+#     GMAIL_USER       your Gmail address, e.g. you@gmail.com
+#     RECIPIENT_EMAIL  destination address (can be same as GMAIL_USER)
+#
+#   SECRETS tab (sensitive — never shown in logs):
+#     GMAIL_APP_PASS   16-char App Password from myaccount.google.com/apppasswords
 
 name: Daily Signal Email
 
 on:
   schedule:
-    - cron: "35 20 * * 1-5"   # Mon–Fri 4:35 PM ET (weekdays only)
+    - cron: "0 14 * * 1-5"    # Mon–Fri 8:00 AM ET (13:00 UTC — covers EST & EDT)
+    - cron: "0 18 * * 1-5"    # Mon–Fri 12:00 PM ET (17:00 UTC)
   workflow_dispatch:            # Allow manual trigger from GitHub UI
 
 jobs:
@@ -51,9 +56,9 @@ jobs:
       - name: Send signal email
         run: python send_email.py signals.json
         env:
-          GMAIL_USER:      ${{ secrets.GMAIL_USER }}
+          GMAIL_USER:      ${{ vars.GMAIL_USER }}
           GMAIL_APP_PASS:  ${{ secrets.GMAIL_APP_PASS }}
-          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+          RECIPIENT_EMAIL: ${{ vars.RECIPIENT_EMAIL }}
 
       # ── 6. (Optional) Upload signals.json as an artifact for debugging ─────
       - name: Upload signals artifact
