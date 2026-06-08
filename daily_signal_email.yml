@@ -1,0 +1,65 @@
+# .github/workflows/daily_signal_email.yml
+#
+# Runs the full Antigravity pipeline daily at 4:35 PM ET (20:35 UTC)
+# — just after US market close — then emails the HTML report.
+#
+# Required GitHub Secrets (Settings → Secrets → Actions):
+#   GMAIL_USER       your Gmail address
+#   GMAIL_APP_PASS   16-char App Password from myaccount.google.com/apppasswords
+#   RECIPIENT_EMAIL  destination address (optional; defaults to GMAIL_USER)
+
+name: Daily Signal Email
+
+on:
+  schedule:
+    - cron: "35 20 * * 1-5"   # Mon–Fri 4:35 PM ET (weekdays only)
+  workflow_dispatch:            # Allow manual trigger from GitHub UI
+
+jobs:
+  run-and-email:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # ── 2. Python setup ──────────────────────────────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      # ── 3. Install dependencies ───────────────────────────────────────────
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install yfinance pandas pandas_ta_classic numpy prophet
+
+      # ── 4. Run the signal engine (produces signals.json) ──────────────────
+      # Adjust this step if your entry point is different
+      # (e.g. signal_engine/main.py or streamlit_app/run.py)
+      - name: Generate signals
+        run: |
+          python signal_engine/main.py
+        env:
+          PYTHONUNBUFFERED: "1"
+
+      # ── 5. Send the HTML email ─────────────────────────────────────────────
+      - name: Send signal email
+        run: python send_email.py signals.json
+        env:
+          GMAIL_USER:      ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS:  ${{ secrets.GMAIL_APP_PASS }}
+          RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+
+      # ── 6. (Optional) Upload signals.json as an artifact for debugging ─────
+      - name: Upload signals artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: signals-${{ github.run_id }}
+          path: signals.json
+          retention-days: 7
