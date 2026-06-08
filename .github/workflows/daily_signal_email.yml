@@ -16,8 +16,8 @@ name: Daily Signal Email
 
 on:
   schedule:
-    - cron: "35 12 * * 1-5"   # Mon–Fri 8:35 AM ET (5 min after signal gen)
-    - cron: "5 16 * * 1-5"    # Mon–Fri 12:05 PM ET (5 min after signal gen)
+    - cron: "17 12 * * 1-5"   # Mon–Fri 8:35 AM ET (5 min after signal gen)
+    - cron: "37 15 * * 1-5"    # Mon–Fri 12:05 PM ET (5 min after signal gen)
   workflow_dispatch:
 
 env:
