@@ -1,5 +1,8 @@
 # .github/workflows/daily_signal_email.yml
 #
+# Checks out the repo (which has the latest signals.json committed by the
+# signal generation workflow) and emails the HTML report.
+#
 # GitHub Actions → Settings → Secrets and variables → Actions:
 #
 #   VARIABLES tab:
@@ -13,17 +16,17 @@ name: Daily Signal Email
 
 on:
   schedule:
-    - cron: "0 13 * * 1-5"    # Mon–Fri 8:00 AM ET
-    - cron: "0 17 * * 1-5"    # Mon–Fri 12:00 PM ET
+    - cron: "35 12 * * 1-5"   # Mon–Fri 8:35 AM ET (5 min after signal gen)
+    - cron: "5 16 * * 1-5"    # Mon–Fri 12:05 PM ET (5 min after signal gen)
   workflow_dispatch:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  run-and-email:
+  send-email:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repo
@@ -38,12 +41,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install yfinance pandas pandas_ta_classic numpy prophet
-
-      - name: Generate signals
-        run: python signal_engine/main.py
-        env:
-          PYTHONUNBUFFERED: "1"
+          pip install -r signal_engine/requirements.txt
 
       - name: Send signal email
         run: python send_email.py signals.json
@@ -51,11 +49,3 @@ jobs:
           GMAIL_USER:      ${{ vars.GMAIL_USER }}
           GMAIL_APP_PASS:  ${{ secrets.GMAIL_APP_PASS }}
           RECIPIENT_EMAIL: ${{ vars.RECIPIENT_EMAIL }}
-
-      - name: Upload signals artifact
-        if: always()
-        uses: actions/upload-artifact@v4.6.2
-        with:
-          name: signals-${{ github.run_id }}
-          path: signals.json
-          retention-days: 7
