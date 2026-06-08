@@ -1,13 +1,13 @@
 """
 email_renderer.py
 Renders signals.json into a styled HTML email body.
+Mobile-responsive via media queries (works in iOS Mail and Gmail app).
 """
 
 import json
 from datetime import datetime
 
 
-# ── Signal colour map ──────────────────────────────────────────────────────────
 SIGNAL_STYLE = {
     "BUY":  {"bg": "#d4edda", "color": "#155724", "border": "#28a745"},
     "DCA":  {"bg": "#cce5ff", "color": "#004085", "border": "#007bff"},
@@ -17,13 +17,13 @@ SIGNAL_STYLE = {
 }
 
 REGIME_EMOJI = {
-    "Overheated":         "🔥",
-    "Strong Uptrend":     "📈",
-    "Bullish":            "🟢",
-    "Neutral":            "⚪",
-    "Pullback":           "🔻",
+    "Overheated":           "🔥",
+    "Strong Uptrend":       "📈",
+    "Bullish":              "🟢",
+    "Neutral":              "⚪",
+    "Pullback":             "🔻",
     "Oversold Opportunity": "💎",
-    "Risk-Off":           "⚠️",
+    "Risk-Off":             "⚠️",
 }
 
 CONFIDENCE_BADGE = {
@@ -54,7 +54,57 @@ def _price_change(chg: float) -> str:
     return f'<span style="color:{color};font-weight:600;">{arrow} {abs(chg):.2f}%</span>'
 
 
-def _section_header(title: str) -> str:
+def _mobile_card(ticker: str, data: dict) -> str:
+    """Renders a single ticker as a stacked card for mobile."""
+    signal  = data.get("signal", "HOLD")
+    price   = data.get("price", 0.0)
+    chg     = data.get("change_pct", 0.0)
+    regime  = data.get("regime", "Neutral")
+    conf    = data.get("confidence", "Low")
+    reasons = data.get("reasons", "—")
+    forecast = data.get("forecast_30d")
+    s = SIGNAL_STYLE.get(signal, SIGNAL_STYLE["HOLD"])
+    regime_icon = REGIME_EMOJI.get(regime, "")
+
+    forecast_html = ""
+    if forecast and price:
+        diff_pct = (forecast - price) / price * 100
+        fc_color = "#28a745" if diff_pct > 0 else "#dc3545"
+        fc_arrow = "▲" if diff_pct > 0 else "▼"
+        forecast_html = (
+            f'<div style="margin-top:6px;font-size:12px;color:#6c757d;">'
+            f'30d Forecast: <span style="color:{fc_color};font-weight:600;">'
+            f'{fc_arrow} ${forecast:,.2f} ({diff_pct:+.1f}%)</span></div>'
+        )
+
+    return f"""
+<div class="mobile-card" style="display:none;background:#fff;border-radius:10px;
+     margin:8px 0;padding:14px 16px;border-left:4px solid {s["border"]};
+     box-shadow:0 1px 4px rgba(0,0,0,.07);">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+    <span style="font-size:18px;font-weight:800;color:#0d1117;">{ticker}</span>
+    {_signal_badge(signal)}
+  </div>
+  <div style="display:flex;gap:16px;margin-bottom:8px;">
+    <div>
+      <div style="font-size:15px;font-weight:700;">${price:,.2f}</div>
+      <div style="font-size:12px;">{_price_change(chg)}</div>
+    </div>
+    <div>
+      <div style="font-size:12px;color:#6c757d;">Regime</div>
+      <div style="font-size:13px;font-weight:600;">{regime_icon} {regime}</div>
+    </div>
+    <div>
+      <div style="font-size:12px;color:#6c757d;">Confidence</div>
+      <div style="font-size:13px;">{_conf_badge(conf)}</div>
+    </div>
+  </div>
+  <div style="font-size:12px;color:#495057;line-height:1.5;">{reasons}</div>
+  {forecast_html}
+</div>"""
+
+
+def _desktop_section_header(title: str) -> str:
     return (
         f'<tr><td colspan="7" style="padding:18px 0 6px 0;">'
         f'<div style="font-size:13px;font-weight:700;letter-spacing:1px;'
@@ -63,18 +113,16 @@ def _section_header(title: str) -> str:
     )
 
 
-def _row(ticker: str, data: dict, zebra: bool) -> str:
-    bg = "#f8f9fa" if zebra else "#ffffff"
-    signal = data.get("signal", "HOLD")
-    price = data.get("price", 0.0)
-    chg = data.get("change_pct", 0.0)
-    regime = data.get("regime", "Neutral")
-    conf = data.get("confidence", "Low")
+def _desktop_row(ticker: str, data: dict, zebra: bool) -> str:
+    bg      = "#f8f9fa" if zebra else "#ffffff"
+    signal  = data.get("signal", "HOLD")
+    price   = data.get("price", 0.0)
+    chg     = data.get("change_pct", 0.0)
+    regime  = data.get("regime", "Neutral")
+    conf    = data.get("confidence", "Low")
     reasons = data.get("reasons", "—")
     forecast = data.get("forecast_30d")
-    forecast_str = f"${forecast:,.2f}" if forecast else "—"
-
-    # Forecast directional hint
+    forecast_str = "—"
     if forecast and price:
         diff_pct = (forecast - price) / price * 100
         fc_color = "#28a745" if diff_pct > 0 else "#dc3545"
@@ -83,9 +131,7 @@ def _row(ticker: str, data: dict, zebra: bool) -> str:
             f'<span style="color:{fc_color};">{fc_arrow} ${forecast:,.2f} '
             f'({diff_pct:+.1f}%)</span>'
         )
-
     regime_icon = REGIME_EMOJI.get(regime, "")
-
     cell = 'style="padding:10px 8px;vertical-align:middle;font-size:13px;border-bottom:1px solid #e9ecef;"'
     return f"""
     <tr style="background:{bg};">
@@ -103,22 +149,20 @@ def render_html(signals_path: str = "signals.json") -> str:
     with open(signals_path) as f:
         data = json.load(f)
 
-    generated_at = data.get("generated_at", str(datetime.now()))
-    signals = data.get("signals", {})
-    top_candidates = data.get("top_candidates", [])
+    generated_at    = data.get("generated_at", str(datetime.now()))
+    signals         = data.get("signals", {})
+    top_candidates  = data.get("top_candidates", [])
 
-    # Split ETFs and Stocks
     etfs   = {k: v for k, v in signals.items() if v.get("type") == "ETF"}
     stocks = {k: v for k, v in signals.items() if v.get("type") == "STOCK"}
 
-    # Summary counts
     counts = {"BUY": 0, "DCA": 0, "HOLD": 0, "WAIT": 0, "SELL": 0}
     for v in signals.values():
         sig = v.get("signal", "HOLD")
         if sig in counts:
             counts[sig] += 1
 
-    # ── Top candidates block ───────────────────────────────────────────────────
+    # ── Top candidates ─────────────────────────────────────────────────────────
     top_html = ""
     for c in top_candidates:
         s = SIGNAL_STYLE.get(c["signal"], SIGNAL_STYLE["HOLD"])
@@ -126,7 +170,8 @@ def render_html(signals_path: str = "signals.json") -> str:
             f'<div style="display:inline-block;margin:4px 6px;padding:8px 16px;'
             f'border-radius:6px;background:{s["bg"]};color:{s["color"]};'
             f'border:1px solid {s["border"]};font-weight:700;font-size:14px;">'
-            f'{c["ticker"]} &nbsp;<span style="font-weight:400;font-size:12px;">({c["signal"]})</span></div>'
+            f'{c["ticker"]} &nbsp;<span style="font-weight:400;font-size:12px;">'
+            f'({c["signal"]})</span></div>'
         )
 
     # ── Summary pills ──────────────────────────────────────────────────────────
@@ -142,15 +187,18 @@ def render_html(signals_path: str = "signals.json") -> str:
             f'{sig} &nbsp;<strong>{count}</strong></span>'
         )
 
-    # ── Table rows ─────────────────────────────────────────────────────────────
-    table_rows = ""
-    table_rows += _section_header("ETFs")
+    # ── Desktop table rows ─────────────────────────────────────────────────────
+    desktop_rows = ""
+    desktop_rows += _desktop_section_header("ETFs")
     for i, (ticker, info) in enumerate(etfs.items()):
-        table_rows += _row(ticker, info, i % 2 == 1)
-
-    table_rows += _section_header("Stocks")
+        desktop_rows += _desktop_row(ticker, info, i % 2 == 1)
+    desktop_rows += _desktop_section_header("Stocks")
     for i, (ticker, info) in enumerate(stocks.items()):
-        table_rows += _row(ticker, info, i % 2 == 1)
+        desktop_rows += _desktop_row(ticker, info, i % 2 == 1)
+
+    # ── Mobile cards ───────────────────────────────────────────────────────────
+    mobile_etf_cards = "".join(_mobile_card(t, v) for t, v in etfs.items())
+    mobile_stock_cards = "".join(_mobile_card(t, v) for t, v in stocks.items())
 
     th = ('style="padding:10px 8px;text-align:left;font-size:12px;font-weight:700;'
           'letter-spacing:.5px;text-transform:uppercase;color:#6c757d;'
@@ -162,38 +210,58 @@ def render_html(signals_path: str = "signals.json") -> str:
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Antigravity Signal Report</title>
+<style>
+  /* ── Mobile: show cards, hide table ── */
+  @media only screen and (max-width: 620px) {{
+    .desktop-table {{ display: none !important; }}
+    .mobile-card   {{ display: block !important; }}
+    .mobile-section-label {{ display: block !important; }}
+    .email-wrapper {{ padding: 8px 4px !important; }}
+    .header-pad    {{ padding: 20px 16px !important; }}
+    .section-pad   {{ padding: 12px 16px !important; }}
+    .header-title  {{ font-size: 18px !important; }}
+  }}
+  .mobile-section-label {{
+    display: none;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #6c757d;
+    padding: 12px 0 4px 0;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 4px;
+  }}
+</style>
 </head>
-<body style="margin:0;padding:0;background:#f0f2f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+<body style="margin:0;padding:0;background:#f0f2f5;
+     font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
 
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f2f5;">
-<tr><td align="center" style="padding:24px 12px;">
+<tr><td align="center" class="email-wrapper" style="padding:24px 12px;">
 
-  <!-- Card wrapper -->
   <table width="700" cellpadding="0" cellspacing="0"
          style="max-width:700px;width:100%;background:#ffffff;border-radius:12px;
                 box-shadow:0 2px 12px rgba(0,0,0,.08);overflow:hidden;">
 
     <!-- Header -->
     <tr>
-      <td style="background:linear-gradient(135deg,#0d1117 0%,#1a2332 100%);
-                 padding:28px 32px;">
-        <div style="display:flex;align-items:center;">
-          <div>
-            <div style="color:#ffffff;font-size:22px;font-weight:800;
-                        letter-spacing:-0.5px;">
-              🚀 Antigravity Signal Report
-            </div>
-            <div style="color:#8b949e;font-size:13px;margin-top:4px;">
-              Generated {generated_at} &nbsp;·&nbsp; {len(signals)} positions tracked
-            </div>
-          </div>
+      <td class="header-pad"
+          style="background:linear-gradient(135deg,#0d1117 0%,#1a2332 100%);padding:28px 32px;">
+        <div class="header-title"
+             style="color:#ffffff;font-size:22px;font-weight:800;letter-spacing:-0.5px;">
+          🚀 Antigravity Signal Report
+        </div>
+        <div style="color:#8b949e;font-size:13px;margin-top:4px;">
+          Generated {generated_at} &nbsp;·&nbsp; {len(signals)} positions tracked
         </div>
       </td>
     </tr>
 
     <!-- Summary bar -->
     <tr>
-      <td style="padding:16px 32px;background:#f8f9fa;border-bottom:1px solid #e9ecef;">
+      <td class="section-pad"
+          style="padding:16px 32px;background:#f8f9fa;border-bottom:1px solid #e9ecef;">
         <div style="font-size:12px;font-weight:700;text-transform:uppercase;
                     letter-spacing:.8px;color:#6c757d;margin-bottom:8px;">
           Signal Summary
@@ -204,7 +272,8 @@ def render_html(signals_path: str = "signals.json") -> str:
 
     <!-- Top candidates -->
     <tr>
-      <td style="padding:20px 32px;border-bottom:1px solid #e9ecef;">
+      <td class="section-pad"
+          style="padding:20px 32px;border-bottom:1px solid #e9ecef;">
         <div style="font-size:12px;font-weight:700;text-transform:uppercase;
                     letter-spacing:.8px;color:#6c757d;margin-bottom:10px;">
           ⭐ Top Candidates
@@ -213,9 +282,9 @@ def render_html(signals_path: str = "signals.json") -> str:
       </td>
     </tr>
 
-    <!-- Main table -->
-    <tr>
-      <td style="padding:8px 32px 24px 32px;overflow-x:auto;">
+    <!-- Desktop table (hidden on mobile) -->
+    <tr class="desktop-table">
+      <td class="section-pad" style="padding:8px 32px 24px 32px;">
         <table width="100%" cellpadding="0" cellspacing="0"
                style="border-collapse:collapse;min-width:580px;">
           <thead>
@@ -229,16 +298,25 @@ def render_html(signals_path: str = "signals.json") -> str:
               <th {th}>30d Forecast</th>
             </tr>
           </thead>
-          <tbody>
-            {table_rows}
-          </tbody>
+          <tbody>{desktop_rows}</tbody>
         </table>
+      </td>
+    </tr>
+
+    <!-- Mobile cards (hidden on desktop) -->
+    <tr>
+      <td class="section-pad" style="padding:8px 16px 16px 16px;">
+        <div class="mobile-section-label">ETFs</div>
+        {mobile_etf_cards}
+        <div class="mobile-section-label" style="margin-top:8px;">Stocks</div>
+        {mobile_stock_cards}
       </td>
     </tr>
 
     <!-- Footer -->
     <tr>
-      <td style="padding:16px 32px;background:#f8f9fa;border-top:1px solid #e9ecef;
+      <td class="section-pad"
+          style="padding:16px 32px;background:#f8f9fa;border-top:1px solid #e9ecef;
                  border-radius:0 0 12px 12px;">
         <div style="font-size:11px;color:#adb5bd;text-align:center;line-height:1.6;">
           ⚠️ This report is for informational purposes only and does not constitute
