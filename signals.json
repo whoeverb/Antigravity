@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-06-09 13:49:05.308878",
+  "generated_at": "2026-06-09 17:32:25.461078",
   "signals": {
     "SCHG": {
       "type": "ETF",
-      "signal": "DCA",
+      "signal": "WAIT",
       "price": 33.8,
       "change_pct": 0.15,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 45.28
+      "reasons": "Steady",
+      "forecast_30d": 34.74
     },
     "SMH": {
       "type": "ETF",
-      "signal": "DCA",
+      "signal": "WAIT",
       "price": 598.16,
       "change_pct": 5.0,
       "regime": "Strong Uptrend",
@@ -23,27 +23,27 @@
     },
     "QTUM": {
       "type": "ETF",
-      "signal": "DCA",
+      "signal": "WAIT",
       "price": 157.74,
       "change_pct": 3.25,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
-      "forecast_30d": 144.34
+      "forecast_30d": 144.24
     },
     "VOO": {
       "type": "ETF",
-      "signal": "DCA",
+      "signal": "WAIT",
       "price": 679.68,
       "change_pct": 0.25,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": 697.01
+      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
+      "forecast_30d": 786.39
     },
     "XT": {
       "type": "ETF",
-      "signal": "DCA",
+      "signal": "WAIT",
       "price": 80.71,
       "change_pct": 0.56,
       "regime": "Strong Uptrend",
@@ -53,23 +53,23 @@
     },
     "SCHD": {
       "type": "ETF",
-      "signal": "DCA",
+      "signal": "WAIT",
       "price": 32.29,
       "change_pct": -0.03,
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
-      "forecast_30d": 39.29
+      "forecast_30d": 38.6
     },
     "VUG": {
       "type": "ETF",
-      "signal": "DCA",
+      "signal": "WAIT",
       "price": 86.21,
       "change_pct": 0.33,
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 88.2
+      "forecast_30d": 88.13
     },
     "AMZN": {
       "type": "STOCK",
@@ -88,8 +88,8 @@
       "change_pct": -0.87,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 161.71
+      "reasons": "Macro caution, Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 161.72
     },
     "LRN": {
       "type": "STOCK",
@@ -98,7 +98,7 @@
       "change_pct": -3.28,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -20%",
+      "reasons": "Macro caution, Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -20%",
       "forecast_30d": 65.64
     },
     "NBIS": {
@@ -108,7 +108,7 @@
       "change_pct": -4.31,
       "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Steady",
+      "reasons": "Macro caution",
       "forecast_30d": 212.27
     },
     "NVDA": {
@@ -118,7 +118,7 @@
       "change_pct": 1.73,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
-      "reasons": "Steady",
+      "reasons": "Macro caution",
       "forecast_30d": null
     },
     "ASML": {
@@ -128,8 +128,8 @@
       "change_pct": 6.54,
       "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1973.26
+      "reasons": "Macro caution, Below 30d forecast trend \u2014 potential dip entry",
+      "forecast_30d": 1978.4
     },
     "TSM": {
       "type": "STOCK",
@@ -138,8 +138,8 @@
       "change_pct": 2.8,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
-      "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 403.71
+      "reasons": "Macro caution, Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 404.45
     },
     "EVGO": {
       "type": "STOCK",
@@ -168,7 +168,7 @@
       "change_pct": -0.29,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
+      "reasons": "Macro caution",
       "forecast_30d": null
     },
     "INTA": {
@@ -188,8 +188,8 @@
       "change_pct": 0.08,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": 80.43
+      "reasons": "Macro caution",
+      "forecast_30d": 80.34
     },
     "GOOG": {
       "type": "STOCK",
@@ -198,8 +198,8 @@
       "change_pct": -1.2,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 412.09
+      "reasons": "Macro caution, Below 30d forecast trend \u2014 potential dip entry",
+      "forecast_30d": 412.31
     },
     "TEM": {
       "type": "STOCK",
@@ -219,24 +219,24 @@
       "signal": "BUY"
     },
     {
-      "ticker": "SCHG",
-      "score": 2,
-      "signal": "DCA"
+      "ticker": "ORCL",
+      "score": 1,
+      "signal": "HOLD"
     },
     {
-      "ticker": "SMH",
-      "score": 2,
-      "signal": "DCA"
+      "ticker": "LRN",
+      "score": 1,
+      "signal": "HOLD"
     },
     {
-      "ticker": "QTUM",
-      "score": 2,
-      "signal": "DCA"
+      "ticker": "NBIS",
+      "score": 1,
+      "signal": "HOLD"
     },
     {
-      "ticker": "VOO",
-      "score": 2,
-      "signal": "DCA"
+      "ticker": "NVDA",
+      "score": 1,
+      "signal": "HOLD"
     }
   ]
 }
