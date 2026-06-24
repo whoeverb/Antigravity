@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-24 10:28:47.835878",
+  "generated_at": "2026-06-24 12:32:19.312303",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -38,8 +38,8 @@
       "change_pct": -1.42,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": null
+      "reasons": "Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 419.37
     },
     "XT": {
       "type": "ETF",
@@ -49,7 +49,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above long-term avg",
-      "forecast_30d": 81.15
+      "forecast_30d": 81.18
     },
     "SCHD": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 24.1
+      "forecast_30d": 25.79
     },
     "VUG": {
       "type": "ETF",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 486.33
+      "forecast_30d": 498.27
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 14.38
+      "forecast_30d": 14.81
     },
     "INTA": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 76.38
+      "forecast_30d": 76.31
     },
     "GOOG": {
       "type": "STOCK",
