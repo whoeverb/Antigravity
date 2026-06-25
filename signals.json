@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25 10:21:45.004352",
+  "generated_at": "2026-06-25 12:36:32.694925",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -28,8 +28,8 @@
       "change_pct": -1.95,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
-      "reasons": "Above long-term avg",
-      "forecast_30d": 153.58
+      "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
+      "forecast_30d": 132.71
     },
     "VOO": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 25.25
+      "forecast_30d": 25.78
     },
     "VUG": {
       "type": "ETF",
@@ -88,8 +88,8 @@
       "change_pct": -4.62,
       "regime": "Pullback",
       "confidence": "Low",
-      "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -11%",
-      "forecast_30d": 217.08
+      "reasons": "Below 50d trend, Approaching tax-loss threshold: down -11%",
+      "forecast_30d": null
     },
     "LRN": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 479.69
+      "forecast_30d": 479.41
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 14.78
+      "forecast_30d": 14.63
     },
     "INTA": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 78.64
+      "forecast_30d": 78.62
     },
     "GOOG": {
       "type": "STOCK",
