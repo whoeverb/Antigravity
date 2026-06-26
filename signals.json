@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-26 10:29:11.139450",
+  "generated_at": "2026-06-26 12:29:39.020014",
   "signals": {
     "SCHG": {
       "type": "ETF",
-      "signal": "WAIT",
+      "signal": "DCA",
       "price": 32.62,
       "change_pct": -1.09,
       "regime": "Bullish",
@@ -13,7 +13,7 @@
     },
     "SMH": {
       "type": "ETF",
-      "signal": "WAIT",
+      "signal": "DCA",
       "price": 636.88,
       "change_pct": 2.9,
       "regime": "Strong Uptrend",
@@ -23,7 +23,7 @@
     },
     "QTUM": {
       "type": "ETF",
-      "signal": "WAIT",
+      "signal": "DCA",
       "price": 160.24,
       "change_pct": 0.22,
       "regime": "Strong Uptrend",
@@ -33,7 +33,7 @@
     },
     "VOO": {
       "type": "ETF",
-      "signal": "WAIT",
+      "signal": "DCA",
       "price": 675.71,
       "change_pct": 0.0,
       "regime": "Bullish",
@@ -43,7 +43,7 @@
     },
     "XT": {
       "type": "ETF",
-      "signal": "WAIT",
+      "signal": "DCA",
       "price": 80.78,
       "change_pct": 0.96,
       "regime": "Strong Uptrend",
@@ -53,17 +53,17 @@
     },
     "SCHD": {
       "type": "ETF",
-      "signal": "WAIT",
+      "signal": "DCA",
       "price": 31.96,
       "change_pct": 0.76,
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
-      "forecast_30d": 29.92
+      "forecast_30d": 24.52
     },
     "VUG": {
       "type": "ETF",
-      "signal": "WAIT",
+      "signal": "DCA",
       "price": 83.05,
       "change_pct": -0.93,
       "regime": "Bullish",
@@ -108,7 +108,7 @@
       "change_pct": -1.17,
       "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Macro caution",
+      "reasons": "Steady",
       "forecast_30d": null
     },
     "NVDA": {
@@ -128,7 +128,7 @@
       "change_pct": 4.45,
       "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Macro caution, Above 30d forecast trend \u2014 overextended",
+      "reasons": "Above 30d forecast trend \u2014 overextended",
       "forecast_30d": 1551.55
     },
     "TSM": {
@@ -138,8 +138,8 @@
       "change_pct": -1.32,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
-      "reasons": "Macro caution",
-      "forecast_30d": null
+      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
+      "forecast_30d": 460.96
     },
     "EVGO": {
       "type": "STOCK",
@@ -168,8 +168,8 @@
       "change_pct": -1.48,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Macro caution",
-      "forecast_30d": 14.38
+      "reasons": "Steady",
+      "forecast_30d": 14.37
     },
     "INTA": {
       "type": "STOCK",
@@ -188,7 +188,7 @@
       "change_pct": -0.22,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Macro caution",
+      "reasons": "Steady",
       "forecast_30d": null
     },
     "GOOG": {
@@ -199,7 +199,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Support found, Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 297.42
+      "forecast_30d": 308.4
     },
     "TEM": {
       "type": "STOCK",
@@ -208,7 +208,7 @@
       "change_pct": 5.64,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Macro caution, Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -20%",
+      "reasons": "Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -20%",
       "forecast_30d": 63.5
     }
   },
@@ -234,9 +234,9 @@
       "signal": "BUY"
     },
     {
-      "ticker": "NBIS",
-      "score": 1,
-      "signal": "HOLD"
+      "ticker": "SCHG",
+      "score": 2,
+      "signal": "DCA"
     }
   ]
 }
