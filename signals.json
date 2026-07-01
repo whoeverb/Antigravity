@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-01 10:49:21.917095",
+  "generated_at": "2026-07-01 13:16:03.081363",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -9,7 +9,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 33.17
+      "forecast_30d": 33.12
     },
     "SMH": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 678.93
+      "forecast_30d": 679.37
     },
     "XT": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 31.31
+      "forecast_30d": 31.32
     },
     "VUG": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 84.06
+      "forecast_30d": 84.17
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Pullback",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -17%",
-      "forecast_30d": 183.37
+      "forecast_30d": 184.39
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 181.37
+      "forecast_30d": 183.26
     },
     "ASML": {
       "type": "STOCK",
@@ -128,8 +128,8 @@
       "change_pct": 5.65,
       "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 2105.06
+      "reasons": "Steady",
+      "forecast_30d": null
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Overheated",
       "confidence": "Low",
       "reasons": "Steady",
-      "forecast_30d": 475.23
+      "forecast_30d": 475.28
     },
     "EVGO": {
       "type": "STOCK",
