@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-02 10:15:23.701262",
+  "generated_at": "2026-07-02 12:25:35.330857",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -9,7 +9,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 41.59
+      "forecast_30d": 43.01
     },
     "SMH": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 774.06
+      "forecast_30d": 820.93
     },
     "XT": {
       "type": "ETF",
@@ -49,7 +49,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above long-term avg",
-      "forecast_30d": 78.72
+      "forecast_30d": 78.78
     },
     "SCHD": {
       "type": "ETF",
@@ -58,8 +58,8 @@
       "change_pct": 0.44,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 29.76
+      "reasons": "Steady",
+      "forecast_30d": 31.41
     },
     "VUG": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 112.58
+      "forecast_30d": 116.97
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Pullback",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -19%",
-      "forecast_30d": 177.91
+      "forecast_30d": 178.06
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 187.18
+      "forecast_30d": 187.82
     },
     "ASML": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Steady",
-      "forecast_30d": 442.96
+      "forecast_30d": 443.04
     },
     "EVGO": {
       "type": "STOCK",
