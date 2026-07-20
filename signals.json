@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20 10:20:59.081810",
+  "generated_at": "2026-07-20 12:29:34.309814",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Oversold, Above long-term avg",
-      "forecast_30d": 162.25
+      "forecast_30d": 162.19
     },
     "VOO": {
       "type": "ETF",
@@ -49,7 +49,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 85.44
+      "forecast_30d": 85.39
     },
     "SCHD": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 34.17
+      "forecast_30d": 34.12
     },
     "VUG": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Pullback",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -29% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 86.38
+      "forecast_30d": 85.64
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 230.74
+      "forecast_30d": 230.24
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1944.99
+      "forecast_30d": 1945.77
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 446.3
+      "forecast_30d": 446.29
     },
     "EVGO": {
       "type": "STOCK",
