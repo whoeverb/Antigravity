@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-21 09:39:02.457837",
+  "generated_at": "2026-07-21 12:05:43.804715",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Pullback",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -31% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 108.44
+      "forecast_30d": 106.14
     },
     "LRN": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1840.86
+      "forecast_30d": 1840.61
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 467.16
+      "forecast_30d": 467.1
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 15.7
+      "forecast_30d": 15.73
     },
     "INTA": {
       "type": "STOCK",
