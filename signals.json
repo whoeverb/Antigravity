@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22 09:38:34.073060",
+  "generated_at": "2026-07-22 12:10:11.542316",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
-      "forecast_30d": 173.69
+      "forecast_30d": 173.67
     },
     "VOO": {
       "type": "ETF",
@@ -49,7 +49,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
-      "forecast_30d": 74.9
+      "forecast_30d": 73.57
     },
     "SCHD": {
       "type": "ETF",
@@ -58,8 +58,8 @@
       "change_pct": 0.21,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
-      "forecast_30d": 31.04
+      "reasons": "Above long-term avg",
+      "forecast_30d": 33.48
     },
     "VUG": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Pullback",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -28% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 115.26
+      "forecast_30d": 115.27
     },
     "LRN": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Steady",
-      "forecast_30d": 1880.81
+      "forecast_30d": 1881.58
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 512.68
+      "forecast_30d": 516.71
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 15.52
+      "forecast_30d": 15.51
     },
     "INTA": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 59.06
+      "forecast_30d": 74.99
     },
     "GOOG": {
       "type": "STOCK",
