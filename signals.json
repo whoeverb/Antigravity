@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-27 10:51:07.655919",
+  "generated_at": "2026-07-27 13:24:18.138316",
   "signals": {
     "SCHG": {
       "type": "ETF",
       "signal": "DCA",
-      "price": null,
-      "change_pct": null,
-      "regime": "Neutral",
-      "confidence": "Medium",
+      "price": 33.46,
+      "change_pct": 0.18,
+      "regime": "Bullish",
+      "confidence": "Low",
       "reasons": "Steady",
       "forecast_30d": null
     },
@@ -89,7 +89,7 @@
       "regime": "Pullback",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -35% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 130.15
+      "forecast_30d": 128.33
     },
     "LRN": {
       "type": "STOCK",
@@ -103,22 +103,22 @@
     },
     "NBIS": {
       "type": "STOCK",
-      "signal": "HOLD",
-      "price": null,
-      "change_pct": null,
-      "regime": "Neutral",
+      "signal": "BUY",
+      "price": 187.77,
+      "change_pct": -15.02,
+      "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Steady",
-      "forecast_30d": 226.95
+      "reasons": "Below 50d trend",
+      "forecast_30d": 192.53
     },
     "NVDA": {
       "type": "STOCK",
-      "signal": "HOLD",
-      "price": null,
-      "change_pct": null,
-      "regime": "Neutral",
-      "confidence": "Low",
-      "reasons": "Steady",
+      "signal": "BUY",
+      "price": 206.84,
+      "change_pct": -0.92,
+      "regime": "Strong Uptrend",
+      "confidence": "Medium",
+      "reasons": "Below 50d trend",
       "forecast_30d": null
     },
     "ASML": {
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Steady",
-      "forecast_30d": 1795.78
+      "forecast_30d": 1795.54
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 488.74
+      "forecast_30d": 485.21
     },
     "EVGO": {
       "type": "STOCK",
@@ -164,9 +164,9 @@
     "BSM": {
       "type": "STOCK",
       "signal": "HOLD",
-      "price": null,
-      "change_pct": null,
-      "regime": "Neutral",
+      "price": 14.65,
+      "change_pct": 0.62,
+      "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
       "forecast_30d": null
@@ -184,21 +184,21 @@
     "KO": {
       "type": "STOCK",
       "signal": "HOLD",
-      "price": null,
-      "change_pct": null,
-      "regime": "Neutral",
+      "price": 82.25,
+      "change_pct": 1.33,
+      "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 84.67
+      "forecast_30d": null
     },
     "GOOG": {
       "type": "STOCK",
-      "signal": "HOLD",
-      "price": null,
-      "change_pct": null,
+      "signal": "BUY",
+      "price": 319.09,
+      "change_pct": 0.24,
       "regime": "Neutral",
       "confidence": "Medium",
-      "reasons": "Steady",
+      "reasons": "Support found, Below 50d trend, Approaching tax-loss threshold: down -12%",
       "forecast_30d": null
     },
     "TEM": {
@@ -219,24 +219,24 @@
       "signal": "BUY"
     },
     {
+      "ticker": "NBIS",
+      "score": 3,
+      "signal": "BUY"
+    },
+    {
+      "ticker": "NVDA",
+      "score": 3,
+      "signal": "BUY"
+    },
+    {
       "ticker": "TSM",
       "score": 3,
       "signal": "BUY"
     },
     {
-      "ticker": "SCHG",
-      "score": 2,
-      "signal": "DCA"
-    },
-    {
-      "ticker": "SMH",
-      "score": 2,
-      "signal": "DCA"
-    },
-    {
-      "ticker": "QTUM",
-      "score": 2,
-      "signal": "DCA"
+      "ticker": "GOOG",
+      "score": 3,
+      "signal": "BUY"
     }
   ]
 }
