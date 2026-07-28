@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-28 09:47:08.646089",
+  "generated_at": "2026-07-28 12:18:52.765796",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -38,8 +38,8 @@
       "change_pct": 0.03,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": null
+      "reasons": "Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 435.28
     },
     "XT": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Pullback",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -32% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 115.62
+      "forecast_30d": 114.59
     },
     "LRN": {
       "type": "STOCK",
@@ -138,8 +138,8 @@
       "change_pct": -1.07,
       "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Below 50d trend",
-      "forecast_30d": 385.28
+      "reasons": "Below 50d trend, Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 298.82
     },
     "EVGO": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Support found, Below 50d trend, Approaching tax-loss threshold: down -10%",
-      "forecast_30d": 314.9
+      "forecast_30d": 317.78
     },
     "TEM": {
       "type": "STOCK",
