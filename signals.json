@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-30 09:41:05.743425",
+  "generated_at": "2026-07-30 12:10:05.269841",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -9,7 +9,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 31.06
+      "forecast_30d": 31.08
     },
     "SMH": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended, Oversold",
-      "forecast_30d": 636.64
+      "forecast_30d": 637.31
     },
     "XT": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
-      "forecast_30d": 44.12
+      "forecast_30d": 41.42
     },
     "VUG": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended, Oversold",
-      "forecast_30d": 74.74
+      "forecast_30d": 75.03
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Pullback",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -33% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 110.23
+      "forecast_30d": 111.05
     },
     "LRN": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 1260.61
+      "forecast_30d": 1306.95
     },
     "TSM": {
       "type": "STOCK",
@@ -168,8 +168,8 @@
       "change_pct": -0.14,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": null
+      "reasons": "Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 8.94
     },
     "INTA": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 362.37
+      "forecast_30d": 363.29
     },
     "TEM": {
       "type": "STOCK",
