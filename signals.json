@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-05 09:48:10.736964",
+  "generated_at": "2026-08-05 12:22:00.627294",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -48,8 +48,8 @@
       "change_pct": 2.24,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
-      "forecast_30d": 105.57
+      "reasons": "Above long-term avg",
+      "forecast_30d": null
     },
     "SCHD": {
       "type": "ETF",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1894.32
+      "forecast_30d": 2047.8
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend",
-      "forecast_30d": 414.36
+      "forecast_30d": 414.35
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 13.83
+      "forecast_30d": 13.89
     },
     "INTA": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 91.55
+      "forecast_30d": 91.48
     },
     "GOOG": {
       "type": "STOCK",
