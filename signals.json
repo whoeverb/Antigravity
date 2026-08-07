@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-07 08:21:01.519388",
+  "generated_at": "2026-08-07 11:14:06.843902",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend",
-      "forecast_30d": 406.5
+      "forecast_30d": 406.81
     },
     "EVGO": {
       "type": "STOCK",
@@ -168,8 +168,8 @@
       "change_pct": -0.35,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": null
+      "reasons": "Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 12.88
     },
     "INTA": {
       "type": "STOCK",
