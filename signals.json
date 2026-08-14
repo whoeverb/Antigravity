@@ -1,155 +1,155 @@
 {
-  "generated_at": "2026-08-13 11:14:51.067325",
+  "generated_at": "2026-08-14 08:37:17.397056",
   "signals": {
     "SCHG": {
       "type": "ETF",
       "signal": "DCA",
-      "price": 35.61,
-      "change_pct": -0.11,
+      "price": 35.94,
+      "change_pct": 0.93,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": 35.38
+      "reasons": "Above long-term avg",
+      "forecast_30d": null
     },
     "SMH": {
       "type": "ETF",
       "signal": "DCA",
-      "price": 584.83,
-      "change_pct": 2.08,
+      "price": 589.12,
+      "change_pct": 0.73,
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
-      "forecast_30d": 664.81
+      "forecast_30d": 667.31
     },
     "QTUM": {
       "type": "ETF",
       "signal": "DCA",
-      "price": 156.85,
-      "change_pct": 2.52,
+      "price": 158.24,
+      "change_pct": 0.89,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 154.29
+      "forecast_30d": 158.62
     },
     "VOO": {
       "type": "ETF",
       "signal": "DCA",
-      "price": 710.17,
-      "change_pct": 0.25,
+      "price": 714.95,
+      "change_pct": 0.67,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Above long-term avg",
-      "forecast_30d": 716.95
+      "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
+      "forecast_30d": 520.52
     },
     "XT": {
       "type": "ETF",
       "signal": "DCA",
-      "price": 83.2,
-      "change_pct": 0.28,
+      "price": 83.74,
+      "change_pct": 0.65,
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above long-term avg",
-      "forecast_30d": 82.4
+      "forecast_30d": 83.04
     },
     "SCHD": {
       "type": "ETF",
       "signal": "DCA",
-      "price": 34.26,
-      "change_pct": -0.03,
+      "price": 34.43,
+      "change_pct": 0.5,
       "regime": "Strong Uptrend",
       "confidence": "High",
-      "reasons": "Above long-term avg",
-      "forecast_30d": 34.5
+      "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
+      "forecast_30d": 41.14
     },
     "VUG": {
       "type": "ETF",
       "signal": "DCA",
-      "price": 88.87,
-      "change_pct": 0.32,
+      "price": 89.73,
+      "change_pct": 0.97,
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 89.08
+      "forecast_30d": null
     },
     "AMZN": {
       "type": "STOCK",
       "signal": "HOLD",
-      "price": 267.28,
-      "change_pct": -1.83,
+      "price": 265.13,
+      "change_pct": -0.8,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 246.07
+      "forecast_30d": 238.72
     },
     "ORCL": {
       "type": "STOCK",
-      "signal": "BUY",
-      "price": 153.28,
-      "change_pct": 5.36,
+      "signal": "HOLD",
+      "price": 156.22,
+      "change_pct": 1.92,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Below 50d trend, Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -13%",
-      "forecast_30d": 93.04
+      "reasons": "Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -12%",
+      "forecast_30d": 106.7
     },
     "LRN": {
       "type": "STOCK",
       "signal": "SELL",
-      "price": 78.59,
-      "change_pct": -0.63,
-      "regime": "Bullish",
+      "price": 83.67,
+      "change_pct": 6.46,
+      "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Tax-loss harvest: down -35% from cost basis. Consider reinvesting in ETF.",
+      "reasons": "Tax-loss harvest: down -30% from cost basis. Consider reinvesting in ETF.",
       "forecast_30d": null
     },
     "NBIS": {
       "type": "STOCK",
       "signal": "HOLD",
-      "price": 259.2,
-      "change_pct": 34.14,
+      "price": 255.04,
+      "change_pct": -1.6,
       "regime": "Overheated",
       "confidence": "Low",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 347.21
+      "reasons": "Steady",
+      "forecast_30d": null
     },
     "NVDA": {
       "type": "STOCK",
       "signal": "HOLD",
-      "price": 224.09,
-      "change_pct": 3.03,
+      "price": 225.3,
+      "change_pct": 0.54,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 251.71
+      "forecast_30d": 252.16
     },
     "ASML": {
       "type": "STOCK",
       "signal": "HOLD",
-      "price": 1810.07,
-      "change_pct": 0.59,
+      "price": 1847.9,
+      "change_pct": 2.09,
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 2172.68
+      "forecast_30d": 2218.31
     },
     "TSM": {
       "type": "STOCK",
       "signal": "HOLD",
-      "price": 429.15,
-      "change_pct": 1.68,
+      "price": 430.49,
+      "change_pct": 0.31,
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Steady",
-      "forecast_30d": 438.09
+      "forecast_30d": 446.45
     },
     "EVGO": {
       "type": "STOCK",
       "signal": "SELL",
-      "price": 1.58,
-      "change_pct": -1.25,
+      "price": 1.65,
+      "change_pct": 4.43,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Tax-loss harvest: down -63% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 1.01
+      "reasons": "Tax-loss harvest: down -62% from cost basis. Consider reinvesting in ETF.",
+      "forecast_30d": 1.14
     },
     "BRK.B": {
       "type": "STOCK",
@@ -164,28 +164,28 @@
     "BSM": {
       "type": "STOCK",
       "signal": "HOLD",
-      "price": 14.47,
-      "change_pct": 2.05,
+      "price": 14.38,
+      "change_pct": -0.62,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 19.76
+      "reasons": "Steady",
+      "forecast_30d": null
     },
     "INTA": {
       "type": "STOCK",
       "signal": "SELL",
-      "price": 39.53,
-      "change_pct": -0.95,
-      "regime": "Bullish",
+      "price": 41.02,
+      "change_pct": 3.77,
+      "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Tax-loss harvest: down -43% from cost basis. Consider reinvesting in ETF.",
+      "reasons": "Tax-loss harvest: down -41% from cost basis. Consider reinvesting in ETF.",
       "forecast_30d": null
     },
     "KO": {
       "type": "STOCK",
       "signal": "HOLD",
-      "price": 86.71,
-      "change_pct": 0.27,
+      "price": 87.42,
+      "change_pct": 0.82,
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Steady",
@@ -194,8 +194,8 @@
     "GOOG": {
       "type": "STOCK",
       "signal": "BUY",
-      "price": 342.37,
-      "change_pct": -0.18,
+      "price": 343.94,
+      "change_pct": 0.46,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 50d trend",
@@ -204,20 +204,15 @@
     "TEM": {
       "type": "STOCK",
       "signal": "SELL",
-      "price": 54.61,
-      "change_pct": -1.94,
+      "price": 54.29,
+      "change_pct": -0.59,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Tax-loss harvest: down -20% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 41.95
+      "reasons": "Tax-loss harvest: down -21% from cost basis. Consider reinvesting in ETF.",
+      "forecast_30d": 38.83
     }
   },
   "top_candidates": [
-    {
-      "ticker": "ORCL",
-      "score": 3,
-      "signal": "BUY"
-    },
     {
       "ticker": "GOOG",
       "score": 3,
@@ -235,6 +230,11 @@
     },
     {
       "ticker": "QTUM",
+      "score": 2,
+      "signal": "DCA"
+    },
+    {
+      "ticker": "VOO",
       "score": 2,
       "signal": "DCA"
     }
