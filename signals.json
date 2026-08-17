@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-17 07:59:48.978979",
+  "generated_at": "2026-08-17 10:54:03.832273",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 160.79
+      "forecast_30d": 160.49
     },
     "VOO": {
       "type": "ETF",
@@ -38,8 +38,8 @@
       "change_pct": -0.19,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Above long-term avg",
-      "forecast_30d": null
+      "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
+      "forecast_30d": 559.67
     },
     "XT": {
       "type": "ETF",
@@ -49,7 +49,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above long-term avg",
-      "forecast_30d": 82.83
+      "forecast_30d": 82.28
     },
     "SCHD": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
-      "forecast_30d": 43.55
+      "forecast_30d": 45.02
     },
     "VUG": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 50d trend, Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -15%",
-      "forecast_30d": 107.0
+      "forecast_30d": 107.17
     },
     "LRN": {
       "type": "STOCK",
@@ -118,8 +118,8 @@
       "change_pct": -0.06,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 246.67
+      "reasons": "Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 212.65
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 2166.87
+      "forecast_30d": 2174.11
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Steady",
-      "forecast_30d": 448.09
+      "forecast_30d": 448.1
     },
     "EVGO": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 80.55
+      "forecast_30d": 80.83
     },
     "GOOG": {
       "type": "STOCK",
