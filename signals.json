@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-24 08:03:52.119549",
+  "generated_at": "2026-08-24 10:59:29.882282",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 151.13
+      "forecast_30d": 151.41
     },
     "VOO": {
       "type": "ETF",
@@ -49,7 +49,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 82.76
+      "forecast_30d": 82.62
     },
     "SCHD": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -17%",
-      "forecast_30d": 111.09
+      "forecast_30d": 110.55
     },
     "LRN": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 448.76
+      "forecast_30d": 448.69
     },
     "EVGO": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 50d trend",
-      "forecast_30d": 334.6
+      "forecast_30d": 336.43
     },
     "TEM": {
       "type": "STOCK",
