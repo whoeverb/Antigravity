@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-26 07:58:34.202275",
+  "generated_at": "2026-08-26 10:58:02.732804",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
-      "forecast_30d": 157.78
+      "forecast_30d": 157.79
     },
     "VOO": {
       "type": "ETF",
@@ -49,7 +49,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 85.06
+      "forecast_30d": 85.07
     },
     "SCHD": {
       "type": "ETF",
@@ -58,8 +58,8 @@
       "change_pct": -0.28,
       "regime": "Strong Uptrend",
       "confidence": "High",
-      "reasons": "Above long-term avg",
-      "forecast_30d": 36.55
+      "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
+      "forecast_30d": 40.57
     },
     "VUG": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 83.99
+      "forecast_30d": 83.89
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -18%",
-      "forecast_30d": 133.87
+      "forecast_30d": 133.91
     },
     "LRN": {
       "type": "STOCK",
@@ -128,8 +128,8 @@
       "change_pct": 0.23,
       "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 1553.73
+      "reasons": "Below 50d trend",
+      "forecast_30d": null
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 455.41
+      "forecast_30d": 455.44
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 16.05
+      "forecast_30d": 16.04
     },
     "INTA": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 50d trend",
-      "forecast_30d": 359.34
+      "forecast_30d": 359.49
     },
     "TEM": {
       "type": "STOCK",
