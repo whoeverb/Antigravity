@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31 15:05:22.667004",
+  "generated_at": "2026-08-31 17:40:05.495253",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
-      "forecast_30d": 163.68
+      "forecast_30d": 163.61
     },
     "VOO": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 88.28
+      "forecast_30d": 88.19
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -15%",
-      "forecast_30d": 166.97
+      "forecast_30d": 160.54
     },
     "LRN": {
       "type": "STOCK",
@@ -118,8 +118,8 @@
       "change_pct": -4.57,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": 207.33
+      "reasons": "Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 206.74
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend",
-      "forecast_30d": 1635.2
+      "forecast_30d": 1646.66
     },
     "TSM": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 366.14
+      "forecast_30d": 365.81
     },
     "TEM": {
       "type": "STOCK",
