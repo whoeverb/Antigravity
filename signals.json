@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-01 12:34:06.466783",
+  "generated_at": "2026-09-01 15:00:34.199015",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -8,8 +8,8 @@
       "change_pct": -0.56,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 46.4
+      "reasons": "Steady",
+      "forecast_30d": null
     },
     "SMH": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
-      "forecast_30d": 158.21
+      "forecast_30d": 158.1
     },
     "VOO": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 710.59
+      "forecast_30d": 710.58
     },
     "XT": {
       "type": "ETF",
@@ -49,7 +49,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 85.38
+      "forecast_30d": 85.39
     },
     "SCHD": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 118.81
+      "forecast_30d": 121.37
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -16%",
-      "forecast_30d": 134.3
+      "forecast_30d": 138.07
     },
     "LRN": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1804.31
+      "forecast_30d": 1808.23
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 451.88
+      "forecast_30d": 451.93
     },
     "EVGO": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Steady",
-      "forecast_30d": 87.62
+      "forecast_30d": 87.55
     },
     "GOOG": {
       "type": "STOCK",
