@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-04 12:07:45.086186",
+  "generated_at": "2026-09-04 14:26:38.471963",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 147.57
+      "forecast_30d": 147.58
     },
     "VOO": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above 30d forecast trend \u2014 overextended, Above long-term avg",
-      "forecast_30d": 25.62
+      "forecast_30d": 26.29
     },
     "VUG": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -13%",
-      "forecast_30d": 113.03
+      "forecast_30d": 113.04
     },
     "LRN": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend",
-      "forecast_30d": 431.21
+      "forecast_30d": 431.25
     },
     "EVGO": {
       "type": "STOCK",
