@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-09 12:20:05.897697",
+  "generated_at": "2026-09-09 14:41:34.965349",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -49,7 +49,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 80.95
+      "forecast_30d": 80.94
     },
     "SCHD": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 87.45
+      "forecast_30d": null
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 119.1
+      "forecast_30d": 119.11
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 236.55
+      "forecast_30d": 232.65
     },
     "ASML": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 14.19
+      "forecast_30d": 14.2
     },
     "INTA": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Steady",
-      "forecast_30d": 91.12
+      "forecast_30d": 91.1
     },
     "GOOG": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Support found, Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 388.74
+      "forecast_30d": 390.29
     },
     "TEM": {
       "type": "STOCK",
