@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14 14:01:28.023103",
+  "generated_at": "2026-09-14 16:25:07.927788",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 146.55
+      "forecast_30d": 146.38
     },
     "VOO": {
       "type": "ETF",
@@ -48,8 +48,8 @@
       "change_pct": 0.86,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": 77.47
+      "reasons": "Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 52.88
     },
     "SCHD": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Above long-term avg",
-      "forecast_30d": 34.77
+      "forecast_30d": 34.65
     },
     "VUG": {
       "type": "ETF",
@@ -119,7 +119,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 218.27
+      "forecast_30d": 218.26
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 2083.29
+      "forecast_30d": 2083.39
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Steady",
-      "forecast_30d": 431.41
+      "forecast_30d": 431.39
     },
     "EVGO": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 379.41
+      "forecast_30d": 384.62
     },
     "TEM": {
       "type": "STOCK",
