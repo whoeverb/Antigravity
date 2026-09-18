@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-18 12:13:50.909405",
+  "generated_at": "2026-09-18 14:34:31.490096",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 145.77
+      "forecast_30d": 145.33
     },
     "VOO": {
       "type": "ETF",
@@ -38,8 +38,8 @@
       "change_pct": 1.12,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": null
+      "reasons": "Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 431.58
     },
     "XT": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 44.17
+      "forecast_30d": 43.4
     },
     "VUG": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -15%",
-      "forecast_30d": 122.96
+      "forecast_30d": 121.59
     },
     "LRN": {
       "type": "STOCK",
@@ -118,8 +118,8 @@
       "change_pct": 2.54,
       "regime": "Strong Uptrend",
       "confidence": "Medium",
-      "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 202.39
+      "reasons": "Steady",
+      "forecast_30d": 222.74
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1802.23
+      "forecast_30d": 1801.92
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Steady",
-      "forecast_30d": 423.79
+      "forecast_30d": 424.27
     },
     "EVGO": {
       "type": "STOCK",
@@ -168,8 +168,8 @@
       "change_pct": 0.2,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Support found, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 18.93
+      "reasons": "Support found",
+      "forecast_30d": null
     },
     "INTA": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Steady",
-      "forecast_30d": 89.54
+      "forecast_30d": 89.68
     },
     "GOOG": {
       "type": "STOCK",
