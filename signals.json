@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-29 14:04:05.357098",
+  "generated_at": "2026-09-29 16:34:27.973941",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 705.0
+      "forecast_30d": 705.01
     },
     "XT": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended, Oversold",
-      "forecast_30d": 29.95
+      "forecast_30d": 29.19
     },
     "VUG": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -25% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 132.83
+      "forecast_30d": 132.84
     },
     "LRN": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1869.63
+      "forecast_30d": 1869.65
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 509.22
+      "forecast_30d": 503.04
     },
     "EVGO": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Support found",
-      "forecast_30d": 86.53
+      "forecast_30d": 86.42
     },
     "GOOG": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 50d trend",
-      "forecast_30d": 326.18
+      "forecast_30d": 326.56
     },
     "TEM": {
       "type": "STOCK",
