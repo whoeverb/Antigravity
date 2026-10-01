@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-01 14:27:42.031972",
+  "generated_at": "2026-10-01 17:04:55.229073",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -9,7 +9,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 34.52
+      "forecast_30d": 34.51
     },
     "SMH": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 696.83
+      "forecast_30d": 696.82
     },
     "XT": {
       "type": "ETF",
@@ -58,8 +58,8 @@
       "change_pct": -0.97,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Oversold",
-      "forecast_30d": null
+      "reasons": "Above 30d forecast trend \u2014 overextended, Oversold",
+      "forecast_30d": 20.48
     },
     "VUG": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 86.81
+      "forecast_30d": 86.83
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -22% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 127.07
+      "forecast_30d": 127.1
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 219.21
+      "forecast_30d": 219.2
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1922.78
+      "forecast_30d": 1922.62
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 494.79
+      "forecast_30d": 494.29
     },
     "EVGO": {
       "type": "STOCK",
@@ -168,8 +168,8 @@
       "change_pct": 0.07,
       "regime": "Bullish",
       "confidence": "Low",
-      "reasons": "Support found, Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 8.6
+      "reasons": "Support found, Below 50d trend",
+      "forecast_30d": null
     },
     "INTA": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend",
-      "forecast_30d": 85.36
+      "forecast_30d": 85.46
     },
     "GOOG": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 50d trend",
-      "forecast_30d": 333.38
+      "forecast_30d": 333.89
     },
     "TEM": {
       "type": "STOCK",
