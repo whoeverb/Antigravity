@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02 13:51:19.101308",
+  "generated_at": "2026-10-02 16:18:54.033864",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -8,8 +8,8 @@
       "change_pct": 0.19,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Steady",
-      "forecast_30d": 34.61
+      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
+      "forecast_30d": 45.74
     },
     "SMH": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 160.67
+      "forecast_30d": 160.68
     },
     "VOO": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 697.5
+      "forecast_30d": 697.47
     },
     "XT": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 88.07
+      "forecast_30d": 87.28
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -22% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 123.0
+      "forecast_30d": 123.03
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 239.78
+      "forecast_30d": 230.33
     },
     "ASML": {
       "type": "STOCK",
@@ -128,8 +128,8 @@
       "change_pct": -0.18,
       "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Steady",
-      "forecast_30d": 1893.75
+      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
+      "forecast_30d": 1911.4
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 489.85
+      "forecast_30d": 488.72
     },
     "EVGO": {
       "type": "STOCK",
@@ -168,8 +168,8 @@
       "change_pct": 1.12,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 13.69
+      "reasons": "Below 50d trend",
+      "forecast_30d": 13.8
     },
     "INTA": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend",
-      "forecast_30d": 85.73
+      "forecast_30d": 85.36
     },
     "GOOG": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 50d trend",
-      "forecast_30d": 331.84
+      "forecast_30d": 333.13
     },
     "TEM": {
       "type": "STOCK",
