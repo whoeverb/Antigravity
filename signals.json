@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09 14:22:11.635917",
+  "generated_at": "2026-10-09 17:05:40.653675",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 156.64
+      "forecast_30d": 156.65
     },
     "VOO": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 735.1
+      "forecast_30d": 734.42
     },
     "XT": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 37.83
+      "forecast_30d": 38.88
     },
     "VUG": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 93.51
+      "forecast_30d": 93.54
     },
     "AMZN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 240.45
+      "forecast_30d": 240.47
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1933.68
+      "forecast_30d": 1933.53
     },
     "TSM": {
       "type": "STOCK",
@@ -138,8 +138,8 @@
       "change_pct": -3.01,
       "regime": "Strong Uptrend",
       "confidence": "Low",
-      "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 384.04
+      "reasons": "Steady",
+      "forecast_30d": null
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 14.87
+      "forecast_30d": 14.86
     },
     "INTA": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 412.55
+      "forecast_30d": 390.25
     },
     "TEM": {
       "type": "STOCK",
