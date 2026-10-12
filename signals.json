@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12 16:43:41.439679",
+  "generated_at": "2026-10-12 19:54:09.575662",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 156.74
+      "forecast_30d": 156.75
     },
     "VOO": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 734.54
+      "forecast_30d": 734.71
     },
     "XT": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 39.81
+      "forecast_30d": 34.85
     },
     "VUG": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above long-term avg",
-      "forecast_30d": 93.47
+      "forecast_30d": 93.44
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -20% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 120.24
+      "forecast_30d": null
     },
     "LRN": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 15.12
+      "forecast_30d": 15.11
     },
     "INTA": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 396.82
+      "forecast_30d": 397.12
     },
     "TEM": {
       "type": "STOCK",
