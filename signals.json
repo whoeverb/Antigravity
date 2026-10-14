@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14 12:52:20.622914",
+  "generated_at": "2026-10-14 15:17:22.082337",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": null
+      "forecast_30d": 140.68
     },
     "VOO": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 610.39
+      "forecast_30d": 622.38
     },
     "XT": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 41.52
+      "forecast_30d": 41.66
     },
     "VUG": {
       "type": "ETF",
@@ -68,8 +68,8 @@
       "change_pct": 0.12,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 85.56
+      "reasons": "Steady",
+      "forecast_30d": 90.17
     },
     "AMZN": {
       "type": "STOCK",
@@ -88,8 +88,8 @@
       "change_pct": 4.23,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Below 50d trend, Above 30d forecast trend \u2014 overextended, Approaching tax-loss threshold: down -19%",
-      "forecast_30d": 123.27
+      "reasons": "Below 50d trend, Approaching tax-loss threshold: down -19%",
+      "forecast_30d": null
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 236.57
+      "forecast_30d": 236.56
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1882.13
+      "forecast_30d": 1884.77
     },
     "TSM": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 376.34
+      "forecast_30d": 376.64
     },
     "TEM": {
       "type": "STOCK",
