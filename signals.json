@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16 12:24:08.258594",
+  "generated_at": "2026-10-16 14:56:36.314078",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -8,8 +8,8 @@
       "change_pct": 0.06,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 24.61
+      "reasons": "Steady",
+      "forecast_30d": null
     },
     "SMH": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended, Oversold",
-      "forecast_30d": 123.91
+      "forecast_30d": 127.55
     },
     "VOO": {
       "type": "ETF",
@@ -68,8 +68,8 @@
       "change_pct": -0.1,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 84.75
+      "reasons": "Steady",
+      "forecast_30d": null
     },
     "AMZN": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1804.98
+      "forecast_30d": 1807.1
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 310.96
+      "forecast_30d": 349.72
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 14.4
+      "forecast_30d": 14.41
     },
     "INTA": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Medium",
       "reasons": "Steady",
-      "forecast_30d": 359.22
+      "forecast_30d": 359.34
     },
     "TEM": {
       "type": "STOCK",
