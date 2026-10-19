@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-19 14:39:58.153706",
+  "generated_at": "2026-10-19 17:03:14.359161",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended, Oversold",
-      "forecast_30d": 126.36
+      "forecast_30d": 125.72
     },
     "VOO": {
       "type": "ETF",
@@ -119,7 +119,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Support found, Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 185.71
+      "forecast_30d": 197.98
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1797.55
+      "forecast_30d": 1796.5
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 341.93
+      "forecast_30d": 341.17
     },
     "EVGO": {
       "type": "STOCK",
@@ -188,8 +188,8 @@
       "change_pct": 2.07,
       "regime": "Strong Uptrend",
       "confidence": "High",
-      "reasons": "Steady",
-      "forecast_30d": null
+      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
+      "forecast_30d": 103.25
     },
     "GOOG": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend",
-      "forecast_30d": 346.64
+      "forecast_30d": 346.54
     },
     "TEM": {
       "type": "STOCK",
