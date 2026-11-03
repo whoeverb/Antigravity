@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03 15:05:26.274775",
+  "generated_at": "2026-11-03 17:56:39.348263",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Oversold, Below long-term avg",
-      "forecast_30d": 148.13
+      "forecast_30d": 148.64
     },
     "VOO": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Oversold",
-      "forecast_30d": 697.94
+      "forecast_30d": 697.9
     },
     "XT": {
       "type": "ETF",
@@ -59,7 +59,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Above 30d forecast trend \u2014 overextended, Momentum stretched, Above long-term avg",
-      "forecast_30d": 24.03
+      "forecast_30d": 25.38
     },
     "VUG": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Neutral",
       "confidence": "Medium",
       "reasons": "Oversold",
-      "forecast_30d": 84.7
+      "forecast_30d": 84.68
     },
     "AMZN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend",
-      "forecast_30d": 207.78
+      "forecast_30d": 207.71
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1693.14
+      "forecast_30d": 1695.0
     },
     "TSM": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Macro caution",
-      "forecast_30d": 98.46
+      "forecast_30d": 98.5
     },
     "GOOG": {
       "type": "STOCK",
