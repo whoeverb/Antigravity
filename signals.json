@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06 15:00:33.041881",
+  "generated_at": "2026-11-06 17:35:38.625231",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -9,7 +9,7 @@
       "regime": "Pullback",
       "confidence": "High",
       "reasons": "Oversold, Below long-term avg",
-      "forecast_30d": 32.77
+      "forecast_30d": 32.78
     },
     "SMH": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Neutral",
       "confidence": "Medium",
       "reasons": "Oversold",
-      "forecast_30d": 680.19
+      "forecast_30d": 679.3
     },
     "XT": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Pullback",
       "confidence": "High",
       "reasons": "Oversold, Below long-term avg",
-      "forecast_30d": 81.67
+      "forecast_30d": 81.71
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Pullback",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -35% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 118.41
+      "forecast_30d": 112.23
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Neutral",
       "confidence": "Medium",
       "reasons": "Support found, Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 142.93
+      "forecast_30d": 159.26
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend, Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 1257.15
+      "forecast_30d": 1257.31
     },
     "TSM": {
       "type": "STOCK",
