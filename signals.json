@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11 15:09:50.713120",
+  "generated_at": "2026-11-11 17:57:42.201535",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -9,7 +9,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Steady",
-      "forecast_30d": 35.27
+      "forecast_30d": 35.26
     },
     "SMH": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below long-term avg",
-      "forecast_30d": 88.23
+      "forecast_30d": 88.21
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -33% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 109.9
+      "forecast_30d": 109.84
     },
     "LRN": {
       "type": "STOCK",
@@ -118,8 +118,8 @@
       "change_pct": -5.47,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Support found, Below 50d trend",
-      "forecast_30d": 160.96
+      "reasons": "Support found, Below 50d trend, Above 30d forecast trend \u2014 overextended",
+      "forecast_30d": 160.79
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1759.3
+      "forecast_30d": 1760.08
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend",
-      "forecast_30d": 406.61
+      "forecast_30d": 407.22
     },
     "EVGO": {
       "type": "STOCK",
