@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-13 15:22:36.077016",
+  "generated_at": "2026-11-13 17:55:44.107999",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -9,7 +9,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 36.72
+      "forecast_30d": 36.64
     },
     "SMH": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 742.3
+      "forecast_30d": 742.36
     },
     "XT": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -28% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 115.24
+      "forecast_30d": 115.36
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend",
-      "forecast_30d": 161.2
+      "forecast_30d": 162.83
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1810.93
+      "forecast_30d": 1810.71
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Strong Uptrend",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 446.83
+      "forecast_30d": 446.75
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Bullish",
       "confidence": "Medium",
       "reasons": "Below 50d trend",
-      "forecast_30d": 13.94
+      "forecast_30d": 13.98
     },
     "INTA": {
       "type": "STOCK",
@@ -188,8 +188,8 @@
       "change_pct": -0.13,
       "regime": "Strong Uptrend",
       "confidence": "High",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 106.83
+      "reasons": "Steady",
+      "forecast_30d": null
     },
     "GOOG": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Neutral",
       "confidence": "Medium",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -19%",
-      "forecast_30d": 406.0
+      "forecast_30d": 407.83
     },
     "TEM": {
       "type": "STOCK",
