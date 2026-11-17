@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-17 16:52:38.616352",
+  "generated_at": "2026-11-17 19:15:27.485264",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Oversold, Below long-term avg",
-      "forecast_30d": 133.7
+      "forecast_30d": 133.84
     },
     "VOO": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Above 30d forecast trend \u2014 overextended",
-      "forecast_30d": 545.75
+      "forecast_30d": 537.37
     },
     "XT": {
       "type": "ETF",
@@ -58,8 +58,8 @@
       "change_pct": -0.72,
       "regime": "Bullish",
       "confidence": "Medium",
-      "reasons": "Below 30d forecast trend \u2014 potential dip entry, Above long-term avg",
-      "forecast_30d": 50.09
+      "reasons": "Above long-term avg",
+      "forecast_30d": null
     },
     "VUG": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Oversold, Below long-term avg",
-      "forecast_30d": 82.95
+      "forecast_30d": null
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -33% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 79.46
+      "forecast_30d": 86.0
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 187.83
+      "forecast_30d": 186.2
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1690.65
+      "forecast_30d": 1688.72
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 406.95
+      "forecast_30d": 406.91
     },
     "EVGO": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Pullback",
       "confidence": "Medium",
       "reasons": "Tax-loss harvest: down -23% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 312.37
+      "forecast_30d": 312.12
     },
     "TEM": {
       "type": "STOCK",
