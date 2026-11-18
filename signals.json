@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18 16:26:20.083794",
+  "generated_at": "2026-11-18 18:55:42.476243",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Oversold, Below long-term avg",
-      "forecast_30d": 127.54
+      "forecast_30d": 127.46
     },
     "VOO": {
       "type": "ETF",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -35% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 74.87
+      "forecast_30d": 73.56
     },
     "LRN": {
       "type": "STOCK",
@@ -119,7 +119,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 198.81
+      "forecast_30d": 198.66
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1629.35
+      "forecast_30d": 1629.63
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend, Approaching tax-loss threshold: down -10%",
-      "forecast_30d": 370.84
+      "forecast_30d": 369.81
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend",
-      "forecast_30d": 13.95
+      "forecast_30d": 13.94
     },
     "INTA": {
       "type": "STOCK",
@@ -189,7 +189,7 @@
       "regime": "Strong Uptrend",
       "confidence": "High",
       "reasons": "Macro caution",
-      "forecast_30d": 99.15
+      "forecast_30d": 96.71
     },
     "GOOG": {
       "type": "STOCK",
