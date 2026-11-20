@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20 16:08:02.304539",
+  "generated_at": "2026-11-20 18:41:05.241242",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -9,7 +9,7 @@
       "regime": "Neutral",
       "confidence": "Medium",
       "reasons": "Above 30d forecast trend \u2014 overextended, Oversold, Below long-term avg",
-      "forecast_30d": 30.6
+      "forecast_30d": 30.61
     },
     "SMH": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Oversold, Below long-term avg",
-      "forecast_30d": 123.03
+      "forecast_30d": 122.48
     },
     "VOO": {
       "type": "ETF",
@@ -68,8 +68,8 @@
       "change_pct": -2.21,
       "regime": "Neutral",
       "confidence": "Medium",
-      "reasons": "Above 30d forecast trend \u2014 overextended, Oversold, Below long-term avg",
-      "forecast_30d": 74.68
+      "reasons": "Oversold, Below long-term avg",
+      "forecast_30d": 77.74
     },
     "AMZN": {
       "type": "STOCK",
@@ -118,8 +118,8 @@
       "change_pct": -3.3,
       "regime": "Neutral",
       "confidence": "Low",
-      "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 190.2
+      "reasons": "Below 50d trend",
+      "forecast_30d": null
     },
     "ASML": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1562.47
+      "forecast_30d": 1562.72
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 50d trend, Approaching tax-loss threshold: down -12%",
-      "forecast_30d": 357.45
+      "forecast_30d": 356.55
     },
     "EVGO": {
       "type": "STOCK",
@@ -169,7 +169,7 @@
       "regime": "Neutral",
       "confidence": "Medium",
       "reasons": "Support found, Below 50d trend, Approaching tax-loss threshold: down -11%",
-      "forecast_30d": 13.43
+      "forecast_30d": 13.47
     },
     "INTA": {
       "type": "STOCK",
