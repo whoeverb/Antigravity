@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-23 19:13:54.682703",
+  "generated_at": "2026-11-23 22:07:29.300285",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Neutral",
       "confidence": "Medium",
       "reasons": "Oversold, Below long-term avg",
-      "forecast_30d": 110.12
+      "forecast_30d": 110.53
     },
     "VOO": {
       "type": "ETF",
@@ -68,8 +68,8 @@
       "change_pct": -5.32,
       "regime": "Pullback",
       "confidence": "High",
-      "reasons": "Above 30d forecast trend \u2014 overextended, Oversold, Below long-term avg",
-      "forecast_30d": 58.79
+      "reasons": "Oversold, Below long-term avg",
+      "forecast_30d": null
     },
     "AMZN": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Support found, Below 50d trend, Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -15%",
-      "forecast_30d": 1412.3
+      "forecast_30d": 1424.48
     },
     "TSM": {
       "type": "STOCK",
