@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24 18:53:04.330687",
+  "generated_at": "2026-11-24 20:44:12.845572",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -9,7 +9,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below long-term avg",
-      "forecast_30d": 32.84
+      "forecast_30d": 32.89
     },
     "SMH": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Below long-term avg",
-      "forecast_30d": 148.78
+      "forecast_30d": 147.16
     },
     "VOO": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below long-term avg",
-      "forecast_30d": 670.15
+      "forecast_30d": 670.43
     },
     "XT": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below long-term avg",
-      "forecast_30d": 82.22
+      "forecast_30d": 82.24
     },
     "AMZN": {
       "type": "STOCK",
@@ -89,7 +89,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Tax-loss harvest: down -36% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 105.48
+      "forecast_30d": 105.06
     },
     "LRN": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 1608.39
+      "forecast_30d": 1608.56
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry",
-      "forecast_30d": 417.41
+      "forecast_30d": 425.44
     },
     "EVGO": {
       "type": "STOCK",
@@ -168,8 +168,8 @@
       "change_pct": -2.02,
       "regime": "Pullback",
       "confidence": "High",
-      "reasons": "Support found, Below 50d trend, Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -13%",
-      "forecast_30d": 13.84
+      "reasons": "Support found, Below 50d trend, Approaching tax-loss threshold: down -13%",
+      "forecast_30d": 13.75
     },
     "INTA": {
       "type": "STOCK",
