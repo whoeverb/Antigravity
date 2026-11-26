@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26 17:42:39.735890",
+  "generated_at": "2026-11-26 19:43:37.844461",
   "signals": {
     "SCHG": {
       "type": "ETF",
@@ -9,7 +9,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Oversold, Below long-term avg",
-      "forecast_30d": 33.99
+      "forecast_30d": 33.95
     },
     "SMH": {
       "type": "ETF",
@@ -29,7 +29,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Oversold, Below long-term avg",
-      "forecast_30d": 144.96
+      "forecast_30d": 146.11
     },
     "VOO": {
       "type": "ETF",
@@ -39,7 +39,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Oversold, Below long-term avg",
-      "forecast_30d": 697.44
+      "forecast_30d": 698.41
     },
     "XT": {
       "type": "ETF",
@@ -69,7 +69,7 @@
       "regime": "Neutral",
       "confidence": "Low",
       "reasons": "Below 30d forecast trend \u2014 potential dip entry, Oversold, Below long-term avg",
-      "forecast_30d": 84.3
+      "forecast_30d": 84.37
     },
     "AMZN": {
       "type": "STOCK",
@@ -129,7 +129,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -12%",
-      "forecast_30d": 1579.88
+      "forecast_30d": 1580.3
     },
     "TSM": {
       "type": "STOCK",
@@ -139,7 +139,7 @@
       "regime": "Bullish",
       "confidence": "Low",
       "reasons": "Below 50d trend, Below 30d forecast trend \u2014 potential dip entry, Approaching tax-loss threshold: down -15%",
-      "forecast_30d": 436.48
+      "forecast_30d": 436.85
     },
     "EVGO": {
       "type": "STOCK",
@@ -199,7 +199,7 @@
       "regime": "Neutral",
       "confidence": "Medium",
       "reasons": "Tax-loss harvest: down -25% from cost basis. Consider reinvesting in ETF.",
-      "forecast_30d": 248.22
+      "forecast_30d": 248.21
     },
     "TEM": {
       "type": "STOCK",
